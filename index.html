@@ -53,7 +53,7 @@
   <!-- TALENTS -->
   <section id="talents" class="panel">
     <h2>Talents</h2>
-    <p class="lead">Final build <b>9 / 32 / 10</b> (Wowhead Mono-Bear). Click any talent to see what it does. Click a spell or stat to see which talents improve it.</p>
+    <p class="lead">The trees are laid out exactly like in game. At level 60 you'll have <b>9 points in Balance, 32 in Feral Combat and 10 in Restoration</b> (Wowhead calls this build “Mono-Bear”). Click any talent to read what it does. Click a button below to highlight every talent that improves that spell or stat.</p>
     <div class="chips" id="chips"></div>
     <div class="talent-layout">
       <div id="trees" class="trees"></div>
@@ -67,14 +67,14 @@
   <!-- ROTATION -->
   <section id="rotation" class="panel">
     <h2>Rotation</h2>
-    <p class="lead">Go down the list and press the first button whose condition is true. This version is filtered to <b id="rot-lvl"></b>: buttons you haven't learned yet are greyed out.</p>
+    <p class="lead">Start at the top of the list. Press the first button whose note applies right now, then start again from the top. The list is set for <b id="rot-lvl"></b>, so buttons you haven't learned yet are greyed out.</p>
     <div class="seg" id="rot-seg">
       <button data-r="single" class="on">1 target</button><button data-r="cleave">2 targets</button><button data-r="aoe">3+ targets</button>
     </div>
     <ol id="prio" class="prio"></ol>
     <div class="cards2">
       <div class="card"><h3>Before the pull</h3><ol id="prepull" class="steps"></ol></div>
-      <div class="card"><h3>Oh no buttons</h3><div id="defs"></div></div>
+      <div class="card"><h3>Emergency buttons</h3><div id="defs"></div></div>
     </div>
     <div class="card"><h3>When to change form</h3><div id="forms" class="forms"></div></div>
   </section>
@@ -116,13 +116,13 @@
       <div id="c-out" class="calc-out"></div>
     </details>
     <details class="dd"><summary>Talent ↔ spell table (all effects)</summary><div class="tablewrap"><table id="mx" class="mx"></table></div></details>
-    <details class="dd"><summary>Enchants &amp; consumables</summary><div class="cards2"><div><h4>Enchants</h4><ul id="ench" class="kv"></ul><p class="small muted">*Rugged Armor Kit may currently get the bear armor bonus (suspected bug).</p></div><div><h4>Consumables</h4><ul id="cons" class="kv"></ul></div></div></details>
+    <details class="dd"><summary>Enchants &amp; consumables</summary><div class="cards2"><div><h4>Enchants</h4><ul id="ench" class="kv"></ul><p class="small muted">*Method.gg thinks the armor from a Rugged Armor Kit may currently get multiplied by bear form (possibly a bug). If so, it's the best choice in those slots.</p></div><div><h4>Consumables</h4><ul id="cons" class="kv"></ul></div></div></details>
     <details class="dd"><summary>Professions, camping, Legacy points</summary><ul class="kv">
-      <li><b>Leveling</b>Leatherworking + Skinning: Camp Tent rested XP, armor kits, Wolfshead Helm, Warbear set.</li>
-      <li><b>At 60</b>Engineering (Sappers reportedly usable in form) + Leatherworking.</li>
-      <li><b>Always</b>Cooking, First Aid, Fishing (Fish Bowl camp = +8% stats).</li>
-      <li><b>Camp</b>Fish Bowl, First Aid Kit, Sharpening Wheel, Lodestone, Camp Tent.</li>
-      <li><b>Legacy</b>0–5 Thrill of Adventure · 5–10 Well Rested &gt; Talented · then max Thrill.</li></ul></details>
+      <li><b>While leveling</b>Leatherworking and Skinning. Skin the animals you kill, then make your own leather armor, armor kits, and later the Wolfshead Helm and the Warbear pieces.</li>
+      <li><b>At 60</b>Many tanks switch to Engineering plus Leatherworking. Engineering bombs (Sapper Charges) reportedly work in bear form in Forever.</li>
+      <li><b>Always</b>Cooking, First Aid and Fishing. They don't use up a profession slot.</li>
+      <li><b>Camping</b>Forever lets you set up a camp with useful items. Wowhead recommends the Fish Bowl (more stats), First Aid Kit, Sharpening Wheel, Lodestone and Camp Tent (rested experience).</li>
+      <li><b>Legacy points</b>Forever's account-wide bonuses. Spend the first 5 on Thrill of Adventure, the next 5 on Well Rested, then Talented, then the rest on Thrill of Adventure.</li></ul></details>
     <details class="dd"><summary>Windshaper Skyborne racials</summary><ul id="racials" class="kv"></ul></details>
     <details class="dd"><summary>All abilities by level</summary><div class="tablewrap"><table id="abil" class="mx"></table></div></details>
     <details class="dd"><summary>Sources</summary><ul id="src"></ul><p class="small muted">Researched the day after launch. Data updated <span id="meta-upd"></span>.</p></details>
@@ -131,6 +131,7 @@
 <footer class="wrap small muted">Fan-made reference. Not affiliated with Blizzard.</footer>
 <script src="data.js"></script>
 <script src="research.js"></script>
+<script src="talent-tree.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
