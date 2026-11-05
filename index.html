@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bear Tank Codex</title>
+<meta name="description" content="WoW: Forever Feral Druid bear tank: what to do at every level, talents, rotation and gear. Patch 1.60.1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>const whTooltips = {colorLinks: true, iconizeLinks: false, renameLinks: false};</script>
+<script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <div class="brand"><img class="logo" src="https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg" alt="Bear Form"><div><b>Bear Tank Codex</b><small>WoW: Forever · Patch <span id="meta-patch"></span></small></div></div>
+    <div class="stepper" aria-label="Your level">
+      <button id="lv-dn" aria-label="Level down">−</button>
+      <div class="lv"><small>LEVEL</small><input id="lvl" type="number" min="10" max="60" inputmode="numeric"></div>
+      <button id="lv-up" aria-label="Level up">+</button>
+    </div>
+  </div>
+  <nav class="wrap tabs" role="tablist">
+    <button data-tab="today" class="on">Today</button>
+    <button data-tab="road">Road to 60</button>
+    <button data-tab="talents">Talents</button>
+    <button data-tab="rotation">Rotation</button>
+    <button data-tab="dungeons">Dungeons</button>
+    <button data-tab="setup">Setup</button>
+    <button data-tab="deep">Deep dive</button>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- TODAY -->
+  <section id="today" class="panel on">
+    <div id="hero" class="hero"></div>
+    <div class="cards3" id="today-cards"></div>
+    <div class="cards2" id="today-extra"></div>
+    <div id="today-loot"></div>
+    <div id="upcoming" class="upcoming"></div>
+  </section>
+
+  <!-- ROAD -->
+  <section id="road" class="panel">
+    <h2>Road to 60</h2>
+    <p class="lead">Each stop is a level range. Open a stop to see what to do, what to loot and which talents to take. Tick it off when you're done.</p>
+    <div class="legend"><span class="tag v">Confirmed</span> stats confirmed for Forever <span class="tag q">Quest</span> quest reward <span class="tag c">Classic</span> Classic item, stats may have changed</div>
+    <ol id="timeline" class="timeline"></ol>
+  </section>
+
+  <!-- TALENTS -->
+  <section id="talents" class="panel">
+    <h2>Talents</h2>
+    <p class="lead">Final build <b>9 / 32 / 10</b> (Wowhead Mono-Bear). Click any talent to see what it does. Click a spell or stat to see which talents improve it.</p>
+    <div class="chips" id="chips"></div>
+    <div class="talent-layout">
+      <div id="trees" class="trees"></div>
+      <aside id="tdetail" class="tdetail"></aside>
+    </div>
+    <h3>Order, level by level</h3>
+    <div id="order" class="order"></div>
+    <p class="small muted" id="validator"></p>
+  </section>
+
+  <!-- ROTATION -->
+  <section id="rotation" class="panel">
+    <h2>Rotation</h2>
+    <p class="lead">Go down the list and press the first button whose condition is true. This version is filtered to <b id="rot-lvl"></b>: buttons you haven't learned yet are greyed out.</p>
+    <div class="seg" id="rot-seg">
+      <button data-r="single" class="on">1 target</button><button data-r="cleave">2 targets</button><button data-r="aoe">3+ targets</button>
+    </div>
+    <ol id="prio" class="prio"></ol>
+    <div class="cards2">
+      <div class="card"><h3>Before the pull</h3><ol id="prepull" class="steps"></ol></div>
+      <div class="card"><h3>Oh no buttons</h3><div id="defs"></div></div>
+    </div>
+    <div class="card"><h3>When to change form</h3><div id="forms" class="forms"></div></div>
+  </section>
+
+  <!-- DUNGEONS -->
+  <section id="dungeons" class="panel">
+    <h2>Dungeon cheat sheets</h2>
+    <p class="lead">How to tank each dungeon: quests to grab first, the route through, what every boss does and how to handle it as a bear. Dungeons that fit your level are highlighted.</p>
+    <div id="dgrid" class="dgrid"></div>
+  </section>
+
+  <!-- SETUP -->
+  <section id="setup" class="panel">
+    <h2>Setup</h2>
+    <p class="lead">Macros you can copy, a keybind layout and the addons worth installing. Macros marked “Untested” use standard Classic syntax but haven't been tried in the Forever client yet.</p>
+    <h3>Macros</h3>
+    <div id="macros" class="macros"></div>
+    <div class="cards2">
+      <div class="card"><h3>Keybind layout</h3><div id="keys" class="keys"></div></div>
+      <div class="card"><h3>Addons</h3><ul id="addons" class="kv"></ul></div>
+    </div>
+  </section>
+
+  <!-- DEEP DIVE -->
+  <section id="deep" class="panel">
+    <h2>Deep dive</h2>
+    <p class="lead">The math and the details. Everything here is optional.</p>
+    <details class="dd" open><summary>Your numbers at this level</summary><p class="small muted">Worked out from the talents you have at your level. Multipliers stack.</p><div class="stats" id="derived"></div></details>
+    <details class="dd"><summary>What changed from Classic</summary><div id="mech"></div></details>
+    <details class="dd"><summary>Stat priority</summary><div id="stats"></div></details>
+    <details class="dd"><summary>Armor calculator</summary>
+      <div class="calc">
+        <label>Gear armor (caster form)<input id="c-armor" type="number" value="1500"></label>
+        <label>Agility<input id="c-agi" type="number" value="150"></label>
+        <label>Form<select id="c-form"><option value="4.6">Dire Bear ×4.6</option><option value="2.8">Bear ×2.8</option><option value="1">Caster</option></select></label>
+        <label>Enemy level<input id="c-lvl" type="number" value="63"></label>
+        <label class="chk"><input id="c-th" type="checkbox" checked> Thick Hide</label>
+      </div>
+      <div id="c-out" class="calc-out"></div>
+    </details>
+    <details class="dd"><summary>Talent ↔ spell table (all effects)</summary><div class="tablewrap"><table id="mx" class="mx"></table></div></details>
+    <details class="dd"><summary>Enchants &amp; consumables</summary><div class="cards2"><div><h4>Enchants</h4><ul id="ench" class="kv"></ul><p class="small muted">*Rugged Armor Kit may currently get the bear armor bonus (suspected bug).</p></div><div><h4>Consumables</h4><ul id="cons" class="kv"></ul></div></div></details>
+    <details class="dd"><summary>Professions, camping, Legacy points</summary><ul class="kv">
+      <li><b>Leveling</b>Leatherworking + Skinning: Camp Tent rested XP, armor kits, Wolfshead Helm, Warbear set.</li>
+      <li><b>At 60</b>Engineering (Sappers reportedly usable in form) + Leatherworking.</li>
+      <li><b>Always</b>Cooking, First Aid, Fishing (Fish Bowl camp = +8% stats).</li>
+      <li><b>Camp</b>Fish Bowl, First Aid Kit, Sharpening Wheel, Lodestone, Camp Tent.</li>
+      <li><b>Legacy</b>0–5 Thrill of Adventure · 5–10 Well Rested &gt; Talented · then max Thrill.</li></ul></details>
+    <details class="dd"><summary>Windshaper Skyborne racials</summary><ul id="racials" class="kv"></ul></details>
+    <details class="dd"><summary>All abilities by level</summary><div class="tablewrap"><table id="abil" class="mx"></table></div></details>
+    <details class="dd"><summary>Sources</summary><ul id="src"></ul><p class="small muted">Researched the day after launch. Data updated <span id="meta-upd"></span>.</p></details>
+  </section>
+</main>
+<footer class="wrap small muted">Fan-made reference. Not affiliated with Blizzard.</footer>
+<script src="data.js"></script>
+<script src="research.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
