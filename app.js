@@ -101,7 +101,7 @@
       ["Feral Charge", "In Cat Form, Feral Charge leaps you behind the enemy from 8 to 25 yards away. Follow it with Shred. Usable every 30 seconds.", { t: "feralCharge" }],
       ["Tiger's Fury", "At the start of the fight: 15% more damage for 6 seconds. Usable every 30 seconds.", { lvl: 24 }],
       ["Rake", "If the enemy isn't bleeding from Rake yet. It hits, then keeps hurting over 9 seconds.", { lvl: 24 }],
-      ["Ferocious Bite", "At 5 combo points, to finish off the enemy. Most questing enemies die quickly, so this is usually your best finisher.", { lvl: 32 }],
+      ["Ferocious Bite", "At 5 combo points, to finish off the enemy. Most questing enemies die quickly, so this is usually your best finisher.", { lvl: 24 }],
       ["Rip", "At 4 or 5 combo points on an enemy with a lot of health (it hurts over 12 seconds). Before level 32 it's your only finisher, so use it at 3 or more combo points.", { lvl: 20 }],
       ["Claw", "When nothing above applies. Builds 1 combo point. Your main button when you're facing the enemy.", { lvl: 20 }],
     ],
@@ -135,6 +135,28 @@
   const rankAt = L => ORDER.slice(0, L - 9).filter(x => x === ORDER[L - 10]).length;
   const unlocked = (req, L, r) => (!req.lvl || L >= req.lvl) && (!req.t || r[req.t]) && (!req.before || !r[req.before]);
 
+  /* ---------------- TRAINER ---------------- */
+  const TR = window.TRAINER || [], TI = window.TRAINER_INFO || {};
+  const money = c => { const g = Math.floor(c / 10000), s = Math.floor(c % 10000 / 100), k = c % 100; return [g && g + "g", s && s + "s", (k || !c) && k + "c"].filter(Boolean).join(" "); };
+  const CAT_L = { bear: "Bear", cat: "Cat", heal: "Self-heal", util: "Utility", skip: "Optional" };
+  const trAt = L => TR.filter(t => t[0] === L);
+  const trName = t => `${spellLink(t[3], img((TI[t[1]] || [])[1] || "inv_misc_questionmark", "ico", t[1]) + " " + esc(t[1]))}${t[2] ? ` <span class="rk">rank ${t[2]}</span>` : ""}`;
+  const trRow = t => { const [c, , d] = TI[t[1]] || ["util", "", ""]; return `<li class="tr-${c}"><div class="tr-n">${trName(t)}<span class="tag tc-${c}">${CAT_L[c]}</span>${t[5] ? `<span class="tag q">Quest</span>` : ""}</div><span class="tr-d">${t[2] > 1 ? "Stronger rank of a spell you already have. " : ""}${esc(d)}</span><span class="tr-c">${t[5] ? "class quest" : money(t[4])}</span></li>`; };
+  const trCost = a => a.filter(t => (TI[t[1]] || [])[0] !== "skip" && !t[5]).reduce((x, t) => x + t[4], 0);
+  function trainerCard(L) {
+    const now = trAt(L), nxt = TR.find(t => t[0] > L), nL = nxt ? nxt[0] : null;
+    const list = a => { const need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
+      return `<ul class="trl">${need.map(trRow).join("")}</ul>${opt.length ? `<p class="small muted" style="margin:10px 0 0">Optional, skip to save gold: ${opt.map(t => esc(t[1]) + (t[2] ? " " + t[2] : "")).join(", ")}</p>` : ""}`; };
+    return `<div class="card"><div class="label">Your trainer at level ${L}</div>${now.length
+      ? `<p class="tr-go"><b>Go to your trainer.</b> ${now.length} new spell${now.length > 1 ? "s" : ""} at level ${L}. The ones you need cost <b>${money(trCost(now))}</b> in total.</p>${list(now)}`
+      : `<p class="tr-go"><b>Nothing new at level ${L}.</b> Druid trainers only add spells on even levels. Don't go yet.</p>${nL ? `<div class="label" style="margin-top:16px">Next visit: level ${nL}</div>${list(trAt(nL))}` : ""}`}</div>`;
+  }
+  function renderTrainer() {
+    const L = state.level, lv = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10);
+    $("#trainer-list").innerHTML = lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
+      return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div><ul class="trl">${need.map(trRow).join("")}</ul>${opt.length ? `<p class="small muted tr-opt">Optional: ${opt.map(t => trName(t)).join(", ")}</p>` : ""}</div>`; }).join("");
+  }
+
   /* ---------------- TODAY ---------------- */
   function renderToday() {
     const L = state.level, n = ptsAt(L), r = ranksAt(n), cp = CHECKPOINTS[curCp(L)], cur = pickAt(L), nx = pickAt(L + 1);
@@ -142,6 +164,7 @@
     $("#hero").innerHTML = `<div class="eyebrow">Level ${L} · stop ${curCp(L) + 1} of ${CHECKPOINTS.length}</div>
       <h1>${esc(cp.title)}</h1><p>${rich(cp.where)}</p>
       ${stepFor(L) ? `<p class="goal">Quest in: <b>${esc(stepFor(L).zones)}</b> · ${esc(stepFor(L).hub)}</p>` : ""}
+      <p class="goal">Trainer: ${trAt(L).length ? `<b>new spells at level ${L}, go train</b>` : `nothing new until level ${L + 1}`}</p>
       ${ct ? `<p class="goal">Your level ${L} talent: <b>${esc(ct.name)} rank ${rankAt(L)} of ${ct.max}</b></p>` : ""}
       <div class="progress"><i style="width:${(L - 10) / 50 * 100}%"></i></div>
       <div class="progress-l"><span>Talents ${n}/51</span><span>Level ${L} / 60</span></div>`;
@@ -151,7 +174,7 @@
       <div class="card"><div class="label">Press these, in order</div><div class="btnrow">${rot.map((x, i) => `<div class="b"><em>${i + 1}</em>${spellLink(SP[x[0]][1], img(SP[x[0]][0], "ico lg", x[0]))}${esc(x[0])}</div>`).join("")}</div></div>
       <div class="card"><div class="label">This stop is done when</div><p style="margin:0 0 10px;font-size:17px;font-weight:600">${rich(cp.done)}</p><p class="small muted" style="margin:0">Talents here: ${rich(cp.talents)}</p></div>`;
     const st = stepFor(L), nst = st ? R.route[R.route.indexOf(st) + 1] : null, dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where)).slice(0, 2);
-    $("#today-extra").innerHTML = (st ? `<div class="card"><div class="label">Where to quest at level ${L}</div>${zoneHtml(st)}${nst ? `<div class="label" style="margin-top:18px">Then, at level ${rng(nst.lv)[0]}</div>${zoneHtml(nst)}` : ""}</div>` : "")
+    $("#today-extra").innerHTML = trainerCard(L) + (st ? `<div class="card"><div class="label">Where to quest at level ${L}</div>${zoneHtml(st)}${nst ? `<div class="label" style="margin-top:18px">Then, at level ${rng(nst.lv)[0]}</div>${zoneHtml(nst)}` : ""}</div>` : "")
       + (dg.length ? `<div class="card"><div class="label">Dungeon cheat sheet</div>${dg.map(d => dungeonMini(d)).join("")}</div>` : "");
     $("#today-extra").querySelectorAll(".open-d").forEach(a => a.onclick = e => { e.preventDefault(); state.dsel = a.dataset.k; renderDungeons(); setTab("dungeons"); });
     $("#today-loot").innerHTML = cp.items.length ? `<div class="card loot"><div class="label">Loot to grab here</div>${itemsHtml(cp.items)}</div>` : "";
@@ -330,7 +353,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);
@@ -349,7 +372,7 @@
     ["#c-armor", "#c-agi", "#c-form", "#c-lvl", "#c-th"].forEach(s => $(s).addEventListener("input", armorCalc));
     buildLinks(); renderDeepStatic(); renderSetup(); armorCalc(); renderAll();
     window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (document.getElementById(t)?.classList.contains("panel")) setTab(t); });
-    const h = location.hash.slice(1); setTab(["today", "road", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
+    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();

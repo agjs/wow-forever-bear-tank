@@ -331,3 +331,31 @@ kbd{min-width:44px;text-align:center;background:linear-gradient(180deg,#2c261c,#
 .now-pill{background:linear-gradient(180deg,var(--gold-2),var(--gold-deep));color:#1a1206;font:800 10.5px var(--sans);letter-spacing:.8px;padding:5px 10px;border-radius:99px;white-space:nowrap;box-shadow:0 0 16px var(--gold-glow)}
 .catnote{margin-bottom:14px}.catnote p{margin:0 0 8px;color:var(--text-2);line-height:1.55}.catnote p:last-child{margin:0}
 .zone .hub{display:block;color:var(--gold-2);font-size:13.5px;margin:2px 0 4px}.zone .fz{display:block;margin-top:6px;font-size:13px;color:var(--text-2)}
+
+/* trainer */
+.trl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.trl li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.18)}
+.trl .tr-n{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600}
+.trl .tr-n a{display:inline-flex;align-items:center;gap:8px}
+.trl .tr-n .ico{width:24px;height:24px}
+.trl .rk{color:var(--text-3);font-weight:500;font-size:13px}
+.trl .tr-d{grid-column:1/2;color:var(--text-2);font-size:14px}
+.trl .tr-c{grid-column:2;grid-row:1/3;align-self:center;color:var(--gold);font-weight:600;white-space:nowrap;font-size:14px}
+.tr-go{margin:0 0 12px}
+.tag.tc-bear{background:rgba(201,122,60,.18);color:#e8a46a}
+.tag.tc-cat{background:rgba(230,200,60,.15);color:#f0d060}
+.tag.tc-heal{background:rgba(60,200,110,.15);color:#6fdc94}
+.tag.tc-util{background:rgba(90,150,230,.15);color:#8db8f0}
+.tag.tc-skip{background:rgba(160,160,160,.15);color:#b0b0b0}
+.trainer-list{display:grid;gap:14px}
+.tr-lv{border:1px solid var(--line);border-radius:var(--r);padding:16px;background:var(--surface)}
+.tr-lv.now{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),var(--shadow)}
+.tr-lv.past{opacity:.55}
+.tr-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.tr-h b{font-family:Cinzel,serif;font-size:18px}
+.tr-h span{color:var(--text-3);font-size:13px}
+.tr-h em{color:var(--gold);font-style:normal;font-weight:700}
+.tr-opt{margin:10px 0 0}
+.tr-opt a{display:inline-flex;align-items:center;gap:4px}
+.tr-opt .ico{width:16px;height:16px}
+@media (max-width:560px){.trl li{grid-template-columns:1fr}.trl .tr-c{grid-column:1;grid-row:auto}}
