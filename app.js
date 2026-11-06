@@ -69,6 +69,8 @@
     Swipe: ["inv_misc_monsterclaw_03", 9908], "Demoralizing Roar": ["ability_druid_demoralizingroar", 9898], "Faerie Fire": ["spell_nature_faeriefire", 9907],
     Enrage: ["ability_druid_enrage", 5229], Barkskin: ["spell_nature_stoneclawtotem", 22812], "Frenzied Regeneration": ["ability_bullrush", 22842],
     "Challenging Roar": ["ability_druid_challangingroar", 5209], Growl: ["ability_physical_taunt", 6795], "Feral Charge": ["ability_hunter_pet_bear", 16979],
+    Claw: ["ability_druid_rake", 1082], Rake: ["ability_druid_disembowel", 1822], Shred: ["spell_shadow_vampiricaura", 5221], Rip: ["ability_ghoulfrenzy", 1079],
+    "Ferocious Bite": ["ability_druid_ferociousbite", 22568], Prowl: ["ability_ambush", 5215], Ravage: ["ability_druid_ravage", 6785], "Tiger's Fury": ["ability_mount_jungletiger", 5217],
     "Dire Bear Form": ["ability_racial_bearform", 9634], Innervate: ["spell_nature_lightning", 29166], Rebirth: ["spell_nature_reincarnation", 20748],
   };
   /* Rotation with unlock requirements: lvl = trained level, t = talent key */
@@ -91,6 +93,17 @@
       ["Faerie Fire", "On the main target.", { lvl: 18 }], ["Demoralizing Roar", "Hits every enemy around you.", { lvl: 10 }],
       ["Swipe", "Press it over and over. It hits 3 enemies at once.", { lvl: 16 }], ["Maul", "On top of everything else, when you have more than 35 rage.", { lvl: 10 }],
       ["Challenging Roar", "Emergency only: forces every enemy around you to attack you for 6 seconds. Usable once every 10 minutes.", { lvl: 28 }],
+    ],
+    cat: [
+      ["Prowl", "Before the fight. Prowl is Cat Form's stealth: enemies can't see you, but you move slower. Sneak up behind the enemy.", { lvl: 20 }],
+      ["Ravage", "Your first hit from Prowl, standing behind the enemy. A very big hit.", { lvl: 32 }],
+      ["Shred", "Your first hit from Prowl before level 32. Also use it any time you're standing behind the enemy, or when Omen of Clarity makes your next ability free.", { lvl: 20 }],
+      ["Feral Charge", "In Cat Form, Feral Charge leaps you behind the enemy from 8 to 25 yards away. Follow it with Shred. Usable every 30 seconds.", { t: "feralCharge" }],
+      ["Tiger's Fury", "At the start of the fight: 15% more damage for 6 seconds. Usable every 30 seconds.", { lvl: 24 }],
+      ["Rake", "If the enemy isn't bleeding from Rake yet. It hits, then keeps hurting over 9 seconds.", { lvl: 24 }],
+      ["Ferocious Bite", "At 5 combo points, to finish off the enemy. Most questing enemies die quickly, so this is usually your best finisher.", { lvl: 32 }],
+      ["Rip", "At 4 or 5 combo points on an enemy with a lot of health (it hurts over 12 seconds). Before level 32 it's your only finisher, so use it at 3 or more combo points.", { lvl: 20 }],
+      ["Claw", "When nothing above applies. Builds 1 combo point. Your main button when you're facing the enemy.", { lvl: 20 }],
     ],
   };
   const DEFS = [
@@ -267,9 +280,10 @@
     const L = state.level, r = ranksAt(ptsAt(L));
     $("#rot-lvl").textContent = "level " + L;
     $("#rot-seg").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.r === state.rot));
+    $("#rot-note").innerHTML = state.rot === "cat" ? `<div class="card catnote"><p><b>For questing alone, one enemy at a time.</b> Claw, Shred, Rake and Ravage each give you a combo point (the dots on the enemy's portrait, up to 5). Rip and Ferocious Bite are finishers: they spend all your combo points, and more points means a stronger hit.</p><p>Switch to Bear Form if a second enemy joins, or if you drop below about half health. Your talents are built for bear, so Cat Form hits softer than it would for a damage-focused druid, but it still kills single enemies faster.</p></div>` : "";
     $("#prio").innerHTML = ROT[state.rot].map(([s, d, req]) => { const ok = unlocked(req, L, r);
       if (!ok && req.before) return "";
-      return `<li class="${ok ? "" : "locked"}">${spellLink(SP[s][1], img(SP[s][0], "ico lg", s))}<div><b>${esc(s)}</b><span>${rich(d)}${ok ? "" : ` · unlocks at ${req.t ? "level " + (TALENTS[req.t].lvl || "?") : "level " + req.lvl}`}</span></div></li>`; }).join("");
+      return `<li class="${ok ? "" : "locked"}">${spellLink(SP[s][1], img(SP[s][0], "ico lg", s))}<div><b>${esc(s)}</b><span>${rich(d)}${ok ? "" : ` · unlocks at ${req.t ? "level " + (ORDER.indexOf(req.t) + 10) : "level " + req.lvl}`}</span></div></li>`; }).join("");
     $("#prepull").innerHTML = ROTATION.prepull.map(x => `<li>${rich(x)}</li>`).join("");
     $("#defs").innerHTML = DEFS.map(([s, d, lv]) => `<div class="def" style="${L < lv ? "opacity:.4" : ""}">${img(SP[s][0])}<div><b>${esc(s)}${L < lv ? ` <span class="small muted">· level ${lv}</span>` : ""}</b><span>${rich(d)}</span></div></div>`).join("");
     $("#forms").innerHTML = ROTATION.forms.map(([a, b]) => `<div class="form"><b>${esc(a)}</b><span>${rich(b)}</span></div>`).join("");
