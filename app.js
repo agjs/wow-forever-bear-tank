@@ -146,15 +146,15 @@
   function trainerCard(L) {
     const now = trAt(L), nxt = TR.find(t => t[0] > L), nL = nxt ? nxt[0] : null;
     const list = a => { const need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
-      return `<ul class="trl">${need.map(trRow).join("")}</ul>${opt.length ? `<p class="small muted" style="margin:10px 0 0">Optional, skip to save gold: ${opt.map(t => esc(t[1]) + (t[2] ? " " + t[2] : "")).join(", ")}</p>` : ""}`; };
+      return `${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length}): a bear rarely uses them, so skip them if gold is tight</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}`; };
     return `<div class="card"><div class="label">Your trainer at level ${L}</div>${now.length
-      ? `<p class="tr-go"><b>Go to your trainer.</b> ${now.length} new spell${now.length > 1 ? "s" : ""} at level ${L}. The ones you need cost <b>${money(trCost(now))}</b> in total.</p>${list(now)}`
+      ? `<p class="tr-go"><b>Go to your trainer.</b> The trainer has ${now.length} new spell${now.length > 1 ? "s" : ""} at level ${L}${(() => { const o = now.filter(t => (TI[t[1]] || [])[0] === "skip").length; return o ? `: ${now.length - o} to learn and ${o} optional` : ""; })()}. The ones to learn cost <b>${money(trCost(now))}</b>.</p>${list(now)}`
       : `<p class="tr-go"><b>Nothing new at level ${L}.</b> Druid trainers only add spells on even levels. Don't go yet.</p>${nL ? `<div class="label" style="margin-top:16px">Next visit: level ${nL}</div>${list(trAt(nL))}` : ""}`}</div>`;
   }
   function renderTrainer() {
     const L = state.level, lv = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10);
     $("#trainer-list").innerHTML = lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
-      return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div><ul class="trl">${need.map(trRow).join("")}</ul>${opt.length ? `<p class="small muted tr-opt">Optional: ${opt.map(t => trName(t)).join(", ")}</p>` : ""}</div>`; }).join("");
+      return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div>${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length})</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}</div>`; }).join("");
   }
 
   /* ---------------- TODAY ---------------- */
