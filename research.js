@@ -1,66 +1,206 @@
 /* Research data: questing route, dungeon cheat sheets, macros, keybinds, addons. */
+/* Horde questing route. Mostly the Classic Horde route; Forever steps from ConquestCapped, wowforever.be, RankedBoost (Nov 2026). */
 window.ROUTE = [
  {
   "lv": "13–16",
-  "zones": "Durotar, then The Barrens (Crossroads)",
-  "notes": "After Zephras Isle, a skycutter (a flying transport) drops you off in Thunder Bluff. Do the Ragefire Chasm dungeon in Orgrimmar, and pick up the Wailing Caverns quests at the Crossroads.",
+  "zones": "Durotar, then The Barrens",
+  "hub": "Razor Hill, then the Crossroads",
+  "how": "After Zephras Isle, a skycutter (a flying transport) drops you off in Thunder Bluff.",
+  "notes": "Do the Ragefire Chasm dungeon in Orgrimmar, and pick up the Wailing Caverns quests at the Crossroads.",
+  "fnote": "",
   "forever": false
  },
  {
-  "lv": "17–22",
-  "zones": "The Barrens, Stonetalon Mountains, Silverpine Forest",
-  "notes": "Do the Wailing Caverns dungeon in The Barrens. There is a new Forever dungeon, Ruins of Lordaeron, in Undercity (about level 15 to 22). Shadowfang Keep is in Silverpine Forest.",
-  "forever": true
- },
- {
-  "lv": "22–27",
-  "zones": "Ashenvale, Stonetalon Mountains, southern Barrens",
-  "notes": "Blackfathom Deeps (in Ashenvale) and Razorfen Kraul (in the southern Barrens). Forever also includes Excavation Site (about level 24 to 29).",
-  "forever": true
- },
- {
-  "lv": "27–32",
-  "zones": "Hillsbrad Foothills, Thousand Needles, Alterac Mountains",
-  "notes": "There is a new Forever dungeon, City of Dalaran, in the Alterac Mountains (about level 28 to 33). Gnomeregan is a long walk for Horde players.",
-  "forever": true
- },
- {
-  "lv": "30–40",
-  "zones": "Desolace, Arathi Highlands, Stranglethorn Vale",
-  "notes": "Scarlet Monastery is in Tirisfal Glades. Razorfen Downs (in The Barrens) and Uldaman (in the Badlands) are both in the mid-30s. Forever also includes The Drowned City (about level 35 to 40).",
-  "forever": true
- },
- {
-  "lv": "40",
-  "zones": "Tanaris, Riverglades (new, about level 35–45)",
-  "notes": "Riverglades is a new zone with more than 150 quests for both factions. Krol'dok Stronghold is a new dungeon (level 40 to 45).",
-  "forever": true
- },
- {
-  "lv": "40–46",
-  "zones": "Feralas, Tanaris, Riverglades",
-  "notes": "Zul'Farrak (in Tanaris) and Maraudon (in Desolace).",
-  "forever": true
- },
- {
-  "lv": "46–52",
-  "zones": "Felwood, Un'Goro Crater, Blasted Lands, Dustwallow Marsh",
-  "notes": "There is a new Forever dungeon, Alcaz Island Prison, in Dustwallow Marsh (about level 48 to 53). Start your Timbermaw reputation (your standing with the Timbermaw tribe) in Felwood.",
-  "forever": true
- },
- {
-  "lv": "52–58",
-  "zones": "Burning Steppes, Eastern Plaguelands, Azshara, Silithus",
-  "notes": "Blackrock Depths and Lower Blackrock Spire (in Searing Gorge and the Burning Steppes), and Dire Maul (in Feralas).",
+  "lv": "17–20",
+  "zones": "The Barrens",
+  "hub": "Crossroads (Horde town in the middle of the Barrens)",
+  "how": "Walk or fly to the Crossroads.",
+  "notes": "Quest around the Crossroads and run Wailing Caverns once with its quests.",
+  "fnote": "",
   "forever": false
  },
  {
-  "lv": "58–60",
-  "zones": "Winterspring, Plaguelands, Mount Hyjal (new end-game zone)",
-  "notes": "New Forever dungeons: Blackmaw Hold (in Azshara, level 55 to 60) and Shaper's Terrace (in Un'Goro Crater, level 58 to 60). Also Stratholme and Scholomance.",
+  "lv": "20–21",
+  "zones": "The Barrens",
+  "hub": "Crossroads",
+  "how": "You're already here.",
+  "notes": "Finish only the quests close to the Crossroads, then leave. The rest of the Barrens gives less experience per quest than the next zones, so finishing the whole zone isn't worth it.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "21–22",
+  "zones": "Your Cat Form quest",
+  "hub": "Thunder Bluff / Moonglade",
+  "how": "Fly from the Crossroads to Thunder Bluff.",
+  "notes": "Do the Cat Form quest line your trainer gives you at level 20. It's a short chain, not a leveling zone.",
+  "fnote": "Forever changed the druid form quests. Guides disagree on which towns the steps are in, so follow your quest log.",
+  "forever": true
+ },
+ {
+  "lv": "22–24",
+  "zones": "Stonetalon Mountains",
+  "hub": "Sun Rock Retreat",
+  "how": "Fly to Sun Rock Retreat (or walk north-west from the Barrens).",
+  "notes": "Work through the Stonetalon quests, then head east into Ashenvale.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "24–26",
+  "zones": "Ashenvale",
+  "hub": "Splintertree Post (Horde camp in eastern Ashenvale), plus Zoram'gar Outpost on the west coast",
+  "how": "Walk from Stonetalon Mountains, or fly to Splintertree Post.",
+  "notes": "Do the Ashenvale quests. Blackfathom Deeps (dungeon, about level 24 to 32) is on the west coast near Zoram'gar Outpost.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "26–28",
+  "zones": "Hillsbrad Foothills",
+  "hub": "Tarren Mill",
+  "how": "Take the zeppelin from Orgrimmar to Undercity, then fly to Tarren Mill.",
+  "notes": "Finish the Hillsbrad quests. Shadowfang Keep (dungeon, about level 22 to 30) is nearby in Silverpine Forest.",
+  "fnote": "Forever adds a new dungeon nearby: City of Dalaran in the Alterac Mountains (about level 28 to 33).",
+  "forever": false
+ },
+ {
+  "lv": "28–30",
+  "zones": "Thousand Needles",
+  "hub": "Freewind Post",
+  "how": "Fly to Freewind Post.",
+  "notes": "Finish the Thousand Needles quests. Razorfen Kraul (dungeon, about level 29 to 38) is at the south end of the Barrens.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "30–33",
+  "zones": "Desolace",
+  "hub": "Shadowprey Village",
+  "how": "Fly to Shadowprey Village.",
+  "notes": "Do the Desolace quests. Your trainer teaches Travel Form at 30, which makes getting around much faster.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "33–35",
+  "zones": "Arathi Highlands",
+  "hub": "Hammerfall",
+  "how": "Fly to Hammerfall.",
+  "notes": "Finish the Arathi quests, then head south to Stranglethorn Vale. Scarlet Monastery (dungeon, about level 30 to 45) is in Tirisfal Glades.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "35–38",
+  "zones": "Stranglethorn Vale",
+  "hub": "Grom'gol Base Camp",
+  "how": "Take the zeppelin from Orgrimmar to Grom'gol.",
+  "notes": "Quest until most of the zone's quests turn green (too low to be worth it), then move on. You don't need to finish everything.",
+  "fnote": "Forever adds a new dungeon for these levels: The Drowned City (about level 35 to 40).",
+  "forever": false
+ },
+ {
+  "lv": "38–40",
+  "zones": "Badlands",
+  "hub": "Kargath",
+  "how": "Fly to Kargath.",
+  "notes": "Finish the Badlands quests. Uldaman (dungeon, about level 35 to 45) is here.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "40–41",
+  "zones": "Tanaris",
+  "hub": "Gadgetzan",
+  "how": "Fly to Gadgetzan.",
+  "notes": "Do the Tanaris quests close to Gadgetzan, then go to Riverglades.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "41–43",
+  "zones": "Riverglades",
+  "hub": "Rog'mar (Horde camp, per one guide)",
+  "how": "Guides say a boat from Gadgetzan's port goes there. Check in game.",
+  "notes": "A new zone with more than 150 quests. Move on when its quests turn green.",
+  "fnote": "New in Forever. Guides put it at about level 35 to 44 and disagree on how you get there. Krol'dok Stronghold, a new dungeon (level 40 to 45), is here.",
+  "forever": true
+ },
+ {
+  "lv": "43–45",
+  "zones": "Dustwallow Marsh",
+  "hub": "Brackenwall Village (Horde town in the north of the marsh)",
+  "how": "Fly to Brackenwall Village.",
+  "notes": "Do the Dustwallow quests.",
+  "fnote": "Forever adds a new dungeon here: Alcaz Island Prison (about level 48 to 53), for later.",
+  "forever": false
+ },
+ {
+  "lv": "45–47",
+  "zones": "Feralas",
+  "hub": "Camp Mojache",
+  "how": "Fly to Camp Mojache.",
+  "notes": "Finish the Feralas quests. Zul'Farrak (in Tanaris) and Maraudon (in Desolace) are the dungeons for these levels.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "47–49",
+  "zones": "The Hinterlands",
+  "hub": "Revantusk Village (Horde troll village on the east coast)",
+  "how": "Fly to Revantusk Village.",
+  "notes": "Finish the Hinterlands quests.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "49–51",
+  "zones": "Searing Gorge",
+  "hub": "Thorium Point",
+  "how": "Fly to Thorium Point (or to Kargath and walk north).",
+  "notes": "Do the Searing Gorge quests. Blackrock Depths (dungeon, level 52 and up) is next door.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "51–53",
+  "zones": "Un'Goro Crater",
+  "hub": "Marshal's Refuge (neutral camp in the north of the crater)",
+  "how": "Fly to Marshal's Refuge.",
+  "notes": "Finish the Un'Goro quests. Great place to skin: the dinosaurs drop Thick and Rugged Leather.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "53–55",
+  "zones": "Azshara",
+  "hub": "Valormok (Horde camp in the west of Azshara)",
+  "how": "Fly to Valormok.",
+  "notes": "Do the Azshara quests. Felwood (Bloodvenom Post) is a good alternative, and it's where you start Timbermaw Hold reputation.",
+  "fnote": "Forever adds a new dungeon in Azshara: Blackmaw Hold (level 55 to 60).",
+  "forever": false
+ },
+ {
+  "lv": "55–57",
+  "zones": "Burning Steppes",
+  "hub": "Flame Crest",
+  "how": "Fly to Flame Crest.",
+  "notes": "Finish the Burning Steppes quests. Western and Eastern Plaguelands are good alternatives.",
+  "fnote": "",
+  "forever": false
+ },
+ {
+  "lv": "57–60",
+  "zones": "Winterspring",
+  "hub": "Everlook",
+  "how": "Fly to Everlook.",
+  "notes": "Quest to level 60. Then head to Mount Hyjal.",
+  "fnote": "Mount Hyjal is the new Forever zone for level 60, per one guide.",
   "forever": true
  }
 ];
+
 window.DUNGEONS = [
  {
   "key": "rfc",

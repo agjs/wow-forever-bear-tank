@@ -141,6 +141,7 @@
     const ct = cur ? TALENTS[cur] : null, xt = nx ? TALENTS[nx] : null;
     $("#hero").innerHTML = `<div class="eyebrow">Level ${L} · stop ${curCp(L) + 1} of ${CHECKPOINTS.length}</div>
       <h1>${esc(cp.title)}</h1><p>${rich(cp.where)}</p>
+      ${stepFor(L) ? `<p class="goal">Quest in: <b>${esc(stepFor(L).zones)}</b> · ${esc(stepFor(L).hub)}</p>` : ""}
       ${ct ? `<p class="goal">Your level ${L} talent: <b>${esc(ct.name)} rank ${rankAt(L)} of ${ct.max}</b></p>` : ""}
       <div class="progress"><i style="width:${(L - 10) / 50 * 100}%"></i></div>
       <div class="progress-l"><span>Talents ${n}/51</span><span>Level ${L} / 60</span></div>`;
@@ -149,8 +150,8 @@
       <div class="card"><div class="label">Level ${L} talent point</div>${ct ? `<div class="next-t">${img(T_UI[cur][0], "ico lg")}<div><b>${esc(ct.name)} ${rankAt(L)}/${ct.max}</b><span>${esc(T_UI[cur][1])}</span></div></div>` : `<b>No talent points before level 10</b>`}${xt ? `<p class="small muted" style="margin:12px 0 0">Level ${L + 1}: ${esc(xt.name)} ${rankAt(L + 1)}/${xt.max}</p>` : ""}</div>
       <div class="card"><div class="label">Press these, in order</div><div class="btnrow">${rot.map((x, i) => `<div class="b"><em>${i + 1}</em>${spellLink(SP[x[0]][1], img(SP[x[0]][0], "ico lg", x[0]))}${esc(x[0])}</div>`).join("")}</div></div>
       <div class="card"><div class="label">This stop is done when</div><p style="margin:0 0 10px;font-size:17px;font-weight:600">${rich(cp.done)}</p><p class="small muted" style="margin:0">Talents here: ${rich(cp.talents)}</p></div>`;
-    const rt = routeFor(cp), dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where)).slice(0, 2);
-    $("#today-extra").innerHTML = (rt.length ? `<div class="card"><div class="label">Quest here between runs</div>${rt.map(z => `<p class="zone"><b>${esc(z.lv)} · ${esc(z.zones)}</b><span>${rich(z.notes)}</span></p>`).join("")}</div>` : "")
+    const st = stepFor(L), nst = st ? R.route[R.route.indexOf(st) + 1] : null, dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where)).slice(0, 2);
+    $("#today-extra").innerHTML = (st ? `<div class="card"><div class="label">Where to quest at level ${L}</div>${zoneHtml(st)}${nst ? `<div class="label" style="margin-top:18px">Then, at level ${rng(nst.lv)[0]}</div>${zoneHtml(nst)}` : ""}</div>` : "")
       + (dg.length ? `<div class="card"><div class="label">Dungeon cheat sheet</div>${dg.map(d => dungeonMini(d)).join("")}</div>` : "");
     $("#today-extra").querySelectorAll(".open-d").forEach(a => a.onclick = e => { e.preventDefault(); state.dsel = a.dataset.k; renderDungeons(); setTab("dungeons"); });
     $("#today-loot").innerHTML = cp.items.length ? `<div class="card loot"><div class="label">Loot to grab here</div>${itemsHtml(cp.items)}</div>` : "";
@@ -164,6 +165,8 @@
   const R = { route: window.ROUTE || [], dungeons: window.DUNGEONS || [], macros: window.MACROS || [], keys: window.KEYBINDS || [], addons: window.ADDONS || [] };
   const rng = s => { const p = String(s).split(/[–-]/).map(Number); return [p[0], p[1] ?? p[0]]; };
   const overlaps = (a, b) => a[0] <= b[1] && b[0] <= a[1];
+  const stepFor = L => { const m = R.route.filter(z => { const [a, b] = rng(z.lv); return L >= a && L <= b; }); return m[m.length - 1]; };
+  const zoneHtml = z => `<p class="zone"><b>${esc(z.lv)} · ${esc(z.zones)}</b><span class="hub">Quest town: ${esc(z.hub)}</span><span>${rich(z.how)} ${rich(z.notes)}</span>${z.fnote ? `<span class="fz"><span class="tag v">Forever</span> ${rich(z.fnote)}</span>` : ""}</p>`;
   const routeFor = cp => R.route.filter(z => overlaps(rng(z.lv), range(cp)));
   const dungeonsFor = cp => { const t = (cp.title + " " + cp.where).toLowerCase(); return R.dungeons.filter(d => t.includes(d.name.split(":")[0].split(" (")[0].toLowerCase())); };
   const lvStart = d => rng(d.lv)[0];
@@ -210,7 +213,7 @@
         <div class="dot">${lo === hi ? lo : `${lo}<br>${hi}`}</div>
         <details ${i === cur ? "open" : ""}><summary><div class="t"><b>${esc(c.title)}</b><span>${rich(c.where)}</span></div>${i === cur ? `<span class="now-pill">YOU ARE HERE</span>` : ""}<span class="chev">▶</span></summary>
         <div class="body">
-          <div>${routeFor(c).length ? `<h4>Quest in</h4><ul>${routeFor(c).map(z => `<li><b>${esc(z.lv)}</b> ${esc(z.zones)}</li>`).join("")}</ul><br>` : ""}<h4>Do</h4><ul><li>${rich(c.train)}</li>${c.tips.map(t => `<li>${rich(t)}</li>`).join("")}</ul></div>
+          <div>${routeFor(c).length ? `<h4>Where to quest, in order</h4><ul>${routeFor(c).map(z => `<li><b>${esc(z.lv)}</b> ${esc(z.zones)} <span class="muted">(${esc(z.hub)})</span><br><span class="small muted">${rich(z.notes)}</span></li>`).join("")}</ul><br>` : ""}<h4>Do</h4><ul><li>${rich(c.train)}</li>${c.tips.map(t => `<li>${rich(t)}</li>`).join("")}</ul></div>
           <div><h4>Talents</h4>${talents.length ? `<div class="tchips">${talents.map(k => `<span class="tchip">${img(T_UI[k][0], "ico sm")}${esc(TALENTS[k].name)} <small>${ORDER.slice(0, Math.min(51, hi - 9)).filter(x => x === k).length}/${TALENTS[k].max}</small></span>`).join("")}</div>` : "<span class='muted'>None</span>"}
             <h4 style="margin-top:16px">Done when</h4><label class="donebox"><input type="checkbox" data-id="${id}" ${done ? "checked" : ""}> ${rich(c.done)}</label></div>
           ${c.items.length ? `<div class="full"><h4>Loot</h4>${itemsHtml(c.items)}</div>` : ""}
