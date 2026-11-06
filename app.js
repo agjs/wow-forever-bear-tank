@@ -118,20 +118,22 @@
   const FINAL = ranksAt(51);
   const range = c => { const p = c.lv.split("–").map(Number); return [p[0], p[1] ?? p[0]]; };
   const curCp = L => { const i = CHECKPOINTS.findIndex(c => L <= range(c)[1]); return i < 0 ? CHECKPOINTS.length - 1 : i; };
+  const pickAt = L => L >= 10 && L <= 60 ? ORDER[L - 10] : null;
+  const rankAt = L => ORDER.slice(0, L - 9).filter(x => x === ORDER[L - 10]).length;
   const unlocked = (req, L, r) => (!req.lvl || L >= req.lvl) && (!req.t || r[req.t]) && (!req.before || !r[req.before]);
 
   /* ---------------- TODAY ---------------- */
   function renderToday() {
-    const L = state.level, n = ptsAt(L), r = ranksAt(n), cp = CHECKPOINTS[curCp(L)], next = ORDER[n];
-    const nt = next ? TALENTS[next] : null;
+    const L = state.level, n = ptsAt(L), r = ranksAt(n), cp = CHECKPOINTS[curCp(L)], cur = pickAt(L), nx = pickAt(L + 1);
+    const ct = cur ? TALENTS[cur] : null, xt = nx ? TALENTS[nx] : null;
     $("#hero").innerHTML = `<div class="eyebrow">Level ${L} · stop ${curCp(L) + 1} of ${CHECKPOINTS.length}</div>
       <h1>${esc(cp.title)}</h1><p>${rich(cp.where)}</p>
-      ${nt ? `<p class="goal">Next talent: <b>${esc(nt.name)} rank ${ORDER.slice(0, n + 1).filter(x => x === next).length} of ${nt.max}</b> at level ${n + 10}</p>` : ""}
+      ${ct ? `<p class="goal">Your level ${L} talent: <b>${esc(ct.name)} rank ${rankAt(L)} of ${ct.max}</b></p>` : ""}
       <div class="progress"><i style="width:${(L - 10) / 50 * 100}%"></i></div>
       <div class="progress-l"><span>Talents ${n}/51</span><span>Level ${L} / 60</span></div>`;
     const rot = ROT.single.filter(x => unlocked(x[2], L, r)).filter((x, i, a) => a.findIndex(y => y[0] === x[0]) === i);
     $("#today-cards").innerHTML = `
-      <div class="card"><div class="label">Next talent point</div>${nt ? `<div class="next-t">${img(T_UI[next][0], "ico lg")}<div><b>${esc(nt.name)}</b><span>${esc(T_UI[next][1])}</span><br><span class="muted">at level ${n + 10}</span></div></div>` : `<b>Build complete 🎉</b>`}</div>
+      <div class="card"><div class="label">Level ${L} talent point</div>${ct ? `<div class="next-t">${img(T_UI[cur][0], "ico lg")}<div><b>${esc(ct.name)} ${rankAt(L)}/${ct.max}</b><span>${esc(T_UI[cur][1])}</span></div></div>` : `<b>No talent points before level 10</b>`}${xt ? `<p class="small muted" style="margin:12px 0 0">Level ${L + 1}: ${esc(xt.name)} ${rankAt(L + 1)}/${xt.max}</p>` : ""}</div>
       <div class="card"><div class="label">Press these, in order</div><div class="btnrow">${rot.map((x, i) => `<div class="b"><em>${i + 1}</em>${spellLink(SP[x[0]][1], img(SP[x[0]][0], "ico lg", x[0]))}${esc(x[0])}</div>`).join("")}</div></div>
       <div class="card"><div class="label">This stop is done when</div><p style="margin:0 0 10px;font-size:17px;font-weight:600">${rich(cp.done)}</p><p class="small muted" style="margin:0">Talents here: ${rich(cp.talents)}</p></div>`;
     const rt = routeFor(cp), dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where)).slice(0, 2);
@@ -208,7 +210,7 @@
 
   /* ---------------- TALENTS ---------------- */
   function renderTalents() {
-    const n = ptsAt(state.level), r = ranksAt(n), next = ORDER[n];
+    const n = ptsAt(state.level), r = ranksAt(n), next = pickAt(state.level);
     $("#chips").innerHTML = `<span class="small muted" style="align-self:center">Show talents that improve:</span>` + Object.keys(CHIPS).map(c => `<button class="chip ${state.chip === c ? "on" : ""}" data-c="${c}">${c}</button>`).join("");
     $("#chips").querySelectorAll(".chip").forEach(b => b.onclick = () => { state.chip = state.chip === b.dataset.c ? null : b.dataset.c; renderTalents(); });
     const match = k => !state.chip || (TALENTS[k] && TALENTS[k].fx.some(CHIPS[state.chip]));
@@ -223,10 +225,10 @@
         ${list.map(t => { const k = t.k, n = r[k] || 0, cls = [n >= t.max ? "max" : n ? "have" : "", FINAL[k] ? "plan" : "", k === next ? "next" : "", match(k) ? "" : "dim", state.sel === k ? "sel" : ""].join(" ");
           return `<div class="tn ${cls}" data-k="${k}" style="grid-row:${t.row + 1};grid-column:${t.col + 1}" title="${esc(t.name)}">${img(t.icon, "", t.name)}<span class="pts">${n}/${t.max}</span></div>`; }).join("")}
         </div></div>`;
-    }).join("") + `<div class="key" style="grid-column:1/-1"><span><i style="background:var(--green)"></i>Some points spent</span><span><i style="background:var(--gold)"></i>Fully learned</span><span><i class="ring"></i>Gold outline: you'll take it later</span><span>Glowing: your next point</span><span>Numbers: points now / max ranks</span></div>`;
+    }).join("") + `<div class="key" style="grid-column:1/-1"><span><i style="background:var(--green)"></i>Some points spent</span><span><i style="background:var(--gold)"></i>Fully learned</span><span><i class="ring"></i>Gold outline: you'll take it later</span><span>Glowing: the talent for your level</span><span>Numbers: points now / max ranks</span></div>`;
     $("#trees").querySelectorAll(".tn").forEach(el => el.onclick = () => { state.sel = el.dataset.k; renderTalents(); });
     renderDetail(state.sel || next || "primalBite", r);
-    $("#order").innerHTML = ORDER.map((k, i) => `<div class="ostep ${i < n ? "past" : i === n ? "now" : ""}"><span class="l">${i + 10}</span>${img(T_UI[k][0], "ico sm")}<div>${esc(TALENTS[k].name)}<br><small>${ORDER.slice(0, i + 1).filter(x => x === k).length}/${TALENTS[k].max}</small></div></div>`).join("");
+    $("#order").innerHTML = ORDER.map((k, i) => `<div class="ostep ${i + 10 < state.level ? "past" : i + 10 === state.level ? "now" : ""}"><span class="l">${i + 10}</span>${img(T_UI[k][0], "ico sm")}<div>${esc(TALENTS[k].name)}<br><small>${ORDER.slice(0, i + 1).filter(x => x === k).length}/${TALENTS[k].max}</small></div></div>`).join("");
     const v = validate();
     $("#validator").textContent = v.length ? "⚠ " + v.join(" · ") : "✓ Checked: 51 points, every row unlocked in time, level requirements (Lacerate 25, Primal Bite 40) and prerequisites met.";
   }
