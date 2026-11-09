@@ -311,7 +311,18 @@
       </article>`;
     $("#dgrid").querySelectorAll(".dlist button").forEach(b => b.onclick = () => { state.dsel = b.dataset.k; renderDungeons(); });
   }
+  function renderQol() {
+    const Q = window.QOL; if (!Q) return;
+    const notes = a => `<ul class="notes">${a.map(([t, x]) => `<li><b>${esc(t)}</b><span>${rich(x)}</span></li>`).join("")}</ul>`;
+    $("#qol").innerHTML = `<h3>Make every bar change with your form</h3><p class="lead" style="margin-bottom:12px">${esc(Q.bars.intro)}</p>
+      <ol class="qsteps">${Q.bars.steps.map(x => `<li>${esc(x)}</li>`).join("")}</ol><p class="small muted">${esc(Q.bars.alt)} No addon? The "One button" macros below do a different thing in each form.</p>
+      <h3>Settings to change once</h3>${notes(Q.settings)}
+      <h3>Habits that make leveling smoother</h3>${notes(Q.habits)}
+      <h3>Before you start playing</h3><ul class="check">${Q.checklist.map(x => `<li><span>${rich(x)}</span></li>`).join("")}</ul>
+      <p class="small muted psrc">Sources: ${Q.sources.map(([t, u]) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>`).join(" · ")}</p>`;
+  }
   function renderSetup() {
+    renderQol();
     $("#macros").innerHTML = R.macros.map((m, i) => `<div class="macro"><div class="mh"><b>${esc(m.name)}</b>${m.tested ? "" : `<span class="tag c" title="Not yet tested in the Forever client">Untested</span>`}<button class="copy" data-i="${i}">Copy</button></div>
       <p>${rich(m.why)}</p><pre>${esc(m.body)}</pre></div>`).join("");
     $("#macros").querySelectorAll(".copy").forEach(b => b.onclick = async () => { try { await navigator.clipboard.writeText(R.macros[b.dataset.i].body); b.textContent = "Copied ✓"; } catch { b.textContent = "Select & copy"; } setTimeout(() => b.textContent = "Copy", 1500); });
