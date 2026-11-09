@@ -137,25 +137,24 @@
   const rankAt = L => ORDER.slice(0, L - 9).filter(x => x === ORDER[L - 10]).length;
   const unlocked = (req, L, r) => (!req.lvl || L >= req.lvl) && (!req.t || r[req.t]) && (!req.before || !r[req.before]);
 
+  const hidNote = (n, what) => n ? `<p class="hidnote">${n} earlier ${what} hidden. Lower your level at the top to see them.</p>` : "";
   /* ---------------- TRAINER ---------------- */
   const TR = window.TRAINER || [], TI = window.TRAINER_INFO || {};
   const money = c => { const g = Math.floor(c / 10000), s = Math.floor(c % 10000 / 100), k = c % 100; return [g && g + "g", s && s + "s", (k || !c) && k + "c"].filter(Boolean).join(" "); };
   const CAT_L = { bear: "Bear", cat: "Cat", heal: "Self-heal", util: "Utility", skip: "Optional" };
   const trAt = L => TR.filter(t => t[0] === L);
   const trName = t => `${spellLink(t[3], img((TI[t[1]] || [])[1] || "inv_misc_questionmark", "ico", t[1]) + " " + esc(t[1]))}${t[2] ? ` <span class="rk">rank ${t[2]}</span>` : ""}`;
-  const trRow = t => { const [c, , d] = TI[t[1]] || ["util", "", ""]; return `<li class="tr-${c}"><div class="tr-n">${trName(t)}${c === "skip" ? "" : `<span class="tag tc-${c}">${CAT_L[c]}</span>`}${t[5] ? `<span class="tag q">Quest</span>` : ""}</div><span class="tr-d">${t[2] > 1 ? "Stronger rank of a spell you already have. " : ""}${esc(d)}</span><span class="tr-c">${t[5] ? "class quest" : money(t[4])}</span></li>`; };
+  const trRow = t => { const [c, , d] = TI[t[1]] || ["util", "", ""]; return `<li class="tr-${c}"><div class="tr-n">${trName(t)}${c === "skip" ? "" : `<span class="tag tc-${c}">${CAT_L[c]}</span>`}${t[5] ? `<span class="tag q">Quest</span>` : ""}</div>${t[2] > 1 ? "" : `<span class="tr-d">${esc(d)}</span>`}<span class="tr-c">${t[5] ? "class quest" : money(t[4])}</span></li>`; };
   const trCost = a => a.filter(t => (TI[t[1]] || [])[0] !== "skip" && !t[5]).reduce((x, t) => x + t[4], 0);
+  const trMini = t => `<li><span>${trName(t)}</span><span class="tr-c">${t[5] ? "quest" : money(t[4])}</span></li>`;
   function trainerCard(L) {
-    const now = trAt(L), nxt = TR.find(t => t[0] > L), nL = nxt ? nxt[0] : null;
-    const list = a => { const need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
-      return `${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length}): a bear rarely uses them, so skip them if gold is tight</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}`; };
-    return `<div class="card"><div class="label">Your trainer at level ${L}</div>${now.length
-      ? `<p class="tr-go"><b>Go to your trainer.</b> The trainer has ${now.length} new spell${now.length > 1 ? "s" : ""} at level ${L}${(() => { const o = now.filter(t => (TI[t[1]] || [])[0] === "skip").length; return o ? `: ${now.length - o} to learn and ${o} optional` : ""; })()}. The ones to learn cost <b>${money(trCost(now))}</b>.</p>${list(now)}`
-      : `<p class="tr-go"><b>Nothing new at level ${L}.</b> Druid trainers only add spells on even levels. Don't go yet.</p>${nL ? `<div class="label" style="margin-top:16px">Next visit: level ${nL}</div>${list(trAt(nL))}` : ""}`}</div>`;
+    const now = trAt(L), nL = (TR.find(t => t[0] > L) || [])[0], a = now.length ? now : trAt(nL), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
+    return `<div class="card"><div class="label">Trainer</div>${now.length ? `<p class="tr-go"><b>Go train now.</b> ${money(trCost(now))}</p>` : `<p class="tr-go"><b>Nothing new at ${L}.</b> Next visit: level ${nL}.</p>`}
+      <ul class="trmini">${need.map(trMini).join("")}</ul>${opt.length ? `<p class="small muted" style="margin:8px 0 0">Optional: ${opt.map(t => esc(t[1])).join(", ")}</p>` : ""}</div>`;
   }
   function renderTrainer() {
-    const L = state.level, lv = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10);
-    $("#trainer-list").innerHTML = lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
+    const L = state.level, all = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10), lv = all.filter(l => l >= L);
+    $("#trainer-list").innerHTML = hidNote(all.length - lv.length, "trainer levels are") + lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
       return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div>${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length})</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}</div>`; }).join("");
   }
 
@@ -258,23 +257,20 @@
   function renderToday() {
     const L = state.level, n = ptsAt(L), r = ranksAt(n), cp = CHECKPOINTS[curCp(L)], cur = pickAt(L), nx = pickAt(L + 1);
     const ct = cur ? TALENTS[cur] : null, xt = nx ? TALENTS[nx] : null;
-    $("#hero").innerHTML = `<div class="eyebrow">Level ${L} · stop ${curCp(L) + 1} of ${CHECKPOINTS.length}</div>
-      <h1>${esc(cp.title)}</h1><p>${rich(cp.where)}</p>
-      ${stepFor(L) ? `<p class="goal">Quest in: <b>${esc(stepFor(L).zones)}</b> · ${esc(stepFor(L).hub)}</p>` : ""}
-      <p class="goal">Trainer: ${trAt(L).length ? `<b>new spells at level ${L}, go train</b>` : `nothing new until level ${L + 1}`}</p>
-      ${ct ? `<p class="goal">Your level ${L} talent: <b>${esc(ct.name)} rank ${rankAt(L)} of ${ct.max}</b></p>` : ""}
-      <div class="progress"><i style="width:${(L - 10) / 50 * 100}%"></i></div>
-      <div class="progress-l"><span>Talents ${n}/51</span><span>Level ${L} / 60</span></div>`;
-    const rot = ROT.single.filter(x => unlocked(x[2], L, r)).filter((x, i, a) => a.findIndex(y => y[0] === x[0]) === i);
+    const st = stepFor(L), nst = st ? R.route[R.route.indexOf(st) + 1] : null, dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where));
+    $("#hero").innerHTML = `<h1>Level ${L}: what to do now</h1>
+      <div class="todo">
+        ${st ? `<div><span>Quest</span><b>${esc(st.zones)}</b><em>${esc(st.hub)}</em></div>` : ""}
+        <div><span>Trainer</span>${trAt(L).length ? `<b>Go train</b><em>new spells at ${L}</em>` : `<b>Not yet</b><em>next at ${(TR.find(t => t[0] > L) || [])[0] || "–"}</em>`}</div>
+        ${ct ? `<div><span>Talent</span><b>${img(T_UI[cur][0], "ico sm")} ${esc(ct.name)} ${rankAt(L)}/${ct.max}</b><em>${esc(T_UI[cur][1])}</em></div>` : ""}
+      </div>
+      <div class="progress"><i style="width:${(L - 10) / 50 * 100}%"></i></div>`;
     $("#today-cards").innerHTML = `
-      <div class="card"><div class="label">Level ${L} talent point</div>${ct ? `<div class="next-t">${img(T_UI[cur][0], "ico lg")}<div><b>${esc(ct.name)} ${rankAt(L)}/${ct.max}</b><span>${esc(T_UI[cur][1])}</span></div></div>` : `<b>No talent points before level 10</b>`}${xt ? `<p class="small muted" style="margin:12px 0 0">Level ${L + 1}: ${esc(xt.name)} ${rankAt(L + 1)}/${xt.max}</p>` : ""}</div>
-      <div class="card"><div class="label">Press these, in order</div><div class="btnrow">${rot.map((x, i) => `<div class="b"><em>${i + 1}</em>${spellLink(SP[x[0]][1], img(SP[x[0]][0], "ico lg", x[0]))}${esc(x[0])}</div>`).join("")}</div></div>
-      <div class="card"><div class="label">This stop is done when</div><p style="margin:0 0 10px;font-size:17px;font-weight:600">${rich(cp.done)}</p><p class="small muted" style="margin:0">Talents here: ${rich(cp.talents)}</p></div>`;
-    const st = stepFor(L), nst = st ? R.route[R.route.indexOf(st) + 1] : null, dg = dungeonsForLevel(L).filter(d => !/alliance-intended/i.test(d.where)).slice(0, 2);
-    $("#today-extra").innerHTML = trainerCard(L) + (st ? `<div class="card"><div class="label">Where to quest at level ${L}</div>${zoneHtml(st)}${nst ? `<div class="label" style="margin-top:18px">Then, at level ${rng(nst.lv)[0]}</div>${zoneHtml(nst)}` : ""}</div>` : "")
-      + (dg.length ? `<div class="card"><div class="label">Dungeon cheat sheet</div>${dg.map(d => dungeonMini(d)).join("")}</div>` : "");
+      ${st ? `<div class="card"><div class="label">Where to quest</div><b class="big">${esc(st.zones)}</b><p class="small muted" style="margin:2px 0 8px">Quest town: ${esc(st.hub)}</p><p style="margin:0">${rich(st.how)}</p>${nst ? `<p class="small muted" style="margin:12px 0 0">Next, at ${rng(nst.lv)[0]}: <b>${esc(nst.zones)}</b></p>` : ""}</div>` : ""}
+      ${trainerCard(L)}`;
+    $("#today-extra").innerHTML = dg.length ? `<div class="card"><div class="label">Dungeons for your level</div><ul class="dlinks">${dg.map(d => `<li><a href="#dungeons" class="open-d" data-k="${esc(d.key)}">${esc(d.name)}</a><span>${esc(d.lv)}</span></li>`).join("")}</ul></div>` : "";
     $("#today-extra").querySelectorAll(".open-d").forEach(a => a.onclick = e => { e.preventDefault(); state.dsel = a.dataset.k; renderDungeons(); setTab("dungeons"); });
-    $("#today-loot").innerHTML = cp.items.length ? `<div class="card loot"><div class="label">Loot to grab here</div>${itemsHtml(cp.items)}</div>` : "";
+    $("#today-loot").innerHTML = cp.items.length ? `<div class="card loot"><div class="label">Loot worth grabbing</div>${itemsHtml(cp.items)}</div>` : "";
     const up = MILESTONES.filter(m => m[0] > L).slice(0, 3);
     $("#upcoming").innerHTML = up.map(m => `<div class="mile">${img(m[2])}<div><b>Lv ${m[0]} · ${esc(m[1])}</b><span>${esc(m[3])} · ${m[0] - L} level${m[0] - L > 1 ? "s" : ""} away</span></div></div>`).join("");
   }
@@ -296,11 +292,11 @@
   function dungeonsForLevel(L) { return R.dungeons.filter(d => { const [a, b] = rng(d.lv); return L >= a - 1 && L <= b; }); }
   function renderDungeons() {
     const L = state.level, fit = new Set(dungeonsForLevel(L).map(d => d.key));
-    const list = [...R.dungeons].sort((a, b) => lvStart(a) - lvStart(b));
+    const all = [...R.dungeons].sort((a, b) => lvStart(a) - lvStart(b)), list = all.filter(x => rng(x.lv)[1] >= L);
     if (!state.dsel || !list.find(d => d.key === state.dsel)) state.dsel = (list.find(d => fit.has(d.key)) || list[0] || {}).key;
     const d = list.find(x => x.key === state.dsel);
     $("#dgrid").innerHTML = !list.length ? `<p class="muted">Dungeon data not loaded.</p>` : `
-      <nav class="dlist">${list.map(x => `<button class="${x.key === state.dsel ? "on" : ""} ${fit.has(x.key) ? "fit" : ""}" data-k="${esc(x.key)}"><span>${esc(x.name)}</span><em>${esc(x.lv)}</em>${/^NEW/i.test(x.forever || "") ? `<i class="new">NEW</i>` : ""}</button>`).join("")}</nav>
+      <nav class="dlist">${all.length > list.length ? `<p class="hidnote">${all.length - list.length} dungeons you've outleveled are hidden.</p>` : ""}${list.map(x => `<button class="${x.key === state.dsel ? "on" : ""} ${fit.has(x.key) ? "fit" : ""}" data-k="${esc(x.key)}"><span>${esc(x.name)}</span><em>${esc(x.lv)}</em>${/^NEW/i.test(x.forever || "") ? `<i class="new">NEW</i>` : ""}</button>`).join("")}</nav>
       <article class="dview">
         <header><div><h3>${esc(d.name)}</h3><span>${esc(d.where)} · level ${esc(d.lv)}</span></div>${fit.has(d.key) ? `<span class="now-pill">YOUR LEVEL</span>` : ""}</header>
         ${d.forever ? `<p class="fnote"><span class="tag v">Forever</span> ${rich(d.forever)}</p>` : ""}
@@ -326,14 +322,14 @@
   /* ---------------- ROAD ---------------- */
   function renderRoad() {
     const L = state.level, cur = curCp(L);
-    $("#timeline").innerHTML = CHECKPOINTS.map((c, i) => {
+    $("#timeline").innerHTML = hidNote(cur, `stop${cur === 1 ? " is" : "s are"}`) + CHECKPOINTS.map((c, i) => { if (i < cur) return "";
       const id = "cp" + i, done = !!state.done[id], [lo, hi] = range(c);
       const talents = [...new Set(ORDER.filter((k, j) => j + 10 >= lo && j + 10 <= hi))];
       return `<li class="stop ${i === cur ? "current" : ""} ${done ? "done" : ""}">
         <div class="dot">${lo === hi ? lo : `${lo}<br>${hi}`}</div>
         <details ${i === cur ? "open" : ""}><summary><div class="t"><b>${esc(c.title)}</b><span>${rich(c.where)}</span></div>${i === cur ? `<span class="now-pill">YOU ARE HERE</span>` : ""}<span class="chev">▶</span></summary>
         <div class="body">
-          <div>${routeFor(c).length ? `<h4>Where to quest, in order</h4><ul>${routeFor(c).map(z => `<li><b>${esc(z.lv)}</b> ${esc(z.zones)} <span class="muted">(${esc(z.hub)})</span><br><span class="small muted">${rich(z.notes)}</span></li>`).join("")}</ul><br>` : ""}<h4>Do</h4><ul><li>${rich(c.train)}</li>${c.tips.map(t => `<li>${rich(t)}</li>`).join("")}</ul></div>
+          <div>${routeFor(c).filter(z => rng(z.lv)[1] > L || i > cur).length ? `<h4>Where to quest, in order</h4><ul>${routeFor(c).filter(z => rng(z.lv)[1] > L || i > cur).map(z => `<li><b>${esc(z.lv)}</b> ${esc(z.zones)} <span class="muted">(${esc(z.hub)})</span><br><span class="small muted">${rich(z.notes)}</span></li>`).join("")}</ul><br>` : ""}<h4>Do</h4><ul><li>${rich(c.train)}</li>${c.tips.map(t => `<li>${rich(t)}</li>`).join("")}</ul></div>
           <div><h4>Talents</h4>${talents.length ? `<div class="tchips">${talents.map(k => `<span class="tchip">${img(T_UI[k][0], "ico sm")}${esc(TALENTS[k].name)} <small>${ORDER.slice(0, Math.min(51, hi - 9)).filter(x => x === k).length}/${TALENTS[k].max}</small></span>`).join("")}</div>` : "<span class='muted'>None</span>"}
             <h4 style="margin-top:16px">Done when</h4><label class="donebox"><input type="checkbox" data-id="${id}" ${done ? "checked" : ""}><span>${rich(c.done)}</span></label></div>
           ${c.items.length ? `<div class="full"><h4>Loot</h4>${itemsHtml(c.items)}</div>` : ""}
@@ -364,7 +360,7 @@
     }).join("") + `<div class="key" style="grid-column:1/-1"><span><i style="background:var(--green)"></i>Some points spent</span><span><i style="background:var(--gold)"></i>Fully learned</span><span><i class="ring"></i>Gold outline: you'll take it later</span><span>Glowing: the talent for your level</span><span>Numbers: points now / max ranks</span></div>`;
     $("#trees").querySelectorAll(".tn").forEach(el => el.onclick = () => { state.sel = el.dataset.k; renderTalents(); });
     renderDetail(state.sel || next || "primalBite", r);
-    $("#order").innerHTML = ORDER.map((k, i) => `<div class="ostep ${i + 10 < state.level ? "past" : i + 10 === state.level ? "now" : ""}"><span class="l">${i + 10}</span>${img(T_UI[k][0], "ico sm")}<div>${esc(TALENTS[k].name)}<br><small>${ORDER.slice(0, i + 1).filter(x => x === k).length}/${TALENTS[k].max}</small></div></div>`).join("");
+    $("#order").innerHTML = (state.level > 10 ? `<p class="hidnote" style="grid-column:1/-1">${Math.min(51, state.level - 10)} earlier levels hidden. Lower your level at the top to see them.</p>` : "") + ORDER.map((k, i) => i + 10 < state.level ? "" : `<div class="ostep ${i + 10 < state.level ? "past" : i + 10 === state.level ? "now" : ""}"><span class="l">${i + 10}</span>${img(T_UI[k][0], "ico sm")}<div>${esc(TALENTS[k].name)}<br><small>${ORDER.slice(0, i + 1).filter(x => x === k).length}/${TALENTS[k].max}</small></div></div>`).join("");
     const v = validate();
     $("#validator").textContent = v.length ? "⚠ " + v.join(" · ") : "✓ Checked: 51 points, every row unlocked in time, level requirements (Lacerate 25, Primal Bite 40) and prerequisites met.";
   }

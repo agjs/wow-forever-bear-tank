@@ -456,3 +456,22 @@ a[href*="wowhead.com"]:hover{text-decoration-color:currentColor}
 .droute li{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0}
 .boss{background:linear-gradient(90deg,rgba(255,209,0,.05),transparent 70%);border:0;border-left:3px solid var(--gold-deep);border-radius:0 10px 10px 0}
 .cards2{align-items:start}
+
+/* condensed today + hidden notes */
+.hidnote{font-size:12.5px;color:var(--text-3);margin:0 0 12px;font-style:italic}
+.todo{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px 22px;margin:14px 0 18px}
+.todo div{display:flex;flex-direction:column;border-left:3px solid var(--gold);padding:2px 0 2px 12px}
+.todo span{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3)}
+.todo b{font-size:17px;color:var(--text)}
+.todo em{font-style:normal;font-size:13.5px;color:var(--text-2)}
+b.big{font-size:18px;display:block}
+.trmini{list-style:none;margin:0;padding:0}
+.trmini li{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.trmini li:last-child{border:0}
+.trmini a{display:inline-flex;align-items:center;gap:8px}
+.trmini .ico{width:22px;height:22px;border-radius:5px}
+.trmini .tr-c{color:var(--gold);font-weight:600;font-size:13.5px;white-space:nowrap}
+.dlinks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0 24px}
+.dlinks li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}
+.dlinks span{color:var(--text-3);font-size:13px}
+.trmini li > span:first-child{display:inline-flex;align-items:center;gap:8px}.trmini .rk{color:var(--text-3);font-size:12.5px}
