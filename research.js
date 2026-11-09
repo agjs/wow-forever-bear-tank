@@ -65,7 +65,7 @@ window.ROUTE = [
   "forever": false
  },
  {
-  "lv": "28–30",
+  "lv": "28–31",
   "zones": "Thousand Needles",
   "hub": "Freewind Post",
   "how": "Fly to Freewind Post.",
@@ -74,25 +74,16 @@ window.ROUTE = [
   "forever": false
  },
  {
-  "lv": "30–33",
-  "zones": "Desolace",
-  "hub": "Shadowprey Village",
-  "how": "Fly to Shadowprey Village.",
-  "notes": "Do the Desolace quests. Your trainer teaches Travel Form at 30, which makes getting around much faster.",
-  "fnote": "",
-  "forever": false
- },
- {
-  "lv": "33–35",
+  "lv": "31–34",
   "zones": "Arathi Highlands",
   "hub": "Hammerfall",
   "how": "Fly to Hammerfall.",
-  "notes": "Finish the Arathi quests, then head south to Stranglethorn Vale. Scarlet Monastery (dungeon, about level 30 to 45) is in Tirisfal Glades.",
+  "notes": "Do the Arathi quests around Hammerfall. Scarlet Monastery (dungeon, about level 30 to 45) is in Tirisfal Glades. From level 33 you can also try Riverglades, the new Forever zone (see level 41).",
   "fnote": "",
   "forever": false
  },
  {
-  "lv": "35–38",
+  "lv": "34–37",
   "zones": "Stranglethorn Vale",
   "hub": "Grom'gol Base Camp",
   "how": "Take the zeppelin from Orgrimmar to Grom'gol.",
@@ -101,7 +92,16 @@ window.ROUTE = [
   "forever": false
  },
  {
-  "lv": "38–40",
+  "lv": "37–39",
+  "zones": "Desolace",
+  "hub": "Shadowprey Village",
+  "how": "Fly to Shadowprey Village on the west coast.",
+  "notes": "Come here late, not at 30. The centaur and demon areas are full of mobs around level 35 to 40, and the new quest chain that starts with Valley of Bones needs level 35. Your trainer teaches Travel Form at 30, which makes getting around much faster.",
+  "fnote": "Changed in Forever: the new Gelkis and Magram quests (starting with Valley of Bones) need level 35, up from 30 in the beta. Most guides list Desolace as 30 to 40 using Classic numbers, which is too early in practice.",
+  "forever": true
+ },
+ {
+  "lv": "39–40",
   "zones": "Badlands",
   "hub": "Kargath",
   "how": "Fly to Kargath.",
