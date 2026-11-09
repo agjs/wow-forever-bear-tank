@@ -125,7 +125,7 @@
     Dodge: f => f[0] === "Dodge", Armor: f => f[0] === "Armor", Stamina: f => f[0] === "Stamina", "Attack power": f => f[0] === "AP",
   };
 
-  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single" };
+  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw") };
   const ptsAt = L => Math.max(0, Math.min(51, L - 9));
   const ranksAt = n => { const r = {}; ORDER.slice(0, n).forEach(k => r[k] = (r[k] || 0) + 1); return r; };
   const FINAL = ranksAt(51);
@@ -155,6 +155,50 @@
     const L = state.level, lv = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10);
     $("#trainer-list").innerHTML = lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
       return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div>${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length})</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}</div>`; }).join("");
+  }
+
+  /* ---------------- PROFESSIONS ---------------- */
+  const PF = () => window.PROF || {};
+  const fl = f => f === "forever" ? `<span class="tag v">Forever</span>` : f === "classic" ? `<span class="tag c">Classic</span>` : "";
+  const pItem = (n, id, f) => id ? itemLink(id, n, f === "classic" ? "c" : "") : esc(n);
+  const lvIn = (lv, L) => { const m = String(lv || "").match(/\d+/g); if (!m) return false; const a = +m[0], b = +(m[1] || m[0]); return L >= a && L <= b; };
+  const PTABS = [["lw", "Leatherworking"], ["farm", "Leather farming"], ["cook", "Cooking"], ["fish", "Fishing"]];
+  function skillBox(k) { const v = store.get("skill:" + k, k === "lw" ? 150 : 1); return `<label class="skillbox">Your skill <input type="number" min="1" max="300" value="${v}" data-skill="${k}"></label>`; }
+  function stepsHtml(k, steps, render) { const sk = store.get("skill:" + k, k === "lw" ? 150 : 1);
+    return `<ol class="psteps">${steps.map(st => { const cur = sk >= st.from && sk < st.to, past = sk >= st.to;
+      return `<li class="${cur ? "now" : past ? "past" : ""}"><div class="ps-r">${st.from}–${st.to}${cur ? "<em>you are here</em>" : ""}</div><div class="ps-b">${render(st)}</div></li>`; }).join("")}</ol>`; }
+  const trainHtml = t => t?.length ? `<div class="card"><div class="label">Rank-ups: when you need to train or do a quest</div><ul class="kv">${t.map(x => `<li><b>Skill ${esc(x.skill)}</b>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""} ${fl(x.flag)}</li>`).join("")}</ul></div>` : "";
+  const listCard = (title, a) => a?.length ? `<div class="card"><div class="label">${title}</div><ul class="plist">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ul></div>` : "";
+  const srcHtml = a => a?.length ? `<p class="small muted psrc">Sources: ${a.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join(" · ")}</p>` : "";
+  function renderProf() {
+    const k = state.prof, d = PF(), L = state.level, el = $("#prof-body");
+    $("#prof-seg").innerHTML = PTABS.map(([id, n]) => `<button data-p="${id}" class="${id === k ? "on" : ""}">${n}</button>`).join("");
+    $("#prof-seg").querySelectorAll("button").forEach(b => b.onclick = () => { state.prof = b.dataset.p; store.set("prof", state.prof); renderProf(); refreshWH(); });
+    let h = "";
+    if (k === "lw" && d.lw) { const x = d.lw;
+      h = `<div class="ptop"><p class="lead">Leatherworking turns the leather you skin into armor and armor kits. Set your skill below and the guide highlights what to craft now. Each step says how many to make, what it costs in materials and where the recipe comes from.</p>${skillBox("lw")}</div>
+        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
+        <h3>What to craft, step by step</h3>${stepsHtml("lw", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)}</b> × ${esc(st.count)} ${fl(st.flag)}<span>Materials: ${rich(st.mats)}</span><span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        <div class="cards2">${listCard("Shopping list for the whole route", x.shopping)}${x.useful_crafts?.length ? `<div class="card"><div class="label">Crafts worth making for your bear</div><ul class="kv">${x.useful_crafts.map(c => `<li><b>${pItem(c.name, c.item_id, c.flag)}</b>Skill ${esc(c.skill)}. ${rich(c.why)} ${fl(c.flag)}</li>`).join("")}</ul></div>` : ""}</div>
+        ${listCard("Making gold with Leatherworking", x.gold)}${srcHtml(x.sources)}`;
+    } else if (k === "farm" && d.lw) { const f = d.lw.farming || [];
+      h = `<p class="lead">Where to skin each type of leather. Rows that fit your level (${L}) are highlighted. Skinning gives the leather; you need a skinning skill of about 5 times the creature's level to skin it.</p>
+        <div class="tablewrap"><table class="mx farm"><tr><th>Leather</th><th>Level</th><th>Zone</th><th>Where</th><th>Why</th></tr>${f.map(r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td><b>${rich(r.mat)}</b></td><td class="c">${esc(r.lv)}</td><td>${esc(r.zone)}</td><td>${rich(r.where)}</td><td>${rich(r.note)} ${fl(r.flag)}</td></tr>`).join("")}</table></div>${srcHtml(d.lw.sources)}`;
+    } else if (k === "cook" && d.cook) { const x = d.cook;
+      h = `<div class="ptop"><p class="lead">Cooking turns meat and fish into food. Some food gives a "Well Fed" buff with extra stamina or other stats, which helps a tank. Set your skill and the guide highlights what to cook now.</p>${skillBox("cook")}</div>
+        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
+        <h3>What to cook, step by step</h3>${stepsHtml("cook", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)}</b> × ${esc(st.count)} ${fl(st.flag)}<span>Materials: ${rich(st.mats)}</span>${st.mats_from ? `<span>Where to get it: ${rich(st.mats_from)}</span>` : ""}<span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        ${x.tank_food?.length ? `<h3>Best food for your bear</h3>${x.food_note ? `<p class="small muted">${rich(x.food_note)}</p>` : ""}<div class="tablewrap"><table class="mx farm"><tr><th>Level</th><th>Food</th><th>What it does</th><th>Recipe</th></tr>${x.tank_food.map(r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td class="c">${esc(r.lv)}</td><td><b>${pItem(r.name, r.item_id, r.flag)}</b></td><td>${rich(r.effect)}</td><td>${rich(r.recipe_from)} ${fl(r.flag)}</td></tr>`).join("")}</table></div>` : ""}
+        ${listCard("Making gold with Cooking", x.gold)}${srcHtml(x.sources)}`;
+    } else if (k === "fish" && d.fish) { const x = d.fish;
+      h = `<div class="ptop"><p class="lead">Fishing doesn't use a profession slot. You need a fishing pole equipped. Cast into water, wait for the bobber to splash, then click it. Set your skill and the guide highlights where to fish now.</p>${skillBox("fish")}</div>
+        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
+        <h3>Where to fish, step by step</h3>${stepsHtml("fish", x.steps, st => `<b>${esc(st.zone)}</b> ${fl(st.flag)}<span>Where: ${rich(st.where)}</span><span>You catch: ${rich(st.catch)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        <div class="cards2">${x.gear?.length ? `<div class="card"><div class="label">Fishing poles and lures</div><ul class="kv">${x.gear.map(g => `<li><b>${pItem(g.name, g.item_id, g.flag)}</b>${rich(g.what)} Where: ${rich(g.where)} ${fl(g.flag)}</li>`).join("")}</ul></div>` : ""}
+        ${x.valuable?.length ? `<div class="card"><div class="label">Fish worth catching</div><ul class="kv">${x.valuable.map(g => `<li><b>${rich(g.fish)}</b>${rich(g.use)} Where: ${rich(g.where)} ${fl(g.flag)}</li>`).join("")}</ul></div>` : ""}</div>${srcHtml(x.sources)}`;
+    } else h = `<p class="muted">This guide is still being written.</p>`;
+    el.innerHTML = h;
+    el.querySelectorAll("[data-skill]").forEach(i => i.addEventListener("change", () => { store.set("skill:" + i.dataset.skill, Math.max(1, Math.min(300, +i.value || 1))); renderProf(); refreshWH(); }));
   }
 
   /* ---------------- TODAY ---------------- */
@@ -353,7 +397,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);
@@ -372,7 +416,7 @@
     ["#c-armor", "#c-agi", "#c-form", "#c-lvl", "#c-th"].forEach(s => $(s).addEventListener("input", armorCalc));
     buildLinks(); renderDeepStatic(); renderSetup(); armorCalc(); renderAll();
     window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (document.getElementById(t)?.classList.contains("panel")) setTab(t); });
-    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
+    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "prof", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();
