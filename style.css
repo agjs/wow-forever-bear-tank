@@ -388,3 +388,22 @@ kbd{min-width:44px;text-align:center;background:linear-gradient(180deg,#2c261c,#
 .linkbtn{background:none;border:0;color:var(--text-3);font:600 13px var(--sans);cursor:pointer;padding:0 0 10px;text-decoration:underline}
 .linkbtn:hover{color:var(--text)}
 #prof details.dd{margin-bottom:12px}
+
+/* pvp */
+.clsrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin-bottom:18px}
+.clsrow button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;color:var(--text-2);font:600 14px var(--sans);cursor:pointer;transition:all .15s var(--ease)}
+.clsrow button:hover{border-color:var(--line-2);color:var(--text)}
+.clsrow button.on{border-color:var(--gold);color:var(--text);box-shadow:0 0 0 1px var(--gold)}
+.clsrow .ico{width:36px;height:36px;border-radius:8px}
+.skulls{display:inline-flex;gap:3px;vertical-align:middle}
+.skulls i{width:8px;height:8px;border-radius:50%;background:#e0533d}
+.skulls i.off{background:rgba(255,255,255,.12)}
+.matchup{margin-bottom:16px}
+.mu-h{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.mu-h h3{margin:0}
+.plist.fear li::marker{color:#e0533d}
+.plist.plan{padding-left:20px}
+.tips{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:18px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.tip span{color:var(--text-2);font-size:14.5px}
+#pvp details.dd{margin-bottom:12px}

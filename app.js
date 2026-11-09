@@ -25,6 +25,7 @@
     Object.values(window.TREE || {}).flat().forEach(t => { if (t.max === 1 || ["Lacerate", "Primal Bite"].includes(t.name) || TALENTS[t.k]) LINKS[t.name] = LINKS[t.name] || "spell=" + t.spell; });
     Object.entries(EXTRA_ITEMS).forEach(([n, id]) => LINKS[n] = "item=" + id);
     Object.entries(window.PROF_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
+    Object.entries(window.PVP_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
     CHECKPOINTS.forEach(c => c.items.forEach(([n, id, , f]) => { if (id && f !== "c" && !/set$/i.test(n)) LINKS[n] = "item=" + id; }));
     const names = Object.keys(LINKS).sort((a, b) => b.length - a.length).map(n => esc(n).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     LINKS._re = new RegExp("(?<![\\w>])(" + names.join("|") + ")(?![\\w<])", "g");
@@ -126,7 +127,7 @@
     Dodge: f => f[0] === "Dodge", Armor: f => f[0] === "Armor", Stamina: f => f[0] === "Stamina", "Attack power": f => f[0] === "AP",
   };
 
-  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw") };
+  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw"), pvpCls: store.get("pvpCls", null) };
   const ptsAt = L => Math.max(0, Math.min(51, L - 9));
   const ranksAt = n => { const r = {}; ORDER.slice(0, n).forEach(k => r[k] = (r[k] || 0) + 1); return r; };
   const FINAL = ranksAt(51);
@@ -216,6 +217,41 @@
     el.innerHTML = h;
     el.querySelectorAll("[data-past]").forEach(b => b.onclick = () => { showPast[b.dataset.past] = !showPast[b.dataset.past]; renderProf(); refreshWH(); });
     el.querySelectorAll("[data-skill]").forEach(i => i.addEventListener("change", () => { store.set("skill:" + i.dataset.skill, Math.max(1, Math.min(300, +i.value || 1))); renderProf(); refreshWH(); }));
+  }
+
+  /* ---------------- PVP ---------------- */
+  const CLS_ICON = c => "classicon_" + c.toLowerCase().replace(/[^a-z]/g, "");
+  const splitAb = x => { let m = x.match(/^(.+?) \((.+?)\): (.*)$/); if (m) return [m[1], m[3], m[2]]; m = x.match(/^([^:]{1,40}): (.*)$/); return m ? [m[1], m[2], ""] : [null, x, ""]; };
+  const abLink = n => { const v = LINKS[n] || (window.PVP_LINKS || {})[n]; return v ? `<a class="wh" href="https://www.wowhead.com/forever/${v}" target="_blank" rel="noopener">${esc(n)}</a>` : esc(n); };
+  function renderPvp() {
+    const P = window.PVP, el = $("#pvp-body"); if (!P || !el) return;
+    const L = state.level, cls = P.classes || [], cur = cls.find(c => c.cls === state.pvpCls) || cls[0];
+    const lvMatch = a => (a || []).find(x => lvIn(x.lv, L));
+    const skulls = n => `<span class="skulls" title="Danger ${n} of 5">${"<i></i>".repeat(n)}${"<i class=off></i>".repeat(5 - n)}</span>`;
+    const tools = lvMatch(P.feral?.by_level);
+    el.innerHTML = `
+      <div class="label">Who are you fighting?</div>
+      <div class="clsrow">${cls.map(c => `<button data-c="${esc(c.cls)}" class="${c === cur ? "on" : ""}">${img(CLS_ICON(c.cls), "ico", c.cls)}<span>${esc(c.cls)}</span>${skulls(c.danger || 0)}</button>`).join("")}</div>
+      ${cur ? `<div class="card matchup">
+        <div class="mu-h">${img(CLS_ICON(cur.cls), "ico lg", cur.cls)}<div><h3>${esc(cur.cls)}</h3><div class="small muted">Danger ${cur.danger}/5 ${skulls(cur.danger || 0)}</div></div></div>
+        <div class="cards2">
+          <div><div class="label">Watch out for</div><ul class="plist fear">${(cur.fear || []).map(x => { const [n, t, w] = splitAb(x); return `<li>${n ? `<b>${abLink(n)}</b>${w ? ` <span class="muted small">(${esc(w)})</span>` : ""}: ` : ""}${rich(t)}</li>`; }).join("")}</ul></div>
+          <div><div class="label">Your plan</div><ol class="plist plan">${(cur.plan || []).map(x => `<li>${rich(x)}</li>`).join("")}</ol></div>
+        </div>
+        ${cur.counter_spells?.length ? `<div class="label" style="margin-top:16px">Buttons that matter here</div><div class="mats">${cur.counter_spells.map(n => { const nm = n.split(/[:(]/)[0].trim(), icon = (window.TRAINER_INFO?.[nm] || [])[1] || SP[nm]?.[0]; return `<span class="mat">${icon ? img(icon, "ico") + " " : ""}${abLink(nm)}</span>`; }).join("")}</div>` : ""}
+        ${cur.by_level ? `<p class="small" style="margin:14px 0 0"><b>As you level:</b> ${rich(cur.by_level)}</p>` : ""}
+        ${cur.forever ? `<p class="small" style="margin:8px 0 0"><span class="tag v">Forever</span> ${rich(cur.forever)}</p>` : ""}
+      </div>` : ""}
+      ${tools ? `<div class="card"><div class="label">Your PvP tools at level ${L}</div><p style="margin:0">${rich(tools.text)}</p></div>` : ""}
+      <h3>Playing Feral in PvP</h3>${P.feral?.summary ? `<p class="lead" style="margin-bottom:14px">${rich(P.feral.summary)}</p>` : ""}
+      <div class="tips">${(P.feral?.tips || []).map(t => `<div class="tip"><b>${esc(t.title)}</b><span>${rich(t.text)}</span></div>`).join("")}</div>
+      ${fold("Talents for PvP", P.feral?.talents ? `<p>${rich(P.feral.talents)}</p>` : "")}
+      ${fold("General PvP tips", (P.general || []).length ? `<ul class="kv">${P.general.map(g => `<li><b>${esc(g.title)}</b>${rich(g.text)}</li>`).join("")}</ul>` : "")}
+      ${fold("How PvP works in WoW: Forever", plist(P.basics))}
+      ${fold("Alliance races and their racials", (P.alliance_races || []).length ? `<ul class="kv">${P.alliance_races.map(r => `<li><b>${esc(r.race)}</b>${rich(r.racials)}</li>`).join("")}</ul>` : "")}
+      ${fold("Your tools at every level", (P.feral?.by_level || []).length ? `<ul class="kv">${P.feral.by_level.map(r => `<li><b>${esc(r.lv)}</b>${rich(r.text)}</li>`).join("")}</ul>` : "")}
+      ${srcHtml(P.sources)}`;
+    el.querySelectorAll(".clsrow button").forEach(b => b.onclick = () => { state.pvpCls = b.dataset.c; store.set("pvpCls", state.pvpCls); renderPvp(); refreshWH(); });
   }
 
   /* ---------------- TODAY ---------------- */
@@ -414,7 +450,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);
@@ -433,7 +469,7 @@
     ["#c-armor", "#c-agi", "#c-form", "#c-lvl", "#c-th"].forEach(s => $(s).addEventListener("input", armorCalc));
     buildLinks(); renderDeepStatic(); renderSetup(); armorCalc(); renderAll();
     window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (document.getElementById(t)?.classList.contains("panel")) setTab(t); });
-    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "prof", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
+    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "prof", "pvp", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();
