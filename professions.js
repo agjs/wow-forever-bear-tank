@@ -45,7 +45,7 @@ window.PROF = {
     "mats": "5 Heavy Leather, 1 Fine Thread each",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Skill-ups yellow until 155. Total for this step: 40 Heavy Leather and 8 Fine Thread.",
+    "note": "Skill-ups yellow until 155.",
     "flag": "forever"
    },
    {
@@ -56,7 +56,7 @@ window.PROF = {
     "mats": "5 Heavy Leather, 1 Fine Thread, 1 Green Dye, 1 Iron Buckle, plus 1 Cured Heavy Hide each (the cured hide is made from Heavy Hide and Salt)",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Green at 165. Total: 135 Heavy Leather, 27 Fine Thread, 27 Green Dye, 27 Iron Buckle.",
+    "note": "Green at 165.",
     "flag": "forever"
    },
    {
@@ -67,7 +67,7 @@ window.PROF = {
     "mats": "8 Heavy Leather, 2 Fine Thread each, plus Cured Heavy Hide (from Heavy Hide and Salt)",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Total: 48 Heavy Leather and 12 Fine Thread.",
+    "note": "",
     "flag": "forever"
    },
    {
@@ -78,7 +78,7 @@ window.PROF = {
     "mats": "6 Heavy Leather, 1 Green Dye, 1 Fine Thread each, plus Cured Heavy Hide",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Total: 84 Heavy Leather, 14 Green Dye, 14 Fine Thread.",
+    "note": "",
     "flag": "forever"
    },
    {
@@ -89,7 +89,7 @@ window.PROF = {
     "mats": "4 Heavy Leather, 1 Silken Thread, plus Cured Heavy Hide each",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Total: 56 Heavy Leather and 14 Silken Thread. Cure Heavy Hide with Salt first.",
+    "note": "Cure Heavy Hide with Salt first.",
     "flag": "forever"
    },
    {
@@ -100,7 +100,7 @@ window.PROF = {
     "mats": "5 Thick Leather, 1 Silken Thread each",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Total: 30 Thick Leather and 6 Silken Thread.",
+    "note": "",
     "flag": "forever"
    },
    {
@@ -111,7 +111,7 @@ window.PROF = {
     "mats": "5 Thick Leather, 2 Silken Thread each",
     "recipe_from": "Leatherworking trainer (Expert range)",
     "item_id": null,
-    "note": "Green at 210. Total: 135 Thick Leather and 54 Silken Thread.",
+    "note": "Green at 210.",
     "flag": "forever"
    },
    {
@@ -122,7 +122,7 @@ window.PROF = {
     "mats": "12 Thick Leather, 4 Silken Thread each",
     "recipe_from": "Recipe item, source not confirmed by any source. Usable from 205. Fallback: Turtle Scale Breastplate (215 to 220, about 13 crafts), then Thick Leather Ammo Pouch (220 to 225, about 6 crafts).",
     "item_id": null,
-    "note": "Orange until 225. Total: 120 Thick Leather and 40 Silken Thread.",
+    "note": "Orange until 225.",
     "flag": "forever"
    },
    {
@@ -133,7 +133,7 @@ window.PROF = {
     "mats": "5 Rugged Leather each",
     "recipe_from": "Artisan trainer (Hahrana Ironhide, Feralas, or the Artisan trainer for this rank)",
     "item_id": null,
-    "note": "Yellow and green at 235. Total: 135 Rugged Leather. Rugged Leather comes from skinning in the 200 to 250 zones.",
+    "note": "Yellow and green at 235. Rugged Leather comes from skinning in the 200 to 250 zones.",
     "flag": "forever"
    },
    {
@@ -144,7 +144,7 @@ window.PROF = {
     "mats": "8 Rugged Leather, 1 Rune Thread, 1 Blue Dye each",
     "recipe_from": "Recipe item, source not confirmed. Usable from 240. Alternative 240 to 250: Nightscape Boots (about 59 crafts).",
     "item_id": null,
-    "note": "Orange and yellow at 260. Total: 184 Rugged Leather, 23 Rune Thread, 23 Blue Dye. Rune Thread and Blue Dye are bought from vendors, and the guide does not name them.",
+    "note": "Orange and yellow at 260. Rune Thread and Blue Dye are bought from vendors, and the guide does not name them.",
     "flag": "forever"
    },
    {
@@ -155,7 +155,7 @@ window.PROF = {
     "mats": "7 Rugged Leather, 2 Heavy Scorpid Scale, 1 Rune Thread each",
     "recipe_from": "Recipe item, source not confirmed. Usable from 250.",
     "item_id": null,
-    "note": "Orange and yellow at 270. Total: 98 Rugged Leather, 28 Heavy Scorpid Scale, 14 Rune Thread. No trainer recipe gives skill-ups from 262 to 275.",
+    "note": "Orange and yellow at 270. No trainer recipe gives skill-ups from 262 to 275.",
     "flag": "forever"
    },
    {
@@ -166,22 +166,9 @@ window.PROF = {
     "mats": "10 Rugged Leather, 1 Rune Thread, 1 Blue Dye each",
     "recipe_from": "Recipe item, source not confirmed. Usable from 275. Alternative 285 to 295: Gordok Ogre Suit (about 30 crafts).",
     "item_id": null,
-    "note": "Orange and yellow at 295. Total: 260 Rugged Leather, 26 Rune Thread, 26 Blue Dye. The Rankedboost 225 to 300 route is an estimate.",
+    "note": "Orange and yellow at 295. The Rankedboost 225 to 300 route is an estimate.",
     "flag": "forever"
    }
-  ],
-  "shopping": [
-   "About 363 Heavy Leather (Expert range, from the steps above, not counting the Heavy Hide for cured hides)",
-   "About 285 Thick Leather (Expert and Artisan range)",
-   "About 677 Rugged Leather (Artisan range, from 225 to 300)",
-   "About 40 Heavy Hide and matching Salt, for the cured hides needed in the Expert steps (exact count depends on how many cured hides you make)",
-   "About 81 Fine Thread",
-   "About 114 Silken Thread",
-   "About 41 Green Dye and 27 Iron Buckle",
-   "About 49 Blue Dye",
-   "About 63 Rune Thread",
-   "28 Heavy Scorpid Scale",
-   "Plus Light Leather and Medium Leather for the early cured hides if you do not already have them (not covered by the 150 to 300 route)"
   ],
   "farming": [
    {
@@ -978,3 +965,5 @@ window.PROF = {
   ]
  }
 };
+/* Wowhead Forever ids for names used in the profession text (auto-linked). */
+window.PROF_LINKS = {"Light Leather": "item=2318", "Medium Leather": "item=2319", "Heavy Leather": "item=4234", "Thick Leather": "item=4304", "Rugged Leather": "item=8170", "Heavy Hide": "item=4235", "Cured Heavy Hide": "item=4236", "Salt": "item=4289", "Fine Thread": "item=2321", "Silken Thread": "item=4291", "Rune Thread": "item=14341", "Green Dye": "item=2605", "Blue Dye": "item=6260", "Iron Buckle": "item=7071", "Heavy Scorpid Scale": "item=15408", "Heavy Armor Kit": "item=4265", "Thick Armor Kit": "item=8173", "Rugged Armor Kit": "item=15564", "Light Armor Kit": "item=2304", "Green Leather Belt": "item=4257", "Barbaric Shoulders": "item=5964", "Green Leather Bracers": "item=4259", "Guardian Gloves": "item=5966", "Nightscape Headband": "item=8176", "Nightscape Cloak": "item=8195", "Nightscape Boots": "item=8197", "Turtle Scale Breastplate": "item=8189", "Thick Leather Ammo Pouch": "item=8218", "Blue Suede Gloves": "item=252546", "Supple Scorpid Bracers": "item=252582", "Blue Suede Bracers": "item=252559", "Gordok Ogre Suit": "item=18258", "Warbear Harness": "item=15064", "Warbear Woolies": "item=15065", "Devilsaur Gauntlets": "item=15063", "Devilsaur Leggings": "item=15062", "Wolfshead Helm": "item=8345", "Warbear Helm": "item=252485", "Wild Leather Armor Kit": "item=279258", "Core Armor Kit": "item=18251", "Devilsaur Leather": "item=15417", "Warbear Leather": "item=15419", "Turtle Scale": "item=8167", "Simple Wood": "item=4470", "Crystal Vial": "item=8925", "Empty Vial": "item=3371", "Bolt of Runecloth": "item=14048", "Raw Brilliant Smallfish": "item=6291", "Brilliant Smallfish": "item=6290", "Raw Slitherskin Mackerel": "item=6303", "Slitherskin Mackerel": "item=787", "Charred Wolf Meat": "item=2679", "Roasted Boar Meat": "item=2681", "Herb Baked Egg": "item=6888", "Mild Spices": "item=2678", "Hot Spices": "item=2692", "Soothing Spices": "item=3713", "Refreshing Spring Water": "item=159", "Ice Cold Milk": "item=1179", "Raw Longjaw Mud Snapper": "item=6289", "Longjaw Mud Snapper": "item=4592", "Raw Rainbow Fin Albacore": "item=6361", "Rainbow Fin Albacore": "item=5095", "Boiled Clams": "item=5525", "Clam Meat": "item=5503", "Smoked Bear Meat": "item=6890", "Bear Meat": "item=3173", "Crab Cake": "item=2683", "Crawler Meat": "item=2674", "Dry Pork Ribs": "item=2687", "Boar Ribs": "item=2677", "Raw Bristle Whisker Catfish": "item=6308", "Bristle Whisker Catfish": "item=4593", "Hot Lion Chops": "item=3727", "Lion Meat": "item=3731", "Goblin Deviled Clams": "item=5527", "Tangy Clam Meat": "item=5504", "Curiously Tasty Omelet": "item=3665", "Raptor Egg": "item=3685", "Raw Mithril Head Trout": "item=8365", "Roast Raptor": "item=12210", "Raptor Flesh": "item=12184", "Soothing Turtle Bisque": "item=3729", "Turtle Meat": "item=3712", "Raw Spotted Yellowtail": "item=4603", "Spotted Yellowtail": "item=6887", "Raw Redgill": "item=13758", "Filet of Redgill": "item=13930", "Undermine Clam Chowder": "item=16766", "Zesty Clam Meat": "item=7974", "Monster Omelet": "item=12218", "Giant Egg": "item=12207", "Tender Wolf Steak": "item=18045", "Tender Wolf Meat": "item=12208", "Raw Sunscale Salmon": "item=13760", "Poached Sunscale Salmon": "item=13932", "Raw Nightfin Snapper": "item=13759", "Nightfin Soup": "item=13931", "Smoked Desert Dumplings": "item=20452", "Sandworm Meat": "item=20424", "Dirge's Kickin' Chimaerok Chops": "item=21023", "Grilled Squid": "item=13928", "Plated Armorfish": "item=286152", "Expert Cookbook": "item=16072", "Cookie's Stirring Rod": "item=5198", "Wicked Smoothie": "item=249876", "Fishing Pole": "item=6256", "Strong Fishing Pole": "item=6365", "Big Iron Fishing Pole": "item=6367", "Nat Pagle's Extreme Angler FC-5000": "item=19022", "Arcanite Fishing Pole": "item=19970", "Shiny Bauble": "item=6529", "Nightcrawlers": "item=6530", "Bright Baubles": "item=6532", "Aquadynamic Fish Attractor": "item=6533", "Aquadynamic Fish Lens": "item=6811", "Flesh Eating Worm": "item=7307", "Expert Fishing - The Bass and You": "item=16083", "Lucky Fishing Hat": "item=19972", "Nat Pagle's Extreme Anglin' Boots": "item=19969", "Stonescale Eel": "item=13422", "Oily Blackmouth": "item=6358", "Firefin Snapper": "item=6359", "Savory Deviate Delight": "item=6657", "Feralas Ahi": "item=16967", "Misty Reed Mahi Mahi": "item=16970", "Sar'theris Striker": "item=16968", "Savage Coast Blue Sailfin": "item=16969", "Blueprint: Fishing Rack": "item=273141", "Surfer Shoes": "item=276274", "Extravagant Extravaganza Coin": "item=274026", "Enchant Gloves - Fishing": "spell=13620", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Karolek": "npc=3365", "Arthur Moore": "npc=4588", "Tarn": "npc=11084", "Zamja": "npc=3399", "Wulan": "npc=12033", "Dirge Quikcleave": "npc=8125", "Gikkix": "npc=8137", "Keena": "npc=2821", "Zargh": "npc=3489", "Bale": "npc=2806", "Kelsey Yance": "npc=2664", "Jabbey": "npc=8139", "Christoph Jeffcoat": "npc=2393", "Ogg'marr": "npc=4879", "Old Man Heming": "npc=2626", "Nat Pagle": "npc=12919", "Uthan Stillwater": "npc=5938", "Lau'Tiki": "npc=5941", "Lumak": "npc=3332", "Katoom the Angler": "npc=14740", "Krix": "npc=260558", "Gelihast": "npc=6243", "Lui'Mala": "npc=12032", "Kil'Hiwana": "npc=12961", "Shankys": "npc=3333", "Sewa Mistrunner": "npc=3029", "Naal Mistrunner": "npc=3027", "Lizbeth Cromwell": "npc=4574", "Wik'Tar": "npc=12962", "Duhng": "npc=8306", "Cook Torka": "npc=3191", "Aska Mistrunner": "npc=3026", "Clamlette Surprise": "quest=6610", "Nat Pagle, Angler Extreme": "quest=6607", "Camping 101: Fishing": "quest=97920", "Snapjaws, Mon!": "quest=7815", "Desert Recipe": "quest=8307", "Sharing the Knowledge": "quest=8313"};

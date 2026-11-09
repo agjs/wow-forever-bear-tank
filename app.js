@@ -24,6 +24,7 @@
     Object.entries(SP).forEach(([n, v]) => LINKS[n] = "spell=" + v[1]);
     Object.values(window.TREE || {}).flat().forEach(t => { if (t.max === 1 || ["Lacerate", "Primal Bite"].includes(t.name) || TALENTS[t.k]) LINKS[t.name] = LINKS[t.name] || "spell=" + t.spell; });
     Object.entries(EXTRA_ITEMS).forEach(([n, id]) => LINKS[n] = "item=" + id);
+    Object.entries(window.PROF_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
     CHECKPOINTS.forEach(c => c.items.forEach(([n, id, , f]) => { if (id && f !== "c" && !/set$/i.test(n)) LINKS[n] = "item=" + id; }));
     const names = Object.keys(LINKS).sort((a, b) => b.length - a.length).map(n => esc(n).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     LINKS._re = new RegExp("(?<![\\w>])(" + names.join("|") + ")(?![\\w<])", "g");
@@ -160,44 +161,60 @@
   /* ---------------- PROFESSIONS ---------------- */
   const PF = () => window.PROF || {};
   const fl = f => f === "forever" ? `<span class="tag v">Forever</span>` : f === "classic" ? `<span class="tag c">Classic</span>` : "";
-  const pItem = (n, id, f) => id ? itemLink(id, n, f === "classic" ? "c" : "") : esc(n);
+  const pItem = (n, id, f) => id ? itemLink(id, n, f === "classic" ? "c" : "") : rich(n);
   const lvIn = (lv, L) => { const m = String(lv || "").match(/\d+/g); if (!m) return false; const a = +m[0], b = +(m[1] || m[0]); return L >= a && L <= b; };
   const PTABS = [["lw", "Leatherworking"], ["farm", "Leather farming"], ["cook", "Cooking"], ["fish", "Fishing"]];
-  function skillBox(k) { const v = store.get("skill:" + k, k === "lw" ? 150 : 1); return `<label class="skillbox">Your skill <input type="number" min="1" max="300" value="${v}" data-skill="${k}"></label>`; }
-  function stepsHtml(k, steps, render) { const sk = store.get("skill:" + k, k === "lw" ? 150 : 1);
-    return `<ol class="psteps">${steps.map(st => { const cur = sk >= st.from && sk < st.to, past = sk >= st.to;
-      return `<li class="${cur ? "now" : past ? "past" : ""}"><div class="ps-r">${st.from}–${st.to}${cur ? "<em>you are here</em>" : ""}</div><div class="ps-b">${render(st)}</div></li>`; }).join("")}</ol>`; }
-  const trainHtml = t => t?.length ? `<div class="card"><div class="label">Rank-ups: when you need to train or do a quest</div><ul class="kv">${t.map(x => `<li><b>Skill ${esc(x.skill)}</b>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""} ${fl(x.flag)}</li>`).join("")}</ul></div>` : "";
-  const listCard = (title, a) => a?.length ? `<div class="card"><div class="label">${title}</div><ul class="plist">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ul></div>` : "";
+  const skillOf = k => store.get("skill:" + k, k === "lw" ? 150 : 1);
+  const showPast = {};
+  function skillBox(k) { return `<label class="skillbox">Your skill <input type="number" min="1" max="300" value="${skillOf(k)}" data-skill="${k}"></label>`; }
+  function stepsHtml(k, steps, render) { const sk = skillOf(k), past = steps.filter(st => sk >= st.to), left = steps.filter(st => sk < st.to);
+    const li = (st, cls) => `<li class="${cls}"><div class="ps-r">${st.from}–${st.to}${cls === "now" ? "<em>you are here</em>" : ""}</div><div class="ps-b">${render(st)}</div></li>`;
+    return `${past.length ? `<button class="linkbtn" data-past="${k}">${showPast[k] ? "Hide" : "Show"} the ${past.length} step${past.length > 1 ? "s" : ""} you've already passed</button>` : ""}
+      <ol class="psteps">${showPast[k] ? past.map(st => li(st, "past")).join("") : ""}${left.map(st => li(st, sk >= st.from ? "now" : "")).join("")}</ol>
+      ${left.length ? "" : `<p class="muted">You've finished this route. Nice.</p>`}`; }
+  const skNum = x => +(String(x.skill).match(/\d+/) || [0])[0];
+  function trainHtml(k, t) { if (!t?.length) return ""; const sk = skillOf(k), up = t.filter(x => skNum(x) > sk), done = t.filter(x => skNum(x) <= sk && skNum(x) > 1);
+    const row = x => `<li><b>Skill ${skNum(x)}</b>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""}</li>`;
+    return `<div class="card"><div class="label">${up.length ? "Next rank-up" : "Rank-ups"}</div>${up.length ? `<ul class="kv">${row(up[0])}</ul>` : `<p style="margin:0">No more rank-ups to learn.</p>`}${done.length ? `<p class="small muted" style="margin:10px 0 0">Already behind you, make sure you learned: ${done.map(x => `${esc(x.what)} (skill ${skNum(x)})`).join(", ")}.</p>` : ""}${up.length > 1 ? `<p class="small muted" style="margin:6px 0 0">Later: ${up.slice(1).map(x => `${esc(x.what)} at ${skNum(x)}`).join(", ")}.</p>` : ""}</div>`; }
+  const fold = (title, inner) => inner ? `<details class="dd"><summary>${title}</summary>${inner}</details>` : "";
+  const plist = a => a?.length ? `<ul class="plist">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ul>` : "";
   const srcHtml = a => a?.length ? `<p class="small muted psrc">Sources: ${a.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join(" · ")}</p>` : "";
+  const MAT_RE = /(\d+) ([A-Z][A-Za-z' ]+?)(?= each|,|\.| plus| \(|$)/g;
+  const matsOf = st => [...st.mats.matchAll(MAT_RE)].map(m => [m[2], +m[1] * st.count]);
+  const matsHtml = list => { const t = {}; list.forEach(([n, q]) => t[n] = (t[n] || 0) + q); return Object.entries(t).map(([n, q]) => `<span class="mat"><b>${q}</b> ${rich(n)}</span>`).join(""); };
   function renderProf() {
     const k = state.prof, d = PF(), L = state.level, el = $("#prof-body");
     $("#prof-seg").innerHTML = PTABS.map(([id, n]) => `<button data-p="${id}" class="${id === k ? "on" : ""}">${n}</button>`).join("");
     $("#prof-seg").querySelectorAll("button").forEach(b => b.onclick = () => { state.prof = b.dataset.p; store.set("prof", state.prof); renderProf(); refreshWH(); });
     let h = "";
-    if (k === "lw" && d.lw) { const x = d.lw;
-      h = `<div class="ptop"><p class="lead">Leatherworking turns the leather you skin into armor and armor kits. Set your skill below and the guide highlights what to craft now. Each step says how many to make, what it costs in materials and where the recipe comes from.</p>${skillBox("lw")}</div>
-        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
-        <h3>What to craft, step by step</h3>${stepsHtml("lw", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)}</b> × ${esc(st.count)} ${fl(st.flag)}<span>Materials: ${rich(st.mats)}</span><span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
-        <div class="cards2">${listCard("Shopping list for the whole route", x.shopping)}${x.useful_crafts?.length ? `<div class="card"><div class="label">Crafts worth making for your bear</div><ul class="kv">${x.useful_crafts.map(c => `<li><b>${pItem(c.name, c.item_id, c.flag)}</b>Skill ${esc(c.skill)}. ${rich(c.why)} ${fl(c.flag)}</li>`).join("")}</ul></div>` : ""}</div>
-        ${listCard("Making gold with Leatherworking", x.gold)}${srcHtml(x.sources)}`;
-    } else if (k === "farm" && d.lw) { const f = d.lw.farming || [];
-      h = `<p class="lead">Where to skin each type of leather. Rows that fit your level (${L}) are highlighted. Skinning gives the leather; you need a skinning skill of about 5 times the creature's level to skin it.</p>
-        <div class="tablewrap"><table class="mx farm"><tr><th>Leather</th><th>Level</th><th>Zone</th><th>Where</th><th>Why</th></tr>${f.map(r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td><b>${rich(r.mat)}</b></td><td class="c">${esc(r.lv)}</td><td>${esc(r.zone)}</td><td>${rich(r.where)}</td><td>${rich(r.note)} ${fl(r.flag)}</td></tr>`).join("")}</table></div>${srcHtml(d.lw.sources)}`;
+    if (k === "lw" && d.lw) { const x = d.lw, sk = skillOf("lw"), left = x.steps.filter(st => sk < st.to);
+      h = `<div class="ptop"><p class="lead">Enter your skill. You'll see what to craft next and what to collect for the rest of the way to 300.</p>${skillBox("lw")}</div>
+        ${trainHtml("lw", x.trainers)}
+        ${left.length ? `<div class="card"><div class="label">Collect this for the rest of the route</div><div class="mats">${matsHtml(left.flatMap(matsOf))}</div></div>` : ""}
+        <h3>What to craft</h3>${stepsHtml("lw", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)} × ${esc(st.count)}</b><div class="mats">${matsHtml(matsOf(st))}</div><span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        ${x.useful_crafts?.length ? `<div class="card"><div class="label">Crafts worth making for your bear</div><ul class="kv">${x.useful_crafts.map(c => `<li><b>${pItem(c.name, c.item_id, c.flag)}</b>Skill ${esc(c.skill)}. ${rich(c.why)}</li>`).join("")}</ul></div>` : ""}
+        ${fold("What's different in WoW: Forever", plist(x.changes))}${fold("Making gold with Leatherworking", plist(x.gold))}${srcHtml(x.sources)}`;
+    } else if (k === "farm" && d.lw) { const f = d.lw.farming || [], fit = f.filter(r => lvIn(r.lv, L)), rest = f.filter(r => !lvIn(r.lv, L));
+      const row = r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td><b>${rich(r.mat)}</b></td><td class="c">${esc(r.lv)}</td><td>${esc(r.zone)}</td><td>${rich(r.where)}</td><td>${rich(r.note)} ${fl(r.flag)}</td></tr>`;
+      const tbl = a => `<div class="tablewrap"><table class="mx farm"><tr><th>Leather</th><th>Level</th><th>Zone</th><th>What to skin</th><th>Notes</th></tr>${a.map(row).join("")}</table></div>`;
+      h = `<p class="lead">Where to skin leather at your level (${L}). You can skin a creature if your Skinning skill is about 5 times its level.</p>
+        ${fit.length ? tbl(fit) : `<p class="muted">No spot listed for exactly level ${L}. See all spots below.</p>`}${fold("All farming spots, every level", tbl(rest))}${srcHtml(d.lw.sources)}`;
     } else if (k === "cook" && d.cook) { const x = d.cook;
-      h = `<div class="ptop"><p class="lead">Cooking turns meat and fish into food. Some food gives a "Well Fed" buff with extra stamina or other stats, which helps a tank. Set your skill and the guide highlights what to cook now.</p>${skillBox("cook")}</div>
-        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
-        <h3>What to cook, step by step</h3>${stepsHtml("cook", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)}</b> × ${esc(st.count)} ${fl(st.flag)}<span>Materials: ${rich(st.mats)}</span>${st.mats_from ? `<span>Where to get it: ${rich(st.mats_from)}</span>` : ""}<span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
-        ${x.tank_food?.length ? `<h3>Best food for your bear</h3>${x.food_note ? `<p class="small muted">${rich(x.food_note)}</p>` : ""}<div class="tablewrap"><table class="mx farm"><tr><th>Level</th><th>Food</th><th>What it does</th><th>Recipe</th></tr>${x.tank_food.map(r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td class="c">${esc(r.lv)}</td><td><b>${pItem(r.name, r.item_id, r.flag)}</b></td><td>${rich(r.effect)}</td><td>${rich(r.recipe_from)} ${fl(r.flag)}</td></tr>`).join("")}</table></div>` : ""}
-        ${listCard("Making gold with Cooking", x.gold)}${srcHtml(x.sources)}`;
+      h = `<div class="ptop"><p class="lead">Enter your skill to see what to cook next. In Forever almost every cooked food gives the Well Fed buff: 5% more experience from kills.</p>${skillBox("cook")}</div>
+        ${trainHtml("cook", x.trainers)}
+        <h3>What to cook</h3>${stepsHtml("cook", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)} × ${esc(st.count)}</b><span>Materials: ${rich(st.mats)}</span>${st.mats_from ? `<span>Where to get them: ${rich(st.mats_from)}</span>` : ""}<span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        ${x.tank_food?.length ? `<h3>Best food for your bear</h3><div class="tablewrap"><table class="mx farm"><tr><th>Level</th><th>Food</th><th>What it does</th><th>Recipe</th></tr>${x.tank_food.map(r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td class="c">${esc(r.lv)}</td><td><b>${pItem(r.name, r.item_id, r.flag)}</b></td><td>${rich(r.effect)}</td><td>${rich(r.recipe_from)}</td></tr>`).join("")}</table></div>${x.food_note ? `<p class="small muted">${rich(x.food_note)}</p>` : ""}` : ""}
+        ${fold("What's different in WoW: Forever", plist(x.changes))}${fold("Making gold with Cooking", plist(x.gold))}${srcHtml(x.sources)}`;
     } else if (k === "fish" && d.fish) { const x = d.fish;
-      h = `<div class="ptop"><p class="lead">Fishing doesn't use a profession slot. You need a fishing pole equipped. Cast into water, wait for the bobber to splash, then click it. Set your skill and the guide highlights where to fish now.</p>${skillBox("fish")}</div>
-        ${listCard("What's different in WoW: Forever", x.changes)}${trainHtml(x.trainers)}
-        <h3>Where to fish, step by step</h3>${stepsHtml("fish", x.steps, st => `<b>${esc(st.zone)}</b> ${fl(st.flag)}<span>Where: ${rich(st.where)}</span><span>You catch: ${rich(st.catch)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
-        <div class="cards2">${x.gear?.length ? `<div class="card"><div class="label">Fishing poles and lures</div><ul class="kv">${x.gear.map(g => `<li><b>${pItem(g.name, g.item_id, g.flag)}</b>${rich(g.what)} Where: ${rich(g.where)} ${fl(g.flag)}</li>`).join("")}</ul></div>` : ""}
-        ${x.valuable?.length ? `<div class="card"><div class="label">Fish worth catching</div><ul class="kv">${x.valuable.map(g => `<li><b>${rich(g.fish)}</b>${rich(g.use)} Where: ${rich(g.where)} ${fl(g.flag)}</li>`).join("")}</ul></div>` : ""}</div>${srcHtml(x.sources)}`;
+      h = `<div class="ptop"><p class="lead">Enter your skill to see where to fish next. Fishing doesn't use a profession slot.</p>${skillBox("fish")}</div>
+        ${trainHtml("fish", x.trainers)}
+        <h3>Where to fish</h3>${stepsHtml("fish", x.steps, st => `<b>${esc(st.zone)}</b><span>Where: ${rich(st.where)}</span><span>You catch: ${rich(st.catch)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        ${fold("Fishing poles and lures", x.gear?.length ? `<ul class="kv">${x.gear.map(g => `<li><b>${pItem(g.name, g.item_id, g.flag)}</b>${rich(g.what)} ${rich(g.where)}</li>`).join("")}</ul>` : "")}
+        ${fold("Fish worth catching", x.valuable?.length ? `<ul class="kv">${x.valuable.map(g => `<li><b>${rich(g.fish)}</b>${rich(g.use)} ${rich(g.where)}</li>`).join("")}</ul>` : "")}
+        ${fold("What's different in WoW: Forever", plist(x.changes))}${srcHtml(x.sources)}`;
     } else h = `<p class="muted">This guide is still being written.</p>`;
     el.innerHTML = h;
+    el.querySelectorAll("[data-past]").forEach(b => b.onclick = () => { showPast[b.dataset.past] = !showPast[b.dataset.past]; renderProf(); refreshWH(); });
     el.querySelectorAll("[data-skill]").forEach(i => i.addEventListener("change", () => { store.set("skill:" + i.dataset.skill, Math.max(1, Math.min(300, +i.value || 1))); renderProf(); refreshWH(); }));
   }
 
