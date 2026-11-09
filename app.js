@@ -143,7 +143,7 @@
   const CAT_L = { bear: "Bear", cat: "Cat", heal: "Self-heal", util: "Utility", skip: "Optional" };
   const trAt = L => TR.filter(t => t[0] === L);
   const trName = t => `${spellLink(t[3], img((TI[t[1]] || [])[1] || "inv_misc_questionmark", "ico", t[1]) + " " + esc(t[1]))}${t[2] ? ` <span class="rk">rank ${t[2]}</span>` : ""}`;
-  const trRow = t => { const [c, , d] = TI[t[1]] || ["util", "", ""]; return `<li class="tr-${c}"><div class="tr-n">${trName(t)}<span class="tag tc-${c}">${CAT_L[c]}</span>${t[5] ? `<span class="tag q">Quest</span>` : ""}</div><span class="tr-d">${t[2] > 1 ? "Stronger rank of a spell you already have. " : ""}${esc(d)}</span><span class="tr-c">${t[5] ? "class quest" : money(t[4])}</span></li>`; };
+  const trRow = t => { const [c, , d] = TI[t[1]] || ["util", "", ""]; return `<li class="tr-${c}"><div class="tr-n">${trName(t)}${c === "skip" ? "" : `<span class="tag tc-${c}">${CAT_L[c]}</span>`}${t[5] ? `<span class="tag q">Quest</span>` : ""}</div><span class="tr-d">${t[2] > 1 ? "Stronger rank of a spell you already have. " : ""}${esc(d)}</span><span class="tr-c">${t[5] ? "class quest" : money(t[4])}</span></li>`; };
   const trCost = a => a.filter(t => (TI[t[1]] || [])[0] !== "skip" && !t[5]).reduce((x, t) => x + t[4], 0);
   function trainerCard(L) {
     const now = trAt(L), nxt = TR.find(t => t[0] > L), nL = nxt ? nxt[0] : null;
@@ -244,9 +244,9 @@
       </div>` : ""}
       ${tools ? `<div class="card"><div class="label">Your PvP tools at level ${L}</div><p style="margin:0">${rich(tools.text)}</p></div>` : ""}
       <h3>Playing Feral in PvP</h3>${P.feral?.summary ? `<p class="lead" style="margin-bottom:14px">${rich(P.feral.summary)}</p>` : ""}
-      <div class="tips">${(P.feral?.tips || []).map(t => `<div class="tip"><b>${esc(t.title)}</b><span>${rich(t.text)}</span></div>`).join("")}</div>
+      <ul class="notes">${(P.feral?.tips || []).map(t => `<li><b>${esc(t.title)}</b><span>${rich(t.text)}</span></li>`).join("")}</ul>
       ${fold("Talents for PvP", P.feral?.talents ? `<p>${rich(P.feral.talents)}</p>` : "")}
-      ${fold("General PvP tips", (P.general || []).length ? `<ul class="kv">${P.general.map(g => `<li><b>${esc(g.title)}</b>${rich(g.text)}</li>`).join("")}</ul>` : "")}
+      ${fold("General PvP tips", (P.general || []).length ? `<ul class="notes">${P.general.map(g => `<li><b>${esc(g.title)}</b><span>${rich(g.text)}</span></li>`).join("")}</ul>` : "")}
       ${fold("How PvP works in WoW: Forever", plist(P.basics))}
       ${fold("Alliance races and their racials", (P.alliance_races || []).length ? `<ul class="kv">${P.alliance_races.map(r => `<li><b>${esc(r.race)}</b>${rich(r.racials)}</li>`).join("")}</ul>` : "")}
       ${fold("Your tools at every level", (P.feral?.by_level || []).length ? `<ul class="kv">${P.feral.by_level.map(r => `<li><b>${esc(r.lv)}</b>${rich(r.text)}</li>`).join("")}</ul>` : "")}
@@ -278,7 +278,7 @@
     const up = MILESTONES.filter(m => m[0] > L).slice(0, 3);
     $("#upcoming").innerHTML = up.map(m => `<div class="mile">${img(m[2])}<div><b>Lv ${m[0]} · ${esc(m[1])}</b><span>${esc(m[3])} · ${m[0] - L} level${m[0] - L > 1 ? "s" : ""} away</span></div></div>`).join("");
   }
-  const itemsHtml = items => `<div class="items">${items.map(([n, id, src, f]) => `<div class="item">${itemLink(id, n, f)}<span class="tag ${f}">${{ v: "Confirmed", q: "Quest", c: "Classic" }[f]}</span><small>${rich(src)}</small></div>`).join("")}</div>`;
+  const itemsHtml = items => `<div class="items">${items.map(([n, id, src, f]) => `<div class="item">${itemLink(id, n, f)}<small><span class="tag ${f}">${{ v: "Confirmed", q: "Quest", c: "Classic" }[f]}</span>${rich(src)}</small></div>`).join("")}</div>`;
 
 
   /* ---------------- research data (research.js) ---------------- */
@@ -335,7 +335,7 @@
         <div class="body">
           <div>${routeFor(c).length ? `<h4>Where to quest, in order</h4><ul>${routeFor(c).map(z => `<li><b>${esc(z.lv)}</b> ${esc(z.zones)} <span class="muted">(${esc(z.hub)})</span><br><span class="small muted">${rich(z.notes)}</span></li>`).join("")}</ul><br>` : ""}<h4>Do</h4><ul><li>${rich(c.train)}</li>${c.tips.map(t => `<li>${rich(t)}</li>`).join("")}</ul></div>
           <div><h4>Talents</h4>${talents.length ? `<div class="tchips">${talents.map(k => `<span class="tchip">${img(T_UI[k][0], "ico sm")}${esc(TALENTS[k].name)} <small>${ORDER.slice(0, Math.min(51, hi - 9)).filter(x => x === k).length}/${TALENTS[k].max}</small></span>`).join("")}</div>` : "<span class='muted'>None</span>"}
-            <h4 style="margin-top:16px">Done when</h4><label class="donebox"><input type="checkbox" data-id="${id}" ${done ? "checked" : ""}> ${rich(c.done)}</label></div>
+            <h4 style="margin-top:16px">Done when</h4><label class="donebox"><input type="checkbox" data-id="${id}" ${done ? "checked" : ""}><span>${rich(c.done)}</span></label></div>
           ${c.items.length ? `<div class="full"><h4>Loot</h4>${itemsHtml(c.items)}</div>` : ""}
         </div></details></li>`;
     }).join("");

@@ -499,7 +499,7 @@ window.PROF = {
     "recipe_from": "Gikkix in Steamwheedle Port, Tanaris.",
     "mats_from": "Fishing. The source lists Tanaris, Stranglethorn Vale, Azshara, Desolace, Dustwallow Marsh and Arathi Highlands.",
     "item_id": null,
-    "note": "Eat level for the cooked version is 35. Alternatives in this range, each about 65 crafts: Filet of Redgill (Raw Redgill, recipe from Kelsey Yance in Stranglethorn Vale), Undermine Clam Chowder (needs 130 Zesty Clam Meat, 65 Hot Spices and 65 Ice Cold Milk from innkeepers, recipe from Jabbey in Tanaris), Monster Omelet (65 Giant Egg and 130 Soothing Spices, recipe from Bale in Felwood, Horde), and Tender Wolf Steak (65 Tender Wolf Meat and 65 Soothing Spices, recipe from Dirge Quikcleave in Tanaris). Tender Wolf Steak is the best tank food in this range; see tank_food.",
+    "note": "Eat level for the cooked version is 35. Alternatives in this range, each about 65 crafts: Filet of Redgill (Raw Redgill, recipe from Kelsey Yance in Stranglethorn Vale), Undermine Clam Chowder (needs 130 Zesty Clam Meat, 65 Hot Spices and 65 Ice Cold Milk from innkeepers, recipe from Jabbey in Tanaris), Monster Omelet (65 Giant Egg and 130 Soothing Spices, recipe from Bale in Felwood, Horde), and Tender Wolf Steak (65 Tender Wolf Meat and 65 Soothing Spices, recipe from Dirge Quikcleave in Tanaris). Tender Wolf Steak is the best tank food in this range (see "Best food for your bear" below).",
     "flag": "forever"
    },
    {

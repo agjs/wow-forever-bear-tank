@@ -30,7 +30,8 @@ a:hover{color:var(--gold-2)}
 .small{font-size:13px} .muted{color:var(--text-3)}
 h2{font:700 32px/1.15 var(--display);margin:0 0 8px;letter-spacing:.5px;
   background:linear-gradient(180deg,#fff3d6,var(--gold) 70%,var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
-h3{font-size:17px;font-weight:700;margin:0 0 12px;letter-spacing:-.1px}
+h3{font-size:17px;font-weight:700;margin:30px 0 12px;letter-spacing:-.1px}
+h3:first-child,.card h3:first-child{margin-top:0}
 h4{margin:0 0 10px;color:var(--text-3);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
 .lead{color:var(--text-2);margin:0 0 26px;max-width:680px;font-size:16.5px}
 
@@ -222,7 +223,7 @@ h4{margin:0 0 10px;color:var(--text-3);font-size:11.5px;font-weight:700;text-tra
 .dd summary::-webkit-details-marker{display:none}
 .dd summary::after{content:"＋";color:var(--gold);font-weight:400;transition:transform .2s var(--ease)}
 .dd[open] summary::after{transform:rotate(45deg)}
-.dd > *:not(summary){margin-left:22px;margin-right:22px}
+details.dd > *:not(summary){margin-left:22px;margin-right:22px}
 .dd[open]{padding-bottom:20px;border-color:var(--line-2)}
 .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .stat{background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px}
@@ -230,7 +231,7 @@ h4{margin:0 0 10px;color:var(--text-3);font-size:11.5px;font-weight:700;text-tra
 ul.kv{list-style:none;padding:0;margin:0}
 ul.kv li{padding:10px 0;border-bottom:1px solid var(--line);color:var(--text-2);font-size:14.5px}
 ul.kv li:last-child{border:0}
-ul.kv b{color:var(--text);margin-right:8px}
+ul.kv li > b:first-child{display:block;color:var(--text);margin:0 0 3px}
 .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-sm)}
 table.mx{border-collapse:collapse;width:100%;font-size:13px}
 .mx th,.mx td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
@@ -407,3 +408,51 @@ kbd{min-width:44px;text-align:center;background:linear-gradient(180deg,#2c261c,#
 .tip{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
 .tip span{color:var(--text-2);font-size:14.5px}
 #pvp details.dd{margin-bottom:12px}
+
+/* --- layout review fixes --- */
+.panel .card{margin-bottom:16px}
+.cards2 > .card,.cards3 > .card,.cards2 > div,.cards3 > div{margin-bottom:0}
+.tag:first-child{margin-left:0;margin-right:6px}
+.mats{align-items:center}
+.mat{display:inline-flex;align-items:center;gap:7px;line-height:1.3}
+.mat a{display:inline-flex;align-items:center;gap:7px}
+.mat .ico{width:22px;height:22px;border-radius:5px;flex:none}
+/* admonition-style list (replaces boxed tips) */
+.notes{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:8px}
+.notes li{border-left:3px solid var(--gold);background:linear-gradient(90deg,rgba(255,209,0,.06),transparent 70%);border-radius:0 10px 10px 0;padding:10px 14px}
+.notes li b{display:block;color:var(--text);margin-bottom:2px}
+.notes li span{color:var(--text-2);font-size:14.5px}
+.notes.warn li{border-left-color:#e0533d;background:linear-gradient(90deg,rgba(224,83,61,.07),transparent 70%)}
+.items{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 28px}
+.item{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:10px 2px}
+.item:hover{transform:none}
+.item a{display:inline}
+.item small{display:flex;align-items:center;gap:0;flex-wrap:wrap;margin-top:4px}
+#today-extra{align-items:start}
+.trl{gap:0}
+.trl li{border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:10px 2px}
+.trl li:last-child{border-bottom:0}
+.tr-sub{margin:16px 0 4px}
+/* lists instead of stacked boxes */
+.psteps{gap:0;border-top:1px solid var(--line)}
+.psteps li{border:0;border-bottom:1px solid var(--line);border-radius:0;background:none;padding:14px 12px}
+.psteps li.now{border-left:3px solid var(--gold);background:linear-gradient(90deg,rgba(255,209,0,.07),transparent 75%);box-shadow:none;border-radius:0}
+.trainer-list{gap:0}
+.tr-lv{border:0;border-top:1px solid var(--line);border-radius:0;background:none;padding:20px 0 12px}
+.tr-lv.now{border-top-color:var(--gold);box-shadow:none;background:linear-gradient(180deg,rgba(255,209,0,.05),transparent 120px);padding-left:14px;padding-right:14px;border-left:3px solid var(--gold)}
+.psteps li{border-left:3px solid transparent}
+.psteps li.now{border-color:var(--line);border-left-color:var(--gold)}
+.tr-lv{border-left:3px solid transparent;padding-left:14px;padding-right:14px}
+.tr-lv.now{border-top-color:var(--line);border-left-color:var(--gold)}
+a[href*="wowhead.com"]{text-decoration:underline dotted;text-decoration-color:rgba(255,255,255,.28);text-underline-offset:3px}
+a[href*="wowhead.com"]:hover{text-decoration-color:currentColor}
+/* rotation: list rows instead of boxes */
+.prio{gap:0;border-top:1px solid var(--line)}
+.prio li{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;padding:12px 6px}
+.prio li:not(.locked):hover{transform:none;background:rgba(255,255,255,.02)}
+.forms{display:flex;flex-direction:column;gap:8px}
+.form{background:linear-gradient(90deg,rgba(255,209,0,.06),transparent 70%);border:0;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:10px 14px}
+.droute{gap:0;border-top:1px solid var(--line)}
+.droute li{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0}
+.boss{background:linear-gradient(90deg,rgba(255,209,0,.05),transparent 70%);border:0;border-left:3px solid var(--gold-deep);border-radius:0 10px 10px 0}
+.cards2{align-items:start}
