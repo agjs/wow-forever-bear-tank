@@ -154,6 +154,11 @@
   }
   function renderTrainer() {
     const L = state.level, all = [...new Set(TR.map(t => t[0]))].filter(l => l >= 10), lv = all.filter(l => l >= L);
+    const CQ = (window.CLASSQ || {}).quests || [], qPast = CQ.filter(q => q.lv < L && q.must), qUp = CQ.filter(q => q.lv >= L);
+    const qName = q => q.wowhead_quest_id ? `<a href="https://www.wowhead.com/forever/quest=${q.wowhead_quest_id}" target="_blank" rel="noopener">${esc(q.name)}</a>` : esc(q.name);
+    $("#classq").innerHTML = `<h3>Druid class quests</h3>${qPast.length ? `<p class="hidnote">Already behind you, make sure you did: ${qPast.map(q => `${esc(q.name.split(" (")[0])} (${q.lv})`).join(", ")}.</p>` : ""}
+      ${qUp.length ? `<ul class="notes">${qUp.map(q => `<li><b>Level ${q.lv} · ${qName(q)}</b><span>${rich(q.reward)} Starts: ${rich(q.start)}</span>${q.steps.length > 1 ? `<details class="qsteps-d"><summary>Steps</summary><ol>${q.steps.map(s => `<li>${rich(s)}</li>`).join("")}</ol></details>` : ""}${q.note ? `<span class="small muted" style="display:block;margin-top:4px">${rich(q.note)}</span>` : ""}</li>`).join("")}</ul>` : `<p class="muted">No class quests left.</p>`}
+      <h3>New spells by level</h3>`;
     $("#trainer-list").innerHTML = hidNote(all.length - lv.length, "trainer levels are") + lv.map(l => { const a = trAt(l), need = a.filter(t => (TI[t[1]] || [])[0] !== "skip"), opt = a.filter(t => (TI[t[1]] || [])[0] === "skip");
       return `<div class="tr-lv${l === L ? " now" : l < L ? " past" : ""}" id="tr-${l}"><div class="tr-h"><b>Level ${l}</b><span>${money(trCost(a))} for the ones you need${l === L ? ` · <em>your level</em>` : ""}</span></div>${need.length ? `<div class="tr-sub">Learn these (${need.length})</div><ul class="trl">${need.map(trRow).join("")}</ul>` : ""}${opt.length ? `<div class="tr-sub">Optional caster spells (${opt.length})</div><ul class="trl">${opt.map(trRow).join("")}</ul>` : ""}</div>`; }).join("");
   }
@@ -163,7 +168,7 @@
   const fl = f => f === "forever" ? `<span class="tag v">Forever</span>` : f === "classic" ? `<span class="tag c">Classic</span>` : "";
   const pItem = (n, id, f) => id ? itemLink(id, n, f === "classic" ? "c" : "") : rich(n);
   const lvIn = (lv, L) => { const m = String(lv || "").match(/\d+/g); if (!m) return false; const a = +m[0], b = +(m[1] || m[0]); return L >= a && L <= b; };
-  const PTABS = [["lw", "Leatherworking"], ["farm", "Leather farming"], ["cook", "Cooking"], ["fish", "Fishing"]];
+  const PTABS = [["lw", "Leatherworking"], ["farm", "Leather farming"], ["cook", "Cooking"], ["fish", "Fishing"], ["gold", "Gold"]];
   const skillOf = k => store.get("skill:" + k, k === "lw" ? 150 : 1);
   const showPast = {};
   function skillBox(k) { return `<label class="skillbox">Your skill <input type="number" min="1" max="300" value="${skillOf(k)}" data-skill="${k}"></label>`; }
@@ -212,6 +217,14 @@
         ${fold("Fishing poles and lures", x.gear?.length ? `<ul class="kv">${x.gear.map(g => `<li><b>${pItem(g.name, g.item_id, g.flag)}</b>${rich(g.what)} ${rich(g.where)}</li>`).join("")}</ul>` : "")}
         ${fold("Fish worth catching", x.valuable?.length ? `<ul class="kv">${x.valuable.map(g => `<li><b>${rich(g.fish)}</b>${rich(g.use)} ${rich(g.where)}</li>`).join("")}</ul>` : "")}
         ${fold("What's different in WoW: Forever", plist(x.changes))}${srcHtml(x.sources)}`;
+    } else if (k === "gold" && window.GOLD) { const G = window.GOLD, bands = G.bands.filter(b => rng(b.lv)[1] >= L || b.lv === "60"), cur = bands[0], later = bands.slice(1);
+      const notes = a => `<ul class="notes">${a.map(([t, x]) => `<li><b>${esc(t)}</b><span>${rich(x)}</span></li>`).join("")}</ul>`;
+      const band = b => `${b.sell.length ? `<h4>Sell</h4>${plist(b.sell)}` : ""}${b.farm.length ? `<h4 style="margin-top:14px">Where to earn</h4>${plist(b.farm)}` : ""}${b.save_for ? `<p class="small" style="margin-top:12px"><b>Save for:</b> ${rich(b.save_for)}</p>` : ""}`;
+      h = `<p class="lead">Early Forever prices are still settling, so check the auction house before you sell in bulk.</p>
+        <h3>Your mount</h3>${notes(G.mount_short)}
+        ${cur ? `<h3>Making gold at levels ${esc(cur.lv)}</h3><div class="card">${band(cur)}</div>` : ""}
+        ${later.map(b => fold(`Levels ${esc(b.lv)}`, band(b))).join("")}
+        ${fold("Good to know", `<ul class="notes">${G.general.map(g => `<li><b>${esc(g.title)}</b><span>${rich(g.text)}</span></li>`).join("")}</ul>`)}${srcHtml(G.sources)}`;
     } else h = `<p class="muted">This guide is still being written.</p>`;
     el.innerHTML = h;
     el.querySelectorAll("[data-past]").forEach(b => b.onclick = () => { showPast[b.dataset.past] = !showPast[b.dataset.past]; renderProf(); refreshWH(); });
@@ -251,6 +264,20 @@
       ${fold("Your tools at every level", (P.feral?.by_level || []).length ? `<ul class="kv">${P.feral.by_level.map(r => `<li><b>${esc(r.lv)}</b>${rich(r.text)}</li>`).join("")}</ul>` : "")}
       ${srcHtml(P.sources)}`;
     el.querySelectorAll(".clsrow button").forEach(b => b.onclick = () => { state.pvpCls = b.dataset.c; store.set("pvpCls", state.pvpCls); renderPvp(); refreshWH(); });
+  }
+
+  /* ---------------- GEAR ---------------- */
+  const SLOTS = ["Head", "Neck", "Shoulder", "Back", "Chest", "Wrist", "Hands", "Waist", "Legs", "Feet", "Ring", "Trinket", "Weapon", "Idol"];
+  function renderGear() {
+    const G = window.GEAR || [], L = state.level, el = $("#gear-body"); if (!el) return;
+    const it = g => `<div class="gi">${g.icon ? img(g.icon, "ico") : ""}<div><span class="gn">${itemLink(g.id, g.n, g.f)}</span><small>${esc(g.stats || "")}${g.stats ? " · " : ""}${rich(g.src)}</small></div></div>`;
+    el.innerHTML = `<div class="gtable">${SLOTS.map(sl => {
+      const all = G.filter(g => g.slot === sl), n = sl === "Ring" || sl === "Trinket" ? 2 : 1;
+      const now = all.filter(g => g.lv <= L).sort((a, b) => b.ilvl - a.ilvl).slice(0, n);
+      const floor = now.length ? Math.min(...now.map(g => g.ilvl)) : 0;
+      const next = all.filter(g => g.lv > L && g.ilvl > floor).sort((a, b) => a.lv - b.lv)[0];
+      return `<div class="grow"><div class="gs">${sl}</div><div class="gnow">${now.length ? now.map(it).join("") : `<span class="muted small">Nothing from this guide yet. Wear whatever quest reward you have.</span>`}</div>
+        <div class="gnext">${next ? `<span class="glv">Level ${next.lv}</span>${it(next)}` : `<span class="muted small">No later upgrade listed.</span>`}</div></div>`; }).join("")}</div>`;
   }
 
   /* ---------------- TODAY ---------------- */
@@ -457,7 +484,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderGear(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);
@@ -476,7 +503,7 @@
     ["#c-armor", "#c-agi", "#c-form", "#c-lvl", "#c-th"].forEach(s => $(s).addEventListener("input", armorCalc));
     buildLinks(); renderDeepStatic(); renderSetup(); armorCalc(); renderAll();
     window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (document.getElementById(t)?.classList.contains("panel")) setTab(t); });
-    const h = location.hash.slice(1); setTab(["today", "road", "trainer", "prof", "pvp", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
+    const h = location.hash.slice(1); setTab(["today", "road", "gear", "trainer", "prof", "pvp", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();

@@ -7,7 +7,7 @@
 <meta name="description" content="WoW: Forever Feral Druid bear tank: what to do at every level, talents, rotation and gear. Patch 1.60.1.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1794225502">
+<link rel="stylesheet" href="style.css?v=1794227562">
 <script>const whTooltips = {colorLinks: true, iconizeLinks: false, renameLinks: false};</script>
 <script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
 </head>
@@ -24,6 +24,7 @@
   <nav class="wrap tabs" role="tablist">
     <button data-tab="today" class="on">Today</button>
     <button data-tab="road">Road to 60</button>
+    <button data-tab="gear">Gear</button>
     <button data-tab="trainer">Trainer</button>
     <button data-tab="prof">Professions</button>
     <button data-tab="pvp">PvP</button>
@@ -53,10 +54,19 @@
     <ol id="timeline" class="timeline"></ol>
   </section>
 
+  <!-- GEAR -->
+  <section id="gear" class="panel">
+    <h2>What to wear</h2>
+    <p class="lead">For each slot: the best item from this guide you can wear at your level, and the next upgrade. "Best" means highest item level, so glance at the stats too.</p>
+    <div class="gh"><span>Slot</span><span>Wear now</span><span>Next upgrade</span></div>
+    <div id="gear-body"></div>
+  </section>
+
   <!-- TRAINER -->
   <section id="trainer" class="panel">
     <h2>Trainer: new spells by level</h2>
     <p class="lead">New spells come on even levels only. Optional spells are caster spells a bear rarely uses.</p>
+    <div id="classq"></div>
     <div id="trainer-list" class="trainer-list"></div>
   </section>
 
@@ -156,13 +166,16 @@
   </section>
 </main>
 <footer class="wrap small muted">Fan-made reference. Not affiliated with Blizzard.</footer>
-<script src="data.js?v=1794225502"></script>
-<script src="research.js?v=1794225502"></script>
-<script src="trainer.js?v=1794225502"></script>
-<script src="professions.js?v=1794225502"></script>
-<script src="pvp.js?v=1794225502"></script>
-<script src="qol.js?v=1794225502"></script>
-<script src="talent-tree.js?v=1794225502"></script>
-<script src="app.js?v=1794225502"></script>
+<script src="data.js?v=1794227562"></script>
+<script src="research.js?v=1794227562"></script>
+<script src="trainer.js?v=1794227562"></script>
+<script src="professions.js?v=1794227562"></script>
+<script src="pvp.js?v=1794227562"></script>
+<script src="qol.js?v=1794227562"></script>
+<script src="gear.js?v=1794227562"></script>
+<script src="gold.js?v=1794227562"></script>
+<script src="classquests.js?v=1794227562"></script>
+<script src="talent-tree.js?v=1794227562"></script>
+<script src="app.js?v=1794227562"></script>
 </body>
 </html>

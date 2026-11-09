@@ -38,7 +38,7 @@ window.PVP = {
    },
    {
     "title": "Feral Charge closes the gap",
-    "text": "In Cat form, Feral Charge (a talent) has a 30-second cooldown, moves you next to the target, and does not interrupt or root (Warcraft Tavern beta). One guide says the Bear version interrupts from outside melee range. Sources conflict, so test it in a duel before relying on it.",
+    "text": "Feral Charge is a talent. In Bear form it charges an enemy 8 to 25 yards away, roots it and interrupts its spell for 4 seconds, every 15 seconds. The Cat version leaps you to the target every 30 seconds. Both checked against the Forever spell tooltip.",
     "flag": "forever"
    },
    {

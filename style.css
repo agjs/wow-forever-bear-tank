@@ -480,3 +480,20 @@ b.big{font-size:18px;display:block}
 .check{list-style:none;margin:0 0 10px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:6px 20px}
 .check li{display:flex;align-items:center;gap:10px;color:var(--text-2);padding:6px 0;border-bottom:1px solid var(--line)}
 .check li::before{content:"";width:14px;height:14px;border:2px solid var(--gold);border-radius:4px;flex:none}
+
+/* gear */
+.gh,.grow{display:grid;grid-template-columns:90px 1fr 1fr;gap:16px}
+.gh{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-3);padding:0 0 8px;border-bottom:1px solid var(--line)}
+.grow{padding:12px 0;border-bottom:1px solid var(--line);align-items:start}
+.gs{font-weight:700;color:var(--text);padding-top:4px}
+.gi{display:flex;gap:10px;align-items:flex-start;margin-bottom:6px}
+.gi .ico{width:30px;height:30px;border-radius:6px;flex:none}
+.gi > div{display:flex;flex-direction:column}
+.gi .gn{font-weight:600}
+.gi small{color:var(--text-3);font-size:12.5px}
+.gnext{display:flex;flex-direction:column;gap:4px}
+.glv{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--gold)}
+@media (max-width:640px){.gh{display:none}.grow{grid-template-columns:1fr;gap:6px}}
+.qsteps-d{margin-top:6px}
+.qsteps-d summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:600}
+.qsteps-d ol{margin:6px 0 0;padding-left:20px;color:var(--text-2);font-size:14px;display:grid;gap:3px}
