@@ -452,11 +452,12 @@ const STATS = {
 };
 
 const ENCHANTS = [
-  ["Weapon","Crusader, +Strength, or Impact"],["Neck","Deflection or Strength (necks can be enchanted in Forever)"],
-  ["Back","Defense, Agility or Dodge"],["Chest","Wild Leather Armor Kit or +Stamina (Rugged Armor Kit*)"],
-  ["Wrist","Deflection, +Stamina or +Strength"],["Hands","Wild Leather Armor Kit or +Strength"],
-  ["Legs","Wild Leather or Rugged Armor Kit*"],["Feet","Wild Leather, run speed, or Rugged Armor Kit*"],
-  ["Head and shoulders","Not known yet"],
+  ["Weapon","Enchant 2H Weapon - Agility (+25 Agility) for survival, or Crusader or +25 Strength for threat"],["Neck","Enchant Necklace - Agility or Deflection (+5). Forever lets you enchant necklaces."],
+  ["Back","Superior Defense (+70 armor), or Dodge (+1%) if you can get it"],["Chest","Greater Stats (+4 all stats) or Major Stamina (+10)"],
+  ["Wrist","Superior Stamina or Superior Deflection (+9)"],["Hands","Greater Agility (+10), or Threat (+2%) for raids"],
+  ["Legs and head","Lesser Arcanum of Voracity (+8 Stamina or Agility) or Arcanum of Protection (+1% dodge). Legs can take a Wild Leather or Forceful Rugged Armor Kit instead."],["Feet","Greater Agility or Greater Stamina (+7)"],
+  ["Shoulders","Zandalar Signet of Might (+30 Attack Power, Zul'Gurub reputation)"],
+  ["While leveling","The Gear tab lists the best enchant for every slot at your level, with materials."],
 ];
 const CONSUMABLES = [
   ["Dense Sharpening Stone or Weightstone","Now makes your bear attacks stronger"],["Mighty Rage Potion","Gives rage and Strength for 20 seconds"],

@@ -285,6 +285,21 @@
       const next = all.filter(g => g.lv > L && g.ilvl > floor).sort((a, b) => a.lv - b.lv)[0];
       return `<div class="grow"><div class="gs">${sl}</div><div class="gnow">${now.length ? now.map(it).join("") : `<span class="muted small">Nothing from this guide yet. Wear whatever quest reward you have.</span>`}</div>
         <div class="gnext">${next ? `<span class="glv">Level ${next.lv}</span>${it(next)}` : `<span class="muted small">No later upgrade listed.</span>`}</div></div>`; }).join("")}</div>`;
+    renderEnch();
+  }
+  function renderEnch() {
+    const E = window.ENCH, el = $("#ench-body"); if (!E || !el) return;
+    const L = state.level, cur = E.bands.find(b => L >= b.lv[0] && L <= b.lv[1]) || E.bands[E.bands.length - 1];
+    const later = E.bands.filter(b => b.lv[0] > cur.lv[0]), past = E.bands.filter(b => b.lv[1] < cur.lv[0]);
+    const row = r => `<li><b>${esc(r.slot)}</b><span>${r.sp ? spellLink(r.sp, esc(r.n)) : itemLink(r.it, r.n)}${r.kit ? ' <span class="tag q">Armor kit</span>' : ""}: ${rich(r.what.replace(/\.$/, ""))}.
+      <small class="muted ench-how">${r.how ? rich(r.how) : `Enchanter needs Enchanting ${r.skill}${r.rare ? " and the rare formula" : ""}. Materials: ${rich(r.mats)}.`}${r.how && r.mats ? ` Materials: ${rich(r.mats)}.` : ""}${r.alt ? ` <br>Other choice: ${rich(r.alt)}` : ""}</small></span></li>`;
+    const band = b => `<ul class="kv">${b.rows.map(row).join("")}</ul>`;
+    const title = b => `Levels ${b.lv[0]}–${b.lv[1]}`;
+    el.innerHTML = `<div class="card"><div class="label">Now: ${title(cur)}</div>${band(cur)}</div>
+      ${later.map(b => fold(title(b), band(b))).join("")}
+      ${fold("How enchants work (read once)", `<ul class="notes">${E.rules.map(([t, x]) => `<li><b>${esc(t)}</b><span>${rich(x)}</span></li>`).join("")}</ul>`)}
+      ${past.length ? fold(`Earlier levels (${past.map(title).join(", ")})`, past.map(b => `<h4>${title(b)}</h4>${band(b)}`).join("")) : ""}
+      ${srcHtml(E.sources)}`;
   }
 
   /* ---------------- TODAY ---------------- */
