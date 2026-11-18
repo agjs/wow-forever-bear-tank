@@ -26,6 +26,7 @@
     Object.entries(EXTRA_ITEMS).forEach(([n, id]) => LINKS[n] = "item=" + id);
     Object.entries(window.PROF_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
     Object.entries(window.PVP_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
+    Object.entries(window.CAMP_LINKS || {}).forEach(([n, v]) => LINKS[n] = LINKS[n] || v);
     CHECKPOINTS.forEach(c => c.items.forEach(([n, id, , f]) => { if (id && f !== "c" && !/set$/i.test(n)) LINKS[n] = "item=" + id; }));
     const names = Object.keys(LINKS).sort((a, b) => b.length - a.length).map(n => esc(n).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
     LINKS._re = new RegExp("(?<![\\w>])(" + names.join("|") + ")(?![\\w<])", "g");
@@ -271,6 +272,29 @@
       ${fold("Your tools at every level", (P.feral?.by_level || []).length ? `<ul class="kv">${P.feral.by_level.map(r => `<li><b>${esc(r.lv)}</b>${rich(r.text)}</li>`).join("")}</ul>` : "")}
       ${srcHtml(P.sources)}`;
     el.querySelectorAll(".clsrow button").forEach(b => b.onclick = () => { state.pvpCls = b.dataset.c; store.set("pvpCls", state.pvpCls); renderPvp(); refreshWH(); });
+  }
+
+  /* ---------------- CAMPS & CRATES ---------------- */
+  function renderCamps() {
+    const C = window.CAMPS, el = $("#camps-body"); if (!C || !el) return;
+    const ol = a => `<ol class="steps">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ol>`;
+    const notes = a => `<ul class="notes">${a.map(([t, x]) => `<li><b>${esc(t)}</b><span>${rich(x)}</span></li>`).join("")}</ul>`;
+    const prof = p => `<ul class="kv">${p.items.map(i => `<li><b>Skill ${i.sk}</b><span>${itemLink(i.it, i.n)}: ${rich(i.does)}<small class="muted ench-how">Make it from: ${rich(i.mats)}. ${rich(i.from)}</small></span></li>`).join("")}</ul>`;
+    el.innerHTML = `
+      <h3>Camps</h3>
+      <div class="card"><div class="label">How a camp works</div>${ol(C.camp_steps)}</div>
+      <div class="card"><div class="label">Which item to place</div>${notes(C.pick)}</div>
+      ${C.profs.map(p => fold(`Your ${p.prof} camp items`, prof(p))).join("")}
+      ${fold("Campfire kits", `<ul class="kv">${C.fires.map(f => `<li><b>${f.slots} items</b><span>${itemLink(f.it, f.n)}: ${rich(f.how)}</span></li>`).join("")}</ul>`)}
+      <h3>Waylaid Crates (Merchant's Favor)</h3>
+      <div class="card"><div class="label">How crates work</div>${ol(C.crate_steps)}</div>
+      <div class="card"><div class="label">Crates you can fill with your own skins</div>${notes(C.crates_you)}</div>
+      <h3>Craftsman's Writs (reputation)</h3>
+      <div class="card">${ol(C.writ_steps)}<p class="small muted" style="margin:8px 0 0">${rich(C.rep)}</p></div>
+      <h3>What to buy</h3>
+      <div class="card"><div class="label">Your plan</div>${ol(C.plan)}</div>
+      ${fold("Everything worth buying with Merchant's Favor", `<ul class="kv">${C.buy.map(b => `<li><b>${esc(b.cost)}</b><span>${itemLink(b.it, b.n)}: ${rich(b.what)}</span></li>`).join("")}</ul>`)}
+      ${srcHtml(C.sources)}`;
   }
 
   /* ---------------- GEAR ---------------- */
@@ -528,7 +552,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderGear(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderGear(); renderCamps(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);
