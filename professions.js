@@ -8,6 +8,22 @@ window.PROF = {
   ],
   "trainers": [
    {
+    "skill": "1",
+    "cap": 75,
+    "what": "Apprentice Leatherworking",
+    "where": "Karolek in Orgrimmar, Tarn in Thunder Bluff or Arthur Moore in Undercity.",
+    "req": "No requirement.",
+    "flag": "forever"
+   },
+   {
+    "skill": "50",
+    "cap": 150,
+    "what": "Journeyman Leatherworking",
+    "where": "Karolek in Orgrimmar, Tarn in Thunder Bluff or Arthur Moore in Undercity.",
+    "req": "Skill 50 and character level 10.",
+    "flag": "forever"
+   },
+   {
     "skill": "125",
     "cap": 225,
     "what": "Expert Leatherworking",
@@ -530,6 +546,40 @@ window.PROF = {
     "note": "Trainer recipe at 225.",
     "expand": false
    }
+  ],
+  "skin_trainers": [
+   {
+    "skill": "1",
+    "cap": 75,
+    "what": "Apprentice Skinning",
+    "where": "Thuwd in Orgrimmar, Mooranta in Thunder Bluff or Rand Rhobart in Brill, Tirisfal Glades.",
+    "req": "No requirement.",
+    "flag": "forever"
+   },
+   {
+    "skill": "50",
+    "cap": 150,
+    "what": "Journeyman Skinning",
+    "where": "Thuwd in Orgrimmar, Mooranta in Thunder Bluff or Rand Rhobart in Brill.",
+    "req": "Skill 50 and character level 10.",
+    "flag": "forever"
+   },
+   {
+    "skill": "125",
+    "cap": 225,
+    "what": "Expert Skinning",
+    "where": "Thuwd in Orgrimmar or Mooranta in Thunder Bluff.",
+    "req": "Skill 125 and character level 20.",
+    "flag": "forever"
+   },
+   {
+    "skill": "200",
+    "cap": 300,
+    "what": "Artisan Skinning",
+    "where": "Kulleg Stonehorn at Camp Mojache, Feralas (in the main building across from the inn).",
+    "req": "Skill 200 and character level 35.",
+    "flag": "forever"
+   }
   ]
  },
  "cook": {
@@ -565,8 +615,8 @@ window.PROF = {
    },
    {
     "skill": "225",
-    "what": "Artisan Cooking (learned by quest, not a trainer)",
-    "where": "The quest Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris. Then buy Artisan recipes from Gikkix in Steamwheedle Port, Tanaris.",
+    "what": "Artisan Cooking (from a quest, not a trainer)",
+    "where": "Do the quest Clamlette Surprise for Dirge Quikcleave in Gadgetzan, Tanaris. Bring 12 Giant Egg (from Rocs in Tanaris and other large birds), 10 Zesty Clam Meat (from clams) and 20 Alterac Swiss (cheese, from vendors). Finishing it teaches Artisan Cooking. Artisan recipes are then sold by Gikkix in Steamwheedle Port, Tanaris.",
     "req": "Cooking 225 and character level 35.",
     "flag": "forever",
     "cap": 300
@@ -1137,4 +1187,4 @@ window.PROF = {
  }
 };
 /* Wowhead Forever ids for names used in the profession text (auto-linked). */
-window.PROF_LINKS = {"Werg Thickblade": "npc=12943", "Jase Farlane": "npc=12941", "Meilosh": "npc=11557", "Zannok Hidepiercer": "npc=12956", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Heavy Scorpid Helm": "spell=19088", "Light's Hope Chapel": "zone=139", "Light Leather": "item=2318", "Medium Leather": "item=2319", "Heavy Leather": "item=4234", "Thick Leather": "item=4304", "Rugged Leather": "item=8170", "Heavy Hide": "item=4235", "Cured Heavy Hide": "item=4236", "Salt": "item=4289", "Fine Thread": "item=2321", "Silken Thread": "item=4291", "Rune Thread": "item=14341", "Green Dye": "item=2605", "Blue Dye": "item=6260", "Iron Buckle": "item=7071", "Heavy Scorpid Scale": "item=15408", "Heavy Armor Kit": "item=4265", "Thick Armor Kit": "item=8173", "Rugged Armor Kit": "item=15564", "Light Armor Kit": "item=2304", "Green Leather Belt": "item=4257", "Barbaric Shoulders": "item=5964", "Green Leather Bracers": "item=4259", "Guardian Gloves": "item=5966", "Nightscape Headband": "item=8176", "Nightscape Cloak": "item=8195", "Nightscape Boots": "item=8197", "Turtle Scale Breastplate": "item=8189", "Thick Leather Ammo Pouch": "item=8218", "Blue Suede Gloves": "item=252546", "Supple Scorpid Bracers": "item=252582", "Blue Suede Bracers": "item=252559", "Gordok Ogre Suit": "item=18258", "Warbear Harness": "item=15064", "Warbear Woolies": "item=15065", "Devilsaur Gauntlets": "item=15063", "Devilsaur Leggings": "item=15062", "Wolfshead Helm": "item=8345", "Warbear Helm": "item=252485", "Wild Leather Armor Kit": "item=279258", "Core Armor Kit": "item=18251", "Devilsaur Leather": "item=15417", "Warbear Leather": "item=15419", "Turtle Scale": "item=8167", "Simple Wood": "item=4470", "Crystal Vial": "item=8925", "Empty Vial": "item=3371", "Bolt of Runecloth": "item=14048", "Raw Brilliant Smallfish": "item=6291", "Brilliant Smallfish": "item=6290", "Raw Slitherskin Mackerel": "item=6303", "Slitherskin Mackerel": "item=787", "Charred Wolf Meat": "item=2679", "Roasted Boar Meat": "item=2681", "Herb Baked Egg": "item=6888", "Mild Spices": "item=2678", "Hot Spices": "item=2692", "Soothing Spices": "item=3713", "Refreshing Spring Water": "item=159", "Ice Cold Milk": "item=1179", "Raw Longjaw Mud Snapper": "item=6289", "Longjaw Mud Snapper": "item=4592", "Raw Rainbow Fin Albacore": "item=6361", "Rainbow Fin Albacore": "item=5095", "Boiled Clams": "item=5525", "Clam Meat": "item=5503", "Smoked Bear Meat": "item=6890", "Bear Meat": "item=3173", "Crab Cake": "item=2683", "Crawler Meat": "item=2674", "Dry Pork Ribs": "item=2687", "Boar Ribs": "item=2677", "Raw Bristle Whisker Catfish": "item=6308", "Bristle Whisker Catfish": "item=4593", "Hot Lion Chops": "item=3727", "Lion Meat": "item=3731", "Goblin Deviled Clams": "item=5527", "Tangy Clam Meat": "item=5504", "Curiously Tasty Omelet": "item=3665", "Raptor Egg": "item=3685", "Raw Mithril Head Trout": "item=8365", "Roast Raptor": "item=12210", "Raptor Flesh": "item=12184", "Soothing Turtle Bisque": "item=3729", "Turtle Meat": "item=3712", "Raw Spotted Yellowtail": "item=4603", "Spotted Yellowtail": "item=6887", "Raw Redgill": "item=13758", "Filet of Redgill": "item=13930", "Undermine Clam Chowder": "item=16766", "Zesty Clam Meat": "item=7974", "Monster Omelet": "item=12218", "Giant Egg": "item=12207", "Tender Wolf Steak": "item=18045", "Tender Wolf Meat": "item=12208", "Raw Sunscale Salmon": "item=13760", "Poached Sunscale Salmon": "item=13932", "Raw Nightfin Snapper": "item=13759", "Nightfin Soup": "item=13931", "Smoked Desert Dumplings": "item=20452", "Sandworm Meat": "item=20424", "Dirge's Kickin' Chimaerok Chops": "item=21023", "Grilled Squid": "item=13928", "Plated Armorfish": "item=286152", "Expert Cookbook": "item=16072", "Cookie's Stirring Rod": "item=5198", "Wicked Smoothie": "item=249876", "Fishing Pole": "item=6256", "Strong Fishing Pole": "item=6365", "Big Iron Fishing Pole": "item=6367", "Nat Pagle's Extreme Angler FC-5000": "item=19022", "Arcanite Fishing Pole": "item=19970", "Shiny Bauble": "item=6529", "Nightcrawlers": "item=6530", "Bright Baubles": "item=6532", "Aquadynamic Fish Attractor": "item=6533", "Aquadynamic Fish Lens": "item=6811", "Flesh Eating Worm": "item=7307", "Expert Fishing - The Bass and You": "item=16083", "Lucky Fishing Hat": "item=19972", "Nat Pagle's Extreme Anglin' Boots": "item=19969", "Stonescale Eel": "item=13422", "Oily Blackmouth": "item=6358", "Firefin Snapper": "item=6359", "Savory Deviate Delight": "item=6657", "Feralas Ahi": "item=16967", "Misty Reed Mahi Mahi": "item=16970", "Sar'theris Striker": "item=16968", "Savage Coast Blue Sailfin": "item=16969", "Blueprint: Fishing Rack": "item=273141", "Surfer Shoes": "item=276274", "Extravagant Extravaganza Coin": "item=274026", "Enchant Gloves - Fishing": "spell=13620", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Karolek": "npc=3365", "Arthur Moore": "npc=4588", "Tarn": "npc=11084", "Zamja": "npc=3399", "Wulan": "npc=12033", "Dirge Quikcleave": "npc=8125", "Gikkix": "npc=8137", "Keena": "npc=2821", "Zargh": "npc=3489", "Bale": "npc=2806", "Kelsey Yance": "npc=2664", "Jabbey": "npc=8139", "Christoph Jeffcoat": "npc=2393", "Ogg'marr": "npc=4879", "Old Man Heming": "npc=2626", "Nat Pagle": "npc=12919", "Uthan Stillwater": "npc=5938", "Lau'Tiki": "npc=5941", "Lumak": "npc=3332", "Katoom the Angler": "npc=14740", "Krix": "npc=260558", "Gelihast": "npc=6243", "Lui'Mala": "npc=12032", "Kil'Hiwana": "npc=12961", "Shankys": "npc=3333", "Sewa Mistrunner": "npc=3029", "Naal Mistrunner": "npc=3027", "Lizbeth Cromwell": "npc=4574", "Wik'Tar": "npc=12962", "Duhng": "npc=8306", "Cook Torka": "npc=3191", "Aska Mistrunner": "npc=3026", "Clamlette Surprise": "quest=6610", "Nat Pagle, Angler Extreme": "quest=6607", "Camping 101: Fishing": "quest=97920", "Snapjaws, Mon!": "quest=7815", "Desert Recipe": "quest=8307", "Sharing the Knowledge": "quest=8313"};
+window.PROF_LINKS = {"Thuwd": "npc=7088", "Mooranta": "npc=7089", "Rand Rhobart": "npc=6289", "Kulleg Stonehorn": "npc=8144", "Clamlette Surprise": "quest=6610", "Expert Cookbook": "item=16072", "Expert Fishing - The Bass and You": "item=16083", "Nat Pagle, Angler Extreme": "quest=6607", "Gikkix": "npc=8137", "Dirge Quikcleave": "npc=8125", "Old Man Heming": "npc=2626", "Karolek": "npc=3365", "Tarn": "npc=11084", "Arthur Moore": "npc=4588", "Werg Thickblade": "npc=12943", "Jase Farlane": "npc=12941", "Meilosh": "npc=11557", "Zannok Hidepiercer": "npc=12956", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Heavy Scorpid Helm": "spell=19088", "Light's Hope Chapel": "zone=139", "Light Leather": "item=2318", "Medium Leather": "item=2319", "Heavy Leather": "item=4234", "Thick Leather": "item=4304", "Rugged Leather": "item=8170", "Heavy Hide": "item=4235", "Cured Heavy Hide": "item=4236", "Salt": "item=4289", "Fine Thread": "item=2321", "Silken Thread": "item=4291", "Rune Thread": "item=14341", "Green Dye": "item=2605", "Blue Dye": "item=6260", "Iron Buckle": "item=7071", "Heavy Scorpid Scale": "item=15408", "Heavy Armor Kit": "item=4265", "Thick Armor Kit": "item=8173", "Rugged Armor Kit": "item=15564", "Light Armor Kit": "item=2304", "Green Leather Belt": "item=4257", "Barbaric Shoulders": "item=5964", "Green Leather Bracers": "item=4259", "Guardian Gloves": "item=5966", "Nightscape Headband": "item=8176", "Nightscape Cloak": "item=8195", "Nightscape Boots": "item=8197", "Turtle Scale Breastplate": "item=8189", "Thick Leather Ammo Pouch": "item=8218", "Blue Suede Gloves": "item=252546", "Supple Scorpid Bracers": "item=252582", "Blue Suede Bracers": "item=252559", "Gordok Ogre Suit": "item=18258", "Warbear Harness": "item=15064", "Warbear Woolies": "item=15065", "Devilsaur Gauntlets": "item=15063", "Devilsaur Leggings": "item=15062", "Wolfshead Helm": "item=8345", "Warbear Helm": "item=252485", "Wild Leather Armor Kit": "item=279258", "Core Armor Kit": "item=18251", "Devilsaur Leather": "item=15417", "Warbear Leather": "item=15419", "Turtle Scale": "item=8167", "Simple Wood": "item=4470", "Crystal Vial": "item=8925", "Empty Vial": "item=3371", "Bolt of Runecloth": "item=14048", "Raw Brilliant Smallfish": "item=6291", "Brilliant Smallfish": "item=6290", "Raw Slitherskin Mackerel": "item=6303", "Slitherskin Mackerel": "item=787", "Charred Wolf Meat": "item=2679", "Roasted Boar Meat": "item=2681", "Herb Baked Egg": "item=6888", "Mild Spices": "item=2678", "Hot Spices": "item=2692", "Soothing Spices": "item=3713", "Refreshing Spring Water": "item=159", "Ice Cold Milk": "item=1179", "Raw Longjaw Mud Snapper": "item=6289", "Longjaw Mud Snapper": "item=4592", "Raw Rainbow Fin Albacore": "item=6361", "Rainbow Fin Albacore": "item=5095", "Boiled Clams": "item=5525", "Clam Meat": "item=5503", "Smoked Bear Meat": "item=6890", "Bear Meat": "item=3173", "Crab Cake": "item=2683", "Crawler Meat": "item=2674", "Dry Pork Ribs": "item=2687", "Boar Ribs": "item=2677", "Raw Bristle Whisker Catfish": "item=6308", "Bristle Whisker Catfish": "item=4593", "Hot Lion Chops": "item=3727", "Lion Meat": "item=3731", "Goblin Deviled Clams": "item=5527", "Tangy Clam Meat": "item=5504", "Curiously Tasty Omelet": "item=3665", "Raptor Egg": "item=3685", "Raw Mithril Head Trout": "item=8365", "Roast Raptor": "item=12210", "Raptor Flesh": "item=12184", "Soothing Turtle Bisque": "item=3729", "Turtle Meat": "item=3712", "Raw Spotted Yellowtail": "item=4603", "Spotted Yellowtail": "item=6887", "Raw Redgill": "item=13758", "Filet of Redgill": "item=13930", "Undermine Clam Chowder": "item=16766", "Zesty Clam Meat": "item=7974", "Monster Omelet": "item=12218", "Giant Egg": "item=12207", "Tender Wolf Steak": "item=18045", "Tender Wolf Meat": "item=12208", "Raw Sunscale Salmon": "item=13760", "Poached Sunscale Salmon": "item=13932", "Raw Nightfin Snapper": "item=13759", "Nightfin Soup": "item=13931", "Smoked Desert Dumplings": "item=20452", "Sandworm Meat": "item=20424", "Dirge's Kickin' Chimaerok Chops": "item=21023", "Grilled Squid": "item=13928", "Plated Armorfish": "item=286152", "Expert Cookbook": "item=16072", "Cookie's Stirring Rod": "item=5198", "Wicked Smoothie": "item=249876", "Fishing Pole": "item=6256", "Strong Fishing Pole": "item=6365", "Big Iron Fishing Pole": "item=6367", "Nat Pagle's Extreme Angler FC-5000": "item=19022", "Arcanite Fishing Pole": "item=19970", "Shiny Bauble": "item=6529", "Nightcrawlers": "item=6530", "Bright Baubles": "item=6532", "Aquadynamic Fish Attractor": "item=6533", "Aquadynamic Fish Lens": "item=6811", "Flesh Eating Worm": "item=7307", "Expert Fishing - The Bass and You": "item=16083", "Lucky Fishing Hat": "item=19972", "Nat Pagle's Extreme Anglin' Boots": "item=19969", "Stonescale Eel": "item=13422", "Oily Blackmouth": "item=6358", "Firefin Snapper": "item=6359", "Savory Deviate Delight": "item=6657", "Feralas Ahi": "item=16967", "Misty Reed Mahi Mahi": "item=16970", "Sar'theris Striker": "item=16968", "Savage Coast Blue Sailfin": "item=16969", "Blueprint: Fishing Rack": "item=273141", "Surfer Shoes": "item=276274", "Extravagant Extravaganza Coin": "item=274026", "Enchant Gloves - Fishing": "spell=13620", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Karolek": "npc=3365", "Arthur Moore": "npc=4588", "Tarn": "npc=11084", "Zamja": "npc=3399", "Wulan": "npc=12033", "Dirge Quikcleave": "npc=8125", "Gikkix": "npc=8137", "Keena": "npc=2821", "Zargh": "npc=3489", "Bale": "npc=2806", "Kelsey Yance": "npc=2664", "Jabbey": "npc=8139", "Christoph Jeffcoat": "npc=2393", "Ogg'marr": "npc=4879", "Old Man Heming": "npc=2626", "Nat Pagle": "npc=12919", "Uthan Stillwater": "npc=5938", "Lau'Tiki": "npc=5941", "Lumak": "npc=3332", "Katoom the Angler": "npc=14740", "Krix": "npc=260558", "Gelihast": "npc=6243", "Lui'Mala": "npc=12032", "Kil'Hiwana": "npc=12961", "Shankys": "npc=3333", "Sewa Mistrunner": "npc=3029", "Naal Mistrunner": "npc=3027", "Lizbeth Cromwell": "npc=4574", "Wik'Tar": "npc=12962", "Duhng": "npc=8306", "Cook Torka": "npc=3191", "Aska Mistrunner": "npc=3026", "Clamlette Surprise": "quest=6610", "Nat Pagle, Angler Extreme": "quest=6607", "Camping 101: Fishing": "quest=97920", "Snapjaws, Mon!": "quest=7815", "Desert Recipe": "quest=8307", "Sharing the Knowledge": "quest=8313"};

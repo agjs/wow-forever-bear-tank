@@ -178,10 +178,10 @@
       <ol class="psteps">${showPast[k] ? past.map(st => li(st, "past")).join("") : ""}${left.map(st => li(st, sk >= st.from ? "now" : "")).join("")}</ol>
       ${left.length ? "" : `<p class="muted">You've finished this route. Nice.</p>`}`; }
   const skNum = x => +(String(x.skill).match(/\d+/) || [0])[0];
-  function trainHtml(k, t) { if (!t?.length) return ""; const sk = skillOf(k), capOf = x => x.cap || skNum(x) + 75,
-      up = t.filter(x => capOf(x) > sk && skNum(x) > 1), done = t.filter(x => capOf(x) <= sk && skNum(x) > 1);
-    const row = x => `<li><b>Skill ${skNum(x)}</b><span>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""} <span class="muted">Lets you go up to ${capOf(x)}.</span></span></li>`;
-    return `<div class="card"><div class="label">${up.length ? "Next rank-up (skip it if you already have it)" : "Rank-ups"}</div>${up.length ? `<ul class="kv">${row(up[0])}</ul>` : `<p style="margin:0">No more rank-ups to learn.</p>`}${up.length > 1 ? `<p class="small muted" style="margin:6px 0 0">Later: ${up.slice(1).map(x => `${esc(x.what)} at ${skNum(x)}`).join(", ")}.</p>` : ""}</div>`; }
+  function trainHtml(k, t, title) { if (!t?.length) return ""; const sk = skillOf(k), capOf = x => x.cap || skNum(x) + 75,
+      up = t.filter(x => capOf(x) > sk), done = t.filter(x => capOf(x) <= sk);
+    const row = (x, i) => `<li${i === 0 ? ' class="nextrank"' : ""}><b>Skill ${skNum(x)}</b><span>${i === 0 ? "<em>Next.</em> " : ""}<b>${esc(x.what)}</b> (up to ${capOf(x)}): ${rich(x.where)}${x.req ? ` <span class="muted">${esc(x.req)}</span>` : ""}</span></li>`;
+    return `<div class="card"><div class="label">${title || "Where to learn each rank"}</div>${up.length ? `<ul class="kv">${up.map(row).join("")}</ul>` : `<p style="margin:0">You have every rank.</p>`}${done.length ? `<p class="small muted" style="margin:8px 0 0">Already behind you: ${done.map(x => esc(x.what)).join(", ")}.</p>` : ""}</div>`; }
   const fold = (title, inner) => inner ? `<details class="dd"><summary>${title}</summary>${inner}</details>` : "";
   const plist = a => a?.length ? `<ul class="plist">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ul>` : "";
   const srcHtml = a => a?.length ? `<p class="small muted psrc">Sources: ${a.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join(" · ")}</p>` : "";
@@ -209,7 +209,7 @@
     } else if (k === "farm" && d.lw) { const f = d.lw.farming || [], fit = f.filter(r => lvIn(r.lv, L)), rest = f.filter(r => !lvIn(r.lv, L));
       const row = r => `<tr class="${lvIn(r.lv, L) ? "now" : ""}"><td><b>${rich(r.mat)}</b></td><td class="c">${esc(r.lv)}</td><td>${esc(r.zone)}</td><td>${rich(r.where)}</td><td>${rich(r.note)} ${fl(r.flag)}</td></tr>`;
       const tbl = a => `<div class="tablewrap"><table class="mx farm"><tr><th>Leather</th><th>Level</th><th>Zone</th><th>What to skin</th><th>Notes</th></tr>${a.map(row).join("")}</table></div>`;
-      h = `<p class="lead">Where to skin leather at your level (${L}). You can skin a creature if your Skinning skill is about 5 times its level.</p>
+      h = `<div class="ptop"><p class="lead">Your Skinning skill decides which ranks you still need.</p>${skillBox("skin")}</div>${trainHtml("skin", d.lw.skin_trainers, "Skinning: where to learn each rank")}<p class="lead">Where to skin leather at your level (${L}). You can skin a creature if your Skinning skill is about 5 times its level.</p>
         ${fit.length ? tbl(fit) : `<p class="muted">No spot listed for exactly level ${L}. See all spots below.</p>`}${fold("All farming spots, every level", tbl(rest))}${srcHtml(d.lw.sources)}`;
     } else if (k === "cook" && d.cook) { const x = d.cook;
       h = `<div class="ptop"><p class="lead">Enter your skill to see what to cook next. In Forever almost every cooked food gives the Well Fed buff: 5% more experience from kills.</p>${skillBox("cook")}</div>

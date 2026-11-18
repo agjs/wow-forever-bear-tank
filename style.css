@@ -497,3 +497,6 @@ b.big{font-size:18px;display:block}
 .qsteps-d{margin-top:6px}
 .qsteps-d summary{cursor:pointer;color:var(--gold);font-size:13px;font-weight:600}
 .qsteps-d ol{margin:6px 0 0;padding-left:20px;color:var(--text-2);font-size:14px;display:grid;gap:3px}
+
+.kv li.nextrank{background:rgba(232,184,90,.07);border-left:3px solid var(--gold);padding-left:10px;border-radius:4px}
+.kv li.nextrank em{color:var(--gold);font-style:normal;font-weight:700}
