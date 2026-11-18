@@ -2,37 +2,25 @@
 window.PROF = {
  "lw": {
   "changes": [
-   "Most Forever profession guides were written during the beta, so treat counts and skill numbers here as a good starting point and check them in game.",
-   "Trainer breakpoints conflict between sources. Method and WoW Professions say the Expert Leatherworking trainer is learned at skill 125 (character level 20, costs 50 silver) and the Artisan trainer at skill 200 (character level 35). Rankedboost and Metabot say you must visit the Expert trainer at skill 150 and the Artisan trainer at skill 225. The likely reading is that you learn the trainer's rank at 125 and 200, but must visit the trainer by 150 and 225 to keep leveling. Confirm in game before relying on either.",
-   "Skinning breakpoints per Rankedboost: Journeyman Skinning at 75, Expert Skinning at 150, Artisan Skinning at 225. These match the Classic pattern, so treat them as unconfirmed for Forever.",
-   "Recipes turn grey about 25 skill points earlier in Forever than in Classic Era, according to a Forever beta guide. This changes when a recipe stops giving skill-ups.",
-   "Forever has its own Leatherworking pattern list (the Warcraft Wiki calls these exclusive to Forever). It includes armor kits in tiers (Light, Medium, Heavy, Thick, Rugged) plus Forceful and Mystic kit variants sold by vendors, and Wild Leather Armor Kit and Core Armor Kit at 300. Meaning for a bear tank: the Forceful and Mystic variants are upgraded versions of the same kits and may be worth checking as stat options.",
-   "Beta sources report roughly 480 to 600 Leatherworking recipes in total, with a large share new to Forever (one source says 239 of them). The totals disagree (510 in one source, 595 in another), so do not quote a specific number.",
-   "New camping objects reported by beta guides: a Tanning Rack unlocks advanced Leatherworking patterns, and a Camp Chair is a new Skinning-related recipe that needs Light Leather and Simple Wood. These could not be confirmed on a Forever-specific source with a full recipe list.",
-   "Bear-tank relevant leather: the Warbear Harness (skill 250, drop), Warbear Woolies (skill 260, vendor), Devilsaur Gauntlets (skill 265, vendor), Devilsaur Leggings (skill 290, drop), Devilcore Gauntlets (skill 290, drop) and Warbear Helm (skill 300) appear in the Warcraft Wiki's Forever list. The Wolfshead Helm (skill 225) appears there too, but its source is unknown. The wiki page did not include Forever reagent lists, so the materials for these are unverified.",
-   "Rankedboost lists 'Light Armor Kit' at skill 1 to 50, a Forever route entry. No source named a Forever-specific bear-tank leather set beyond the items above.",
-   "Gold making: no source gave Forever-specific auction house profit figures for Leatherworking. Materials are priced from base item values until auction data exists after launch, according to Method."
+   "Every recipe, reagent and skill color on this page comes from Wowhead's Forever database (Nov 18). Craft counts are estimates from the skill colors: orange always gives a point, yellow usually does, green rarely.",
+   "Forever added many new recipes (the Skulker's, Warden's, Mender's and similar sets, and the Gustwoven hoods). Most of them need Cured Heavy Hide, Pristine Hide or gems, so they cost more than the route above.",
+   "Forever also added Forceful and Mystic versions of the Thick and Rugged Armor Kits, made from a normal kit plus extra materials."
   ],
   "trainers": [
    {
-    "skill": "50 (Journeyman)",
-    "what": "Journeyman Leatherworking",
-    "where": "Horde trainers: Karolek (Orgrimmar), Arthur Moore (Undercity), Tarn (Thunder Bluff)",
-    "req": "Character level 10",
-    "flag": "forever"
-   },
-   {
-    "skill": "125 (Expert)",
+    "skill": "125",
+    "cap": 225,
     "what": "Expert Leatherworking",
-    "where": "Una, Thunder Bluff (Horde). Armorers building on the middle rise.",
-    "req": "Skill 125 to learn, character level 20, costs 50 silver. Conflicting sources say visit at skill 150.",
+    "where": "Una in Thunder Bluff (Horde).",
+    "req": "Skill 125 and character level 20. Without it you're stuck at 150.",
     "flag": "forever"
    },
    {
-    "skill": "200 (Artisan)",
+    "skill": "200",
+    "cap": 300,
     "what": "Artisan Leatherworking",
-    "where": "Hahrana Ironhide, Camp Mojache, Feralas (Horde)",
-    "req": "Skill 200 to learn, character level 35. Conflicting sources say visit at skill 225.",
+    "where": "Hahrana Ironhide at Camp Mojache, Feralas (Horde).",
+    "req": "Skill 200 and character level 35. Without it you're stuck at 225.",
     "flag": "forever"
    }
   ],
@@ -41,132 +29,267 @@ window.PROF = {
     "from": 150,
     "to": 155,
     "craft": "Heavy Armor Kit",
+    "spell_id": 3780,
     "count": 8,
-    "mats": "5 Heavy Leather, 1 Fine Thread each",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "Skill-ups yellow until 155.",
+    "colors": [
+     125,
+     145,
+     155,
+     165
+    ],
+    "r": [
+     [
+      5,
+      "Heavy Leather",
+      4234
+     ],
+     [
+      1,
+      "Fine Thread",
+      2321
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
+    "note": "Yellow at 150, so not every craft gives a point.",
     "flag": "forever"
    },
    {
     "from": 155,
-    "to": 170,
-    "craft": "Green Leather Belt",
-    "count": 27,
-    "mats": "5 Heavy Leather, 1 Fine Thread, 1 Green Dye, 1 Iron Buckle, plus 1 Cured Heavy Hide each (the cured hide is made from Heavy Hide and Salt)",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "Green at 165.",
-    "flag": "forever"
-   },
-   {
-    "from": 170,
-    "to": 175,
+    "to": 165,
     "craft": "Barbaric Shoulders",
-    "count": 6,
-    "mats": "8 Heavy Leather, 2 Fine Thread each, plus Cured Heavy Hide (from Heavy Hide and Salt)",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
+    "spell_id": 7151,
+    "count": 10,
+    "colors": [
+     150,
+     170,
+     180,
+     190
+    ],
+    "r": [
+     [
+      8,
+      "Heavy Leather",
+      4234
+     ],
+     [
+      1,
+      "Cured Heavy Hide",
+      4236
+     ],
+     [
+      2,
+      "Fine Thread",
+      2321
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
     "note": "",
     "flag": "forever"
    },
    {
-    "from": 175,
+    "from": 165,
     "to": 185,
-    "craft": "Green Leather Bracers",
-    "count": 14,
-    "mats": "6 Heavy Leather, 1 Green Dye, 1 Fine Thread each, plus Cured Heavy Hide",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "",
+    "craft": "Guardian Gloves",
+    "spell_id": 7156,
+    "count": 20,
+    "colors": [
+     165,
+     185,
+     195,
+     205
+    ],
+    "r": [
+     [
+      4,
+      "Heavy Leather",
+      4234
+     ],
+     [
+      1,
+      "Cured Heavy Hide",
+      4236
+     ],
+     [
+      1,
+      "Silken Thread",
+      4291
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
+    "note": "The cheapest way through this range.",
     "flag": "forever"
    },
    {
     "from": 185,
     "to": 195,
-    "craft": "Guardian Gloves",
-    "count": 14,
-    "mats": "4 Heavy Leather, 1 Silken Thread, plus Cured Heavy Hide each",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "Cure Heavy Hide with Salt first.",
+    "craft": "Thick Armor Kit",
+    "spell_id": 10487,
+    "count": 10,
+    "colors": [
+     175,
+     195,
+     205,
+     215
+    ],
+    "r": [
+     [
+      5,
+      "Thick Leather",
+      4304
+     ],
+     [
+      1,
+      "Silken Thread",
+      4291
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
+    "note": "No Thick Leather yet? Keep making Guardian Gloves; they stay yellow until 195.",
     "flag": "forever"
    },
    {
     "from": 195,
-    "to": 200,
-    "craft": "Thick Armor Kit",
-    "count": 6,
-    "mats": "5 Thick Leather, 1 Silken Thread each",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "",
-    "flag": "forever"
-   },
-   {
-    "from": 200,
-    "to": 215,
+    "to": 210,
     "craft": "Nightscape Headband",
-    "count": 27,
-    "mats": "5 Thick Leather, 2 Silken Thread each",
-    "recipe_from": "Leatherworking trainer (Expert range)",
-    "item_id": null,
-    "note": "Green at 210.",
+    "spell_id": 10507,
+    "count": 19,
+    "colors": [
+     180,
+     200,
+     210,
+     220
+    ],
+    "r": [
+     [
+      5,
+      "Thick Leather",
+      4304
+     ],
+     [
+      2,
+      "Silken Thread",
+      4291
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
+    "note": "Turns yellow at 200 and green at 210.",
     "flag": "forever"
    },
    {
-    "from": 215,
+    "from": 210,
     "to": 225,
-    "craft": "Nightscape Cloak",
-    "count": 10,
-    "mats": "12 Thick Leather, 4 Silken Thread each",
-    "recipe_from": "Recipe item, source not confirmed by any source. Usable from 205. Fallback: Turtle Scale Breastplate (215 to 220, about 13 crafts), then Thick Leather Ammo Pouch (220 to 225, about 6 crafts).",
-    "item_id": null,
-    "note": "Orange until 225.",
+    "craft": "Nightscape Pants",
+    "spell_id": 10548,
+    "count": 15,
+    "colors": [
+     205,
+     225,
+     235,
+     245
+    ],
+    "r": [
+     [
+      14,
+      "Thick Leather",
+      4304
+     ],
+     [
+      4,
+      "Silken Thread",
+      4291
+     ]
+    ],
+    "recipe_from": "Leatherworking trainer.",
+    "note": "Learn Artisan Leatherworking before 225, or your skill stops there.",
     "flag": "forever"
    },
    {
     "from": 225,
-    "to": 240,
+    "to": 235,
     "craft": "Rugged Armor Kit",
-    "count": 27,
-    "mats": "5 Rugged Leather each",
-    "recipe_from": "Artisan trainer (Hahrana Ironhide, Feralas, or the Artisan trainer for this rank)",
-    "item_id": null,
-    "note": "Yellow and green at 235. Rugged Leather comes from skinning in the 200 to 250 zones.",
-    "flag": "forever"
-   },
-   {
-    "from": 240,
-    "to": 262,
-    "craft": "Blue Suede Gloves",
-    "count": 23,
-    "mats": "8 Rugged Leather, 1 Rune Thread, 1 Blue Dye each",
-    "recipe_from": "Recipe item, source not confirmed. Usable from 240. Alternative 240 to 250: Nightscape Boots (about 59 crafts).",
-    "item_id": null,
-    "note": "Orange and yellow at 260. Rune Thread and Blue Dye are bought from vendors, and the guide does not name them.",
-    "flag": "forever"
-   },
-   {
-    "from": 262,
-    "to": 275,
-    "craft": "Supple Scorpid Bracers",
+    "spell_id": 19058,
     "count": 14,
-    "mats": "7 Rugged Leather, 2 Heavy Scorpid Scale, 1 Rune Thread each",
-    "recipe_from": "Recipe item, source not confirmed. Usable from 250.",
-    "item_id": null,
-    "note": "Orange and yellow at 270. No trainer recipe gives skill-ups from 262 to 275.",
+    "colors": [
+     225,
+     225,
+     235,
+     245
+    ],
+    "r": [
+     [
+      5,
+      "Rugged Leather",
+      8170
+     ]
+    ],
+    "recipe_from": "Artisan Leatherworking trainer.",
+    "note": "Yellow from the start. If you have no Rugged Leather yet, Nightscape Pants also stay yellow until 235.",
     "flag": "forever"
    },
    {
-    "from": 275,
+    "from": 235,
+    "to": 265,
+    "craft": "Wicked Leather Gauntlets",
+    "spell_id": 19049,
+    "count": 34,
+    "colors": [
+     235,
+     255,
+     265,
+     275
+    ],
+    "r": [
+     [
+      8,
+      "Rugged Leather",
+      8170
+     ],
+     [
+      1,
+      "Black Dye",
+      2325
+     ],
+     [
+      1,
+      "Rune Thread",
+      14341
+     ]
+    ],
+    "recipe_from": "Pattern sold by Werg Thickblade in Tirisfal Glades (Horde), 12 gold.",
+    "note": "Turns yellow at 255.",
+    "flag": "forever"
+   },
+   {
+    "from": 265,
     "to": 300,
-    "craft": "Blue Suede Bracers",
-    "count": 26,
-    "mats": "10 Rugged Leather, 1 Rune Thread, 1 Blue Dye each",
-    "recipe_from": "Recipe item, source not confirmed. Usable from 275. Alternative 285 to 295: Gordok Ogre Suit (about 30 crafts).",
-    "item_id": null,
-    "note": "Orange and yellow at 295. The Rankedboost 225 to 300 route is an estimate.",
+    "craft": "Runic Leather Headband",
+    "spell_id": 19082,
+    "count": 47,
+    "colors": [
+     265,
+     285,
+     295,
+     305
+    ],
+    "r": [
+     [
+      14,
+      "Rugged Leather",
+      8170
+     ],
+     [
+      10,
+      "Runecloth",
+      14047
+     ],
+     [
+      1,
+      "Rune Thread",
+      14341
+     ]
+    ],
+    "recipe_from": "Pattern sold by Jase Farlane at Light's Hope Chapel, Eastern Plaguelands (both factions), 22 gold.",
+    "note": "Yellow at 285 and green at 295, so the last points take more crafts. Faster option from 285: Heavy Scorpid Helm (pattern from Zannok Hidepiercer in Silithus, needs Heavy Scorpid Scale), which stays orange until 290.",
     "flag": "forever"
    }
   ],
@@ -254,59 +377,24 @@ window.PROF = {
   ],
   "useful_crafts": [
    {
+    "name": "Wolfshead Helm",
+    "skill": 200,
+    "why": "Trainer recipe. 18 Thick Leather, 2 Thick Wolfhide, 8 Wicked Claw, 4 Heavy Silken Thread, 2 Cured Thick Hide.",
+    "item_id": 8345,
+    "flag": "forever"
+   },
+   {
     "name": "Rugged Armor Kit",
     "skill": 225,
-    "why": "Starts the Artisan range and is the base for the 225 to 300 route. Armor kits add armor to leather pieces, and Forever has upgraded variants (Forceful and Mystic) sold by vendors.",
-    "item_id": null,
+    "why": "Trainer recipe. Adds armor to a chest, leg, hand or foot piece. 5 Rugged Leather.",
+    "item_id": 15564,
     "flag": "forever"
    },
    {
     "name": "Warbear Harness",
     "skill": 250,
-    "why": "Warbear-themed leather armor from the Warcraft Wiki Forever list. Drops from mobs. Source and stats not confirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Warbear Woolies",
-    "skill": 260,
-    "why": "Warbear-themed leather legs listed in the Warcraft Wiki Forever list, vendor-sold. Vendor location not confirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Devilsaur Gauntlets",
-    "skill": 265,
-    "why": "Devilsaur-themed leather gloves from the Warcraft Wiki Forever list, vendor-sold. Vendor location not confirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Devilsaur Leggings",
-    "skill": 290,
-    "why": "Devilsaur-themed leather legs from the Warcraft Wiki Forever list, dropped by mobs. Source location not confirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Devilcore Gauntlets",
-    "skill": 290,
-    "why": "Gloves from the Warcraft Wiki Forever list, dropped by mobs. Source location not confirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Wolfshead Helm",
-    "skill": 225,
-    "why": "Head piece from the Warcraft Wiki Forever list. Source is listed as unknown, so the route to get it is unconfirmed.",
-    "item_id": null,
-    "flag": "forever"
-   },
-   {
-    "name": "Warbear Helm",
-    "skill": 300,
-    "why": "Head piece for the top of the range. Source listed as unknown.",
-    "item_id": null,
+    "why": "Pattern sold by Meilosh in Felwood (Timbermaw Hold). 28 Rugged Leather, 12 Warbear Leather, 1 Rune Thread.",
+    "item_id": 15064,
     "flag": "forever"
    }
   ],
@@ -360,20 +448,95 @@ window.PROF = {
     "title": "WoW Forever all new profession changes (Mobalytics, search result only)",
     "url": "https://mobalytics.gg/wow-forever/guides/wow-forever-all-new-profession-changes"
    }
+  ],
+  "subcrafts": [
+   {
+    "name": "Cured Heavy Hide",
+    "spell_id": 3818,
+    "r": [
+     [
+      1,
+      "Heavy Hide",
+      4235
+     ],
+     [
+      3,
+      "Salt",
+      4289
+     ]
+    ],
+    "note": "Trainer recipe. Salt is sold by Leatherworking supply vendors.",
+    "expand": true
+   },
+   {
+    "name": "Cured Thick Hide",
+    "spell_id": 10482,
+    "r": [
+     [
+      1,
+      "Thick Hide",
+      8169
+     ],
+     [
+      1,
+      "Deeprock Salt",
+      8150
+     ]
+    ],
+    "note": "Trainer recipe at 175. Deeprock Salt comes from mining Mithril.",
+    "expand": true
+   },
+   {
+    "name": "Cured Rugged Hide",
+    "spell_id": 19047,
+    "r": [
+     [
+      1,
+      "Rugged Hide",
+      8171
+     ],
+     [
+      1,
+      "Refined Deeprock Salt",
+      15409
+     ]
+    ],
+    "note": "Trainer recipe at 225.",
+    "expand": true
+   },
+   {
+    "name": "Thick Leather",
+    "spell_id": 20650,
+    "r": [
+     [
+      6,
+      "Heavy Leather",
+      4234
+     ]
+    ],
+    "note": "Trainer recipe at 175 if you have spare Heavy Leather.",
+    "expand": false
+   },
+   {
+    "name": "Rugged Leather",
+    "spell_id": 22331,
+    "r": [
+     [
+      6,
+      "Thick Leather",
+      4304
+     ]
+    ],
+    "note": "Trainer recipe at 225.",
+    "expand": false
+   }
   ]
  },
  "cook": {
   "changes": [
-   "Almost every cooked food in WoW Forever gives the Well Fed buff, and Well Fed adds 5 percent more experience from kills for its duration. This was confirmed on the item pages for Smoked Desert Dumplings, Grilled Squid, Dirge's Kickin' Chimaerok Chops and Tender Wolf Steak. The duration is 15 minutes on those items.",
-   "Cookie's Stirring Rod makes cooking 25 percent faster (single source: Conquest Capped).",
-   "Some high-level recipes need an Iron Oven, which requires Cooking 300. The blueprint for the Iron Oven has no known source yet (Conquest Capped).",
-   "Campfires: sources disagree. WoW-Professions says the Basic Campfire Kit is an item you place from your bags, and that other players can add camp items to your fire. Conquest Capped says the Journeyman Campfire Kit gives 5 camp feature slots, with its drop rate unconfirmed. Warcraft Tavern names a Cooking Fire upgrade path and Cookie's Feast and Iron Oven camp objects. Treat the exact campfire tiers as unverified.",
-   "The claim of more than 600 new cooking recipes is not supported by any source found. Sources report about 125 to 130 Cooking recipes in total, with about 42 to 44 of them new. Treat any larger number as unverified.",
-   "Some search summaries say Forever adds 12 new drinks, six teas and six smoothies. Wicked Smoothie (20 Spirit, bought with Merchant's Favor) is the only one confirmed (Conquest Capped). The rest is unverified.",
-   "Plated Armorfish gives 150 Armor, needs Cooking 225, and its recipe source is unknown (Conquest Capped). Armor matters for a bear tank, so this is worth finding in-game.",
-   "Conflicting rank ranges: WoW-Professions and Conquest Capped say Journeyman Cooking requires Cooking 50 and character level 10, and that you must learn it before skill 75, or your skill stops rising at 75. RankedBoost gives the same warning. Learn Journeyman at skill 50.",
-   "Artisan Cooking is unlocked by the quest 'Clamlette Surprise' from Dirge Quikcleave in Gadgetzan (Tanaris). It needs Cooking 225 and character level 35. Horde players start with a lead-in quest from Zamja in Orgrimmar. Conquest Capped and WoW-Professions agree on this. The Forever route for Artisan was only tested in beta according to WoW-Professions.",
-   "Both guides that list routes disagree on fish and meat recipes after skill 150. Use the WoW-Professions route for recipe order and the RankedBoost route only for farming ideas, and check each step in-game. RankedBoost says its route is based on the original game."
+   "Almost every cooked food in Forever gives Well Fed, which also adds 5 percent experience from kills for 15 minutes.",
+   "Cooking ranks: Apprentice (up to 75) and Journeyman (up to 150) come from any Cooking trainer. Expert (up to 225) is a book, the Expert Cookbook, bought from Wulan in Shadowprey Village, Desolace for about 1 gold. Artisan (up to 300) comes from the quest Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris (Cooking 225 and character level 35).",
+   "Plated Armorfish gives 150 Armor, which is great for a bear. It needs Cooking 225 and is made from Raw Plated Armorfish and Soothing Spices."
   ],
   "trainers": [
    {
@@ -381,28 +544,32 @@ window.PROF = {
     "what": "Apprentice Cooking",
     "where": "Cooking trainer Zamja in Orgrimmar (Horde capital city). Other Horde trainers are listed as Aska Mistrunner in Thunder Bluff, Cook Torka at Razor Hill, Duhng at The Crossroads, Eunice Burch in Undercity, Mudduk at Grom'gol Base Camp, Pyall Silentstride at Bloodhoof Village, and William Pickman in Brill.",
     "req": "None",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 75
    },
    {
     "skill": "50",
     "what": "Journeyman Cooking",
     "where": "Any Horde Cooking trainer, such as Zamja in Orgrimmar or Aska Mistrunner in Thunder Bluff. Learn it before skill 75, because skill stops rising at 75 until you do.",
     "req": "Cooking 50 and character level 10",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 150
    },
    {
     "skill": "125",
-    "what": "Expert Cookbook (book, not a trainer)",
-    "where": "Wulan at Shadowprey Village, Desolace (Horde). The book costs about 1 gold and can be traded, so you can also buy it on the auction house.",
-    "req": "Cooking 125 to buy. It is needed to go past skill 150.",
-    "flag": "forever"
+    "what": "Expert Cookbook (a book you buy, not a trainer)",
+    "where": "Wulan at Shadowprey Village, Desolace (Horde). Costs about 1 gold. You can also buy it on the auction house.",
+    "req": "Cooking 125 to use it. Without it you are stuck at 150.",
+    "flag": "forever",
+    "cap": 225
    },
    {
     "skill": "225",
     "what": "Artisan Cooking (learned by quest, not a trainer)",
-    "where": "Start with the Horde lead-in quest from Zamja in Orgrimmar. Finish the quest 'Clamlette Surprise' with Dirge Quikcleave in Gadgetzan, Tanaris. Buy the Artisan recipes from Gikkix in Steamwheedle Port, Tanaris.",
-    "req": "Cooking 225 and character level 35",
-    "flag": "forever"
+    "where": "The quest Clamlette Surprise from Dirge Quikcleave in Gadgetzan, Tanaris. Then buy Artisan recipes from Gikkix in Steamwheedle Port, Tanaris.",
+    "req": "Cooking 225 and character level 35.",
+    "flag": "forever",
+    "cap": 300
    }
   ],
   "steps": [
@@ -411,7 +578,7 @@ window.PROF = {
     "to": 50,
     "craft": "Brilliant Smallfish",
     "count": 55,
-    "mats": "55 Raw Brilliant Smallfish (a raw fish you catch by fishing), plus any cheap vendor water if the recipe asks for it",
+    "mats": "1 Raw Brilliant Smallfish each (caught by fishing)",
     "recipe_from": "Recipe sellers for Horde include Sewa Mistrunner in Thunder Bluff, Martine Tramblay in Tirisfal Glades, Lizbeth Cromwell in Undercity, and Harn Longcast in Mulgore. These sellers sell the recipe, they do not teach it.",
     "mats_from": "Fishing. The source does not name a fishing zone for this fish. Other recipes in the same range, such as Slitherskin Mackerel, Charred Wolf Meat and Roasted Boar Meat, can be used instead.",
     "item_id": null,
@@ -473,7 +640,7 @@ window.PROF = {
     "count": 25,
     "mats": "25 Raptor Egg and 25 Hot Spices (vendor)",
     "recipe_from": "Keena in Arathi Highlands (Horde).",
-    "mats_from": "Raptor Egg source is not named in the sources. Hot Spices come from a cooking supply vendor.",
+    "mats_from": "Raptor Egg drops from raptors in Arathi Highlands and the Wetlands. Hot Spices come from a cooking supply vendor.",
     "item_id": null,
     "note": "Alternative: Hot Lion Chops (25 crafts). Curiously Tasty Omelet turns grey at skill 170. Requires the Expert Cookbook from Wulan in Desolace.",
     "flag": "forever"
@@ -520,7 +687,7 @@ window.PROF = {
     "lv": "45-60",
     "name": "Dirge's Kickin' Chimaerok Chops",
     "effect": "Well Fed gives +25 Stamina for 15 minutes, and restores 2452 health over 30 seconds. Stamina is the best stat for a bear tank here.",
-    "recipe_from": "Cooking 300 required. A search summary says it comes from the Scepter of the Shifting Sands quest chain in Silithus; this source was not fetched, so treat it as unverified.",
+    "recipe_from": "Cooking 300. Recipe comes from the Scepter of the Shifting Sands quest chain in Silithus. Made from Chimaerok Tenderloin, Goblin Rocket Fuel, Deeprock Salt and Hot Spices.",
     "item_id": 21023,
     "flag": "forever"
    },
@@ -626,28 +793,32 @@ window.PROF = {
     "what": "Apprentice Fishing",
     "where": "Durotar (Lau'Tiki, south of Sen'jin Village); Mulgore (Uthan Stillwater, Stonebull Lake beside Bloodhoof Village); Tirisfal Glades (Clyde Kellen, Brightwater Lake); Ashenvale (Kil'Hiwana, south of Blackfathom Deeps); Desolace (Lui'Mala, Shadowprey Village); Thunder Bluff (Kah Mistrunner); Orgrimmar (Lumak, Valley of Honor); Undercity (Armand Cromwell, Magic Quarter); The Hinterlands (Katoom the Angler, Revantusk Village)",
     "req": "No level requirement in Forever.",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 75
    },
    {
     "skill": "75",
     "what": "Journeyman Fishing",
     "where": "Any fishing trainer listed for Apprentice Fishing. Neutral trainers Krix (Powderfuse Port, Riverglades), Baelann Swiftcurrent (Valanaar, Zephras Isle), Fenn Fairweather (Shen'dar Village, Zephras Isle) and Myizz Luckycatch (Booty Bay, Stranglethorn Vale) also teach it.",
     "req": "Fishing skill 50 and character level 10.",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 150
    },
    {
     "skill": "150",
     "what": "Expert Fishing",
     "where": "No trainer. Buy the book Expert Fishing - The Bass and You from Old Man Heming in Booty Bay, Stranglethorn Vale (bottom of the city near the fishing sign), or from the Auction House.",
     "req": "Book requires Fishing skill 125 and character level 20. The book costs about 1 gold.",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 225
    },
    {
     "skill": "225",
     "what": "Artisan Fishing",
     "where": "No trainer. Complete the quest Nat Pagle, Angler Extreme from Nat Pagle, Tidefury Cove, Dustwallow Marsh.",
     "req": "Fishing skill 225 and character level 35. The quest requires catching one quest fish from each of four zones: Feralas Ahi (Verdantis River, Feralas), Misty Reed Mahi Mahi (Misty Reed Strand, Swamp of Sorrows), Sar'theris Striker (Sar'theris Strand, Desolace) and Savage Coast Blue Sailfin (Savage Coast, Stranglethorn Vale).",
-    "flag": "forever"
+    "flag": "forever",
+    "cap": 300
    }
   ],
   "steps": [
@@ -966,4 +1137,4 @@ window.PROF = {
  }
 };
 /* Wowhead Forever ids for names used in the profession text (auto-linked). */
-window.PROF_LINKS = {"Light Leather": "item=2318", "Medium Leather": "item=2319", "Heavy Leather": "item=4234", "Thick Leather": "item=4304", "Rugged Leather": "item=8170", "Heavy Hide": "item=4235", "Cured Heavy Hide": "item=4236", "Salt": "item=4289", "Fine Thread": "item=2321", "Silken Thread": "item=4291", "Rune Thread": "item=14341", "Green Dye": "item=2605", "Blue Dye": "item=6260", "Iron Buckle": "item=7071", "Heavy Scorpid Scale": "item=15408", "Heavy Armor Kit": "item=4265", "Thick Armor Kit": "item=8173", "Rugged Armor Kit": "item=15564", "Light Armor Kit": "item=2304", "Green Leather Belt": "item=4257", "Barbaric Shoulders": "item=5964", "Green Leather Bracers": "item=4259", "Guardian Gloves": "item=5966", "Nightscape Headband": "item=8176", "Nightscape Cloak": "item=8195", "Nightscape Boots": "item=8197", "Turtle Scale Breastplate": "item=8189", "Thick Leather Ammo Pouch": "item=8218", "Blue Suede Gloves": "item=252546", "Supple Scorpid Bracers": "item=252582", "Blue Suede Bracers": "item=252559", "Gordok Ogre Suit": "item=18258", "Warbear Harness": "item=15064", "Warbear Woolies": "item=15065", "Devilsaur Gauntlets": "item=15063", "Devilsaur Leggings": "item=15062", "Wolfshead Helm": "item=8345", "Warbear Helm": "item=252485", "Wild Leather Armor Kit": "item=279258", "Core Armor Kit": "item=18251", "Devilsaur Leather": "item=15417", "Warbear Leather": "item=15419", "Turtle Scale": "item=8167", "Simple Wood": "item=4470", "Crystal Vial": "item=8925", "Empty Vial": "item=3371", "Bolt of Runecloth": "item=14048", "Raw Brilliant Smallfish": "item=6291", "Brilliant Smallfish": "item=6290", "Raw Slitherskin Mackerel": "item=6303", "Slitherskin Mackerel": "item=787", "Charred Wolf Meat": "item=2679", "Roasted Boar Meat": "item=2681", "Herb Baked Egg": "item=6888", "Mild Spices": "item=2678", "Hot Spices": "item=2692", "Soothing Spices": "item=3713", "Refreshing Spring Water": "item=159", "Ice Cold Milk": "item=1179", "Raw Longjaw Mud Snapper": "item=6289", "Longjaw Mud Snapper": "item=4592", "Raw Rainbow Fin Albacore": "item=6361", "Rainbow Fin Albacore": "item=5095", "Boiled Clams": "item=5525", "Clam Meat": "item=5503", "Smoked Bear Meat": "item=6890", "Bear Meat": "item=3173", "Crab Cake": "item=2683", "Crawler Meat": "item=2674", "Dry Pork Ribs": "item=2687", "Boar Ribs": "item=2677", "Raw Bristle Whisker Catfish": "item=6308", "Bristle Whisker Catfish": "item=4593", "Hot Lion Chops": "item=3727", "Lion Meat": "item=3731", "Goblin Deviled Clams": "item=5527", "Tangy Clam Meat": "item=5504", "Curiously Tasty Omelet": "item=3665", "Raptor Egg": "item=3685", "Raw Mithril Head Trout": "item=8365", "Roast Raptor": "item=12210", "Raptor Flesh": "item=12184", "Soothing Turtle Bisque": "item=3729", "Turtle Meat": "item=3712", "Raw Spotted Yellowtail": "item=4603", "Spotted Yellowtail": "item=6887", "Raw Redgill": "item=13758", "Filet of Redgill": "item=13930", "Undermine Clam Chowder": "item=16766", "Zesty Clam Meat": "item=7974", "Monster Omelet": "item=12218", "Giant Egg": "item=12207", "Tender Wolf Steak": "item=18045", "Tender Wolf Meat": "item=12208", "Raw Sunscale Salmon": "item=13760", "Poached Sunscale Salmon": "item=13932", "Raw Nightfin Snapper": "item=13759", "Nightfin Soup": "item=13931", "Smoked Desert Dumplings": "item=20452", "Sandworm Meat": "item=20424", "Dirge's Kickin' Chimaerok Chops": "item=21023", "Grilled Squid": "item=13928", "Plated Armorfish": "item=286152", "Expert Cookbook": "item=16072", "Cookie's Stirring Rod": "item=5198", "Wicked Smoothie": "item=249876", "Fishing Pole": "item=6256", "Strong Fishing Pole": "item=6365", "Big Iron Fishing Pole": "item=6367", "Nat Pagle's Extreme Angler FC-5000": "item=19022", "Arcanite Fishing Pole": "item=19970", "Shiny Bauble": "item=6529", "Nightcrawlers": "item=6530", "Bright Baubles": "item=6532", "Aquadynamic Fish Attractor": "item=6533", "Aquadynamic Fish Lens": "item=6811", "Flesh Eating Worm": "item=7307", "Expert Fishing - The Bass and You": "item=16083", "Lucky Fishing Hat": "item=19972", "Nat Pagle's Extreme Anglin' Boots": "item=19969", "Stonescale Eel": "item=13422", "Oily Blackmouth": "item=6358", "Firefin Snapper": "item=6359", "Savory Deviate Delight": "item=6657", "Feralas Ahi": "item=16967", "Misty Reed Mahi Mahi": "item=16970", "Sar'theris Striker": "item=16968", "Savage Coast Blue Sailfin": "item=16969", "Blueprint: Fishing Rack": "item=273141", "Surfer Shoes": "item=276274", "Extravagant Extravaganza Coin": "item=274026", "Enchant Gloves - Fishing": "spell=13620", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Karolek": "npc=3365", "Arthur Moore": "npc=4588", "Tarn": "npc=11084", "Zamja": "npc=3399", "Wulan": "npc=12033", "Dirge Quikcleave": "npc=8125", "Gikkix": "npc=8137", "Keena": "npc=2821", "Zargh": "npc=3489", "Bale": "npc=2806", "Kelsey Yance": "npc=2664", "Jabbey": "npc=8139", "Christoph Jeffcoat": "npc=2393", "Ogg'marr": "npc=4879", "Old Man Heming": "npc=2626", "Nat Pagle": "npc=12919", "Uthan Stillwater": "npc=5938", "Lau'Tiki": "npc=5941", "Lumak": "npc=3332", "Katoom the Angler": "npc=14740", "Krix": "npc=260558", "Gelihast": "npc=6243", "Lui'Mala": "npc=12032", "Kil'Hiwana": "npc=12961", "Shankys": "npc=3333", "Sewa Mistrunner": "npc=3029", "Naal Mistrunner": "npc=3027", "Lizbeth Cromwell": "npc=4574", "Wik'Tar": "npc=12962", "Duhng": "npc=8306", "Cook Torka": "npc=3191", "Aska Mistrunner": "npc=3026", "Clamlette Surprise": "quest=6610", "Nat Pagle, Angler Extreme": "quest=6607", "Camping 101: Fishing": "quest=97920", "Snapjaws, Mon!": "quest=7815", "Desert Recipe": "quest=8307", "Sharing the Knowledge": "quest=8313"};
+window.PROF_LINKS = {"Werg Thickblade": "npc=12943", "Jase Farlane": "npc=12941", "Meilosh": "npc=11557", "Zannok Hidepiercer": "npc=12956", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Heavy Scorpid Helm": "spell=19088", "Light's Hope Chapel": "zone=139", "Light Leather": "item=2318", "Medium Leather": "item=2319", "Heavy Leather": "item=4234", "Thick Leather": "item=4304", "Rugged Leather": "item=8170", "Heavy Hide": "item=4235", "Cured Heavy Hide": "item=4236", "Salt": "item=4289", "Fine Thread": "item=2321", "Silken Thread": "item=4291", "Rune Thread": "item=14341", "Green Dye": "item=2605", "Blue Dye": "item=6260", "Iron Buckle": "item=7071", "Heavy Scorpid Scale": "item=15408", "Heavy Armor Kit": "item=4265", "Thick Armor Kit": "item=8173", "Rugged Armor Kit": "item=15564", "Light Armor Kit": "item=2304", "Green Leather Belt": "item=4257", "Barbaric Shoulders": "item=5964", "Green Leather Bracers": "item=4259", "Guardian Gloves": "item=5966", "Nightscape Headband": "item=8176", "Nightscape Cloak": "item=8195", "Nightscape Boots": "item=8197", "Turtle Scale Breastplate": "item=8189", "Thick Leather Ammo Pouch": "item=8218", "Blue Suede Gloves": "item=252546", "Supple Scorpid Bracers": "item=252582", "Blue Suede Bracers": "item=252559", "Gordok Ogre Suit": "item=18258", "Warbear Harness": "item=15064", "Warbear Woolies": "item=15065", "Devilsaur Gauntlets": "item=15063", "Devilsaur Leggings": "item=15062", "Wolfshead Helm": "item=8345", "Warbear Helm": "item=252485", "Wild Leather Armor Kit": "item=279258", "Core Armor Kit": "item=18251", "Devilsaur Leather": "item=15417", "Warbear Leather": "item=15419", "Turtle Scale": "item=8167", "Simple Wood": "item=4470", "Crystal Vial": "item=8925", "Empty Vial": "item=3371", "Bolt of Runecloth": "item=14048", "Raw Brilliant Smallfish": "item=6291", "Brilliant Smallfish": "item=6290", "Raw Slitherskin Mackerel": "item=6303", "Slitherskin Mackerel": "item=787", "Charred Wolf Meat": "item=2679", "Roasted Boar Meat": "item=2681", "Herb Baked Egg": "item=6888", "Mild Spices": "item=2678", "Hot Spices": "item=2692", "Soothing Spices": "item=3713", "Refreshing Spring Water": "item=159", "Ice Cold Milk": "item=1179", "Raw Longjaw Mud Snapper": "item=6289", "Longjaw Mud Snapper": "item=4592", "Raw Rainbow Fin Albacore": "item=6361", "Rainbow Fin Albacore": "item=5095", "Boiled Clams": "item=5525", "Clam Meat": "item=5503", "Smoked Bear Meat": "item=6890", "Bear Meat": "item=3173", "Crab Cake": "item=2683", "Crawler Meat": "item=2674", "Dry Pork Ribs": "item=2687", "Boar Ribs": "item=2677", "Raw Bristle Whisker Catfish": "item=6308", "Bristle Whisker Catfish": "item=4593", "Hot Lion Chops": "item=3727", "Lion Meat": "item=3731", "Goblin Deviled Clams": "item=5527", "Tangy Clam Meat": "item=5504", "Curiously Tasty Omelet": "item=3665", "Raptor Egg": "item=3685", "Raw Mithril Head Trout": "item=8365", "Roast Raptor": "item=12210", "Raptor Flesh": "item=12184", "Soothing Turtle Bisque": "item=3729", "Turtle Meat": "item=3712", "Raw Spotted Yellowtail": "item=4603", "Spotted Yellowtail": "item=6887", "Raw Redgill": "item=13758", "Filet of Redgill": "item=13930", "Undermine Clam Chowder": "item=16766", "Zesty Clam Meat": "item=7974", "Monster Omelet": "item=12218", "Giant Egg": "item=12207", "Tender Wolf Steak": "item=18045", "Tender Wolf Meat": "item=12208", "Raw Sunscale Salmon": "item=13760", "Poached Sunscale Salmon": "item=13932", "Raw Nightfin Snapper": "item=13759", "Nightfin Soup": "item=13931", "Smoked Desert Dumplings": "item=20452", "Sandworm Meat": "item=20424", "Dirge's Kickin' Chimaerok Chops": "item=21023", "Grilled Squid": "item=13928", "Plated Armorfish": "item=286152", "Expert Cookbook": "item=16072", "Cookie's Stirring Rod": "item=5198", "Wicked Smoothie": "item=249876", "Fishing Pole": "item=6256", "Strong Fishing Pole": "item=6365", "Big Iron Fishing Pole": "item=6367", "Nat Pagle's Extreme Angler FC-5000": "item=19022", "Arcanite Fishing Pole": "item=19970", "Shiny Bauble": "item=6529", "Nightcrawlers": "item=6530", "Bright Baubles": "item=6532", "Aquadynamic Fish Attractor": "item=6533", "Aquadynamic Fish Lens": "item=6811", "Flesh Eating Worm": "item=7307", "Expert Fishing - The Bass and You": "item=16083", "Lucky Fishing Hat": "item=19972", "Nat Pagle's Extreme Anglin' Boots": "item=19969", "Stonescale Eel": "item=13422", "Oily Blackmouth": "item=6358", "Firefin Snapper": "item=6359", "Savory Deviate Delight": "item=6657", "Feralas Ahi": "item=16967", "Misty Reed Mahi Mahi": "item=16970", "Sar'theris Striker": "item=16968", "Savage Coast Blue Sailfin": "item=16969", "Blueprint: Fishing Rack": "item=273141", "Surfer Shoes": "item=276274", "Extravagant Extravaganza Coin": "item=274026", "Enchant Gloves - Fishing": "spell=13620", "Una": "npc=3007", "Hahrana Ironhide": "npc=11098", "Karolek": "npc=3365", "Arthur Moore": "npc=4588", "Tarn": "npc=11084", "Zamja": "npc=3399", "Wulan": "npc=12033", "Dirge Quikcleave": "npc=8125", "Gikkix": "npc=8137", "Keena": "npc=2821", "Zargh": "npc=3489", "Bale": "npc=2806", "Kelsey Yance": "npc=2664", "Jabbey": "npc=8139", "Christoph Jeffcoat": "npc=2393", "Ogg'marr": "npc=4879", "Old Man Heming": "npc=2626", "Nat Pagle": "npc=12919", "Uthan Stillwater": "npc=5938", "Lau'Tiki": "npc=5941", "Lumak": "npc=3332", "Katoom the Angler": "npc=14740", "Krix": "npc=260558", "Gelihast": "npc=6243", "Lui'Mala": "npc=12032", "Kil'Hiwana": "npc=12961", "Shankys": "npc=3333", "Sewa Mistrunner": "npc=3029", "Naal Mistrunner": "npc=3027", "Lizbeth Cromwell": "npc=4574", "Wik'Tar": "npc=12962", "Duhng": "npc=8306", "Cook Torka": "npc=3191", "Aska Mistrunner": "npc=3026", "Clamlette Surprise": "quest=6610", "Nat Pagle, Angler Extreme": "quest=6607", "Camping 101: Fishing": "quest=97920", "Snapjaws, Mon!": "quest=7815", "Desert Recipe": "quest=8307", "Sharing the Knowledge": "quest=8313"};

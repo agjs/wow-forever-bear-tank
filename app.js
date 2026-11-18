@@ -178,15 +178,22 @@
       <ol class="psteps">${showPast[k] ? past.map(st => li(st, "past")).join("") : ""}${left.map(st => li(st, sk >= st.from ? "now" : "")).join("")}</ol>
       ${left.length ? "" : `<p class="muted">You've finished this route. Nice.</p>`}`; }
   const skNum = x => +(String(x.skill).match(/\d+/) || [0])[0];
-  function trainHtml(k, t) { if (!t?.length) return ""; const sk = skillOf(k), up = t.filter(x => skNum(x) > sk), done = t.filter(x => skNum(x) <= sk && skNum(x) > 1);
-    const row = x => `<li><b>Skill ${skNum(x)}</b>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""}</li>`;
-    return `<div class="card"><div class="label">${up.length ? "Next rank-up" : "Rank-ups"}</div>${up.length ? `<ul class="kv">${row(up[0])}</ul>` : `<p style="margin:0">No more rank-ups to learn.</p>`}${done.length ? `<p class="small muted" style="margin:10px 0 0">Already behind you, make sure you learned: ${done.map(x => `${esc(x.what)} (skill ${skNum(x)})`).join(", ")}.</p>` : ""}${up.length > 1 ? `<p class="small muted" style="margin:6px 0 0">Later: ${up.slice(1).map(x => `${esc(x.what)} at ${skNum(x)}`).join(", ")}.</p>` : ""}</div>`; }
+  function trainHtml(k, t) { if (!t?.length) return ""; const sk = skillOf(k), capOf = x => x.cap || skNum(x) + 75,
+      up = t.filter(x => capOf(x) > sk && skNum(x) > 1), done = t.filter(x => capOf(x) <= sk && skNum(x) > 1);
+    const row = x => `<li><b>Skill ${skNum(x)}</b><span>${esc(x.what)}: ${rich(x.where)}${x.req ? ` <span class="muted">(${esc(x.req)})</span>` : ""} <span class="muted">Lets you go up to ${capOf(x)}.</span></span></li>`;
+    return `<div class="card"><div class="label">${up.length ? "Next rank-up (skip it if you already have it)" : "Rank-ups"}</div>${up.length ? `<ul class="kv">${row(up[0])}</ul>` : `<p style="margin:0">No more rank-ups to learn.</p>`}${up.length > 1 ? `<p class="small muted" style="margin:6px 0 0">Later: ${up.slice(1).map(x => `${esc(x.what)} at ${skNum(x)}`).join(", ")}.</p>` : ""}</div>`; }
   const fold = (title, inner) => inner ? `<details class="dd"><summary>${title}</summary>${inner}</details>` : "";
   const plist = a => a?.length ? `<ul class="plist">${a.map(x => `<li>${rich(x)}</li>`).join("")}</ul>` : "";
   const srcHtml = a => a?.length ? `<p class="small muted psrc">Sources: ${a.map(x => `<a href="${esc(x.url)}" target="_blank" rel="noopener">${esc(x.title)}</a>`).join(" · ")}</p>` : "";
   const MAT_RE = /(\d+) ([A-Z][A-Za-z' ]+?)(?= each|,|\.| plus| \(|$)/g;
-  const matsOf = st => [...st.mats.matchAll(MAT_RE)].map(m => [m[2], +m[1] * st.count]);
-  const matsHtml = list => { const t = {}; list.forEach(([n, q]) => t[n] = (t[n] || 0) + q); return Object.entries(t).map(([n, q]) => `<span class="mat"><b>${q}</b> ${rich(n)}</span>`).join(""); };
+  const matsOf = st => st.r ? st.r.map(([q, n, id]) => [n, q * st.count, id]) : [...st.mats.matchAll(MAT_RE)].map(m => [m[2], +m[1] * st.count]);
+  const matA = (n, id) => id ? `<a class="wh" href="https://www.wowhead.com/forever/item=${id}" target="_blank" rel="noopener">${esc(n)}</a>` : rich(n);
+  const matsHtml = list => { const t = {}, ids = {}; list.forEach(([n, q, id]) => { t[n] = (t[n] || 0) + q; if (id) ids[n] = id; }); return Object.entries(t).map(([n, q]) => `<span class="mat"><b>${q}</b> ${matA(n, ids[n])}</span>`).join(""); };
+  const subOf = (k, n) => (PF()[k]?.subcrafts || []).find(x => x.name === n && x.expand);
+  const expandRaw = (k, list) => list.flatMap(([n, q, id]) => { const sc = subOf(k, n); return sc ? sc.r.map(([q2, n2, id2]) => [n2, q * q2, id2]) : [[n, q, id]]; });
+  const subNote = (k, list) => { const seen = new Set(); return list.map(([n]) => n).filter(n => subOf(k, n) && !seen.has(n) && seen.add(n)).map(n => { const sc = subOf(k, n);
+    return `<span class="muted">Make each <a class="wh" href="https://www.wowhead.com/forever/spell=${sc.spell_id}" target="_blank" rel="noopener">${esc(n)}</a> from ${sc.r.map(([q, m, id]) => `${q} ${matA(m, id)}`).join(" and ")}. ${esc(sc.note || "")}</span>`; }).join(""); };
+  const craftA = st => st.spell_id ? `<a class="wh" href="https://www.wowhead.com/forever/spell=${st.spell_id}" target="_blank" rel="noopener">${esc(st.craft)}</a>` : pItem(st.craft, st.item_id, st.flag);
   function renderProf() {
     const k = state.prof, d = PF(), L = state.level, el = $("#prof-body");
     $("#prof-seg").innerHTML = PTABS.map(([id, n]) => `<button data-p="${id}" class="${id === k ? "on" : ""}">${n}</button>`).join("");
@@ -195,8 +202,8 @@
     if (k === "lw" && d.lw) { const x = d.lw, sk = skillOf("lw"), left = x.steps.filter(st => sk < st.to);
       h = `<div class="ptop"><p class="lead">Enter your skill. You'll see what to craft next and what to collect for the rest of the way to 300.</p>${skillBox("lw")}</div>
         ${trainHtml("lw", x.trainers)}
-        ${left.length ? `<div class="card"><div class="label">Collect this for the rest of the route</div><div class="mats">${matsHtml(left.flatMap(matsOf))}</div></div>` : ""}
-        <h3>What to craft</h3>${stepsHtml("lw", x.steps, st => `<b>${pItem(st.craft, st.item_id, st.flag)} × ${esc(st.count)}</b><div class="mats">${matsHtml(matsOf(st))}</div><span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
+        ${left.length ? `<div class="card"><div class="label">Collect this for the rest of the route</div><div class="mats">${matsHtml(expandRaw("lw", left.flatMap(matsOf)))}</div><p class="small muted" style="margin:8px 0 0">Raw materials, with hides already counted for the cured hides you'll make. Craft counts are estimates.</p></div>` : ""}
+        <h3>What to craft</h3>${stepsHtml("lw", x.steps, st => `<b>${craftA(st)} × about ${esc(st.count)}</b><span class="muted">Each one needs ${st.r ? st.r.map(([q, n, id]) => `${q} ${matA(n, id)}`).join(", ") : rich(st.mats)}. In total:</span><div class="mats">${matsHtml(matsOf(st))}</div>${st.r ? subNote("lw", matsOf(st)) : ""}<span>Recipe: ${rich(st.recipe_from)}</span>${st.note ? `<span class="muted">${rich(st.note)}</span>` : ""}`)}
         ${x.useful_crafts?.length ? `<div class="card"><div class="label">Crafts worth making for your bear</div><ul class="kv">${x.useful_crafts.map(c => `<li><b>${pItem(c.name, c.item_id, c.flag)}</b>Skill ${esc(c.skill)}. ${rich(c.why)}</li>`).join("")}</ul></div>` : ""}
         ${fold("What's different in WoW: Forever", plist(x.changes))}${fold("Making gold with Leatherworking", plist(x.gold))}${srcHtml(x.sources)}`;
     } else if (k === "farm" && d.lw) { const f = d.lw.farming || [], fit = f.filter(r => lvIn(r.lv, L)), rest = f.filter(r => !lvIn(r.lv, L));
