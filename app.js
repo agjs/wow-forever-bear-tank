@@ -557,6 +557,7 @@
   function setTab(t) {
     state.tab = t; store.set("tab", t);
     document.querySelectorAll(".tabs button").forEach(b => b.classList.toggle("on", b.dataset.tab === t));
+    const sb = $(`.side button[data-tab="${t}"]`); if (sb && innerWidth <= 900) sb.scrollIntoView({ block: "nearest", inline: "center" });
     document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === t));
     if (location.hash !== "#" + t) history.replaceState(null, "", "#" + t);
     window.scrollTo({ top: 0 });
@@ -571,7 +572,8 @@
     ["#c-armor", "#c-agi", "#c-form", "#c-lvl", "#c-th"].forEach(s => $(s).addEventListener("input", armorCalc));
     buildLinks(); renderDeepStatic(); renderSetup(); armorCalc(); renderAll();
     window.addEventListener("hashchange", () => { const t = location.hash.slice(1); if (document.getElementById(t)?.classList.contains("panel")) setTab(t); });
-    const h = location.hash.slice(1); setTab(["today", "road", "gear", "trainer", "prof", "pvp", "talents", "rotation", "dungeons", "setup", "deep"].includes(h) ? h : state.tab);
+    const h = location.hash.slice(1), isPanel = t => !!document.getElementById(t)?.classList.contains("panel"); setTab(isPanel(h) ? h : isPanel(state.tab) ? state.tab : "today");
+    const topH = () => document.documentElement.style.setProperty("--toph", $(".top").offsetHeight + "px"); topH(); window.addEventListener("resize", topH);
   }
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", init) : init();
 })();

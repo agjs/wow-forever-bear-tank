@@ -7,13 +7,13 @@
 <meta name="description" content="WoW: Forever Feral Druid bear tank: what to do at every level, talents, rotation and gear. Patch 1.60.1.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=1795043098">
+<link rel="stylesheet" href="style.css?v=1795043275">
 <script>const whTooltips = {colorLinks: true, iconizeLinks: false, renameLinks: false};</script>
 <script src="https://wow.zamimg.com/js/tooltips.js" defer></script>
 </head>
 <body>
 <header class="top">
-  <div class="wrap bar">
+  <div class="wrap wide bar">
     <div class="brand"><img class="logo" src="https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg" alt="Bear Form"><div><b>Bear Tank Codex</b><small>WoW: Forever · Patch <span id="meta-patch"></span></small></div></div>
     <div class="stepper" aria-label="Your level">
       <button id="lv-dn" aria-label="Level down">−</button>
@@ -21,23 +21,28 @@
       <button id="lv-up" aria-label="Level up">+</button>
     </div>
   </div>
-  <nav class="wrap tabs" role="tablist">
-    <button data-tab="today" class="on">Today</button>
-    <button data-tab="road">Road to 60</button>
-    <button data-tab="gear">Gear</button>
-    <button data-tab="trainer">Trainer</button>
-    <button data-tab="prof">Professions</button>
-    <button data-tab="camps">Camps &amp; Crates</button>
-    <button data-tab="pvp">PvP</button>
-    <button data-tab="talents">Talents</button>
-    <button data-tab="rotation">Rotation</button>
-    <button data-tab="dungeons">Dungeons</button>
-    <button data-tab="setup">Setup</button>
-    <button data-tab="deep">Deep dive</button>
-  </nav>
 </header>
 
-<main class="wrap">
+<div class="shell">
+  <nav class="tabs side" role="tablist" aria-label="Sections">
+    <div class="grp">Play</div>
+    <button data-tab="today" class="on"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_pocketwatch_01.jpg" alt="" loading="lazy">Today</button>
+    <button data-tab="road"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_map_01.jpg" alt="" loading="lazy">Road to 60</button>
+    <button data-tab="dungeons"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_key_03.jpg" alt="" loading="lazy">Dungeons</button>
+    <div class="grp">Your bear</div>
+    <button data-tab="talents"><img src="https://wow.zamimg.com/images/wow/icons/medium/ability_druid_catform.jpg" alt="" loading="lazy">Talents</button>
+    <button data-tab="rotation"><img src="https://wow.zamimg.com/images/wow/icons/medium/ability_druid_maul.jpg" alt="" loading="lazy">Rotation</button>
+    <button data-tab="trainer"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_book_09.jpg" alt="" loading="lazy">Trainer</button>
+    <button data-tab="gear"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_chest_leather_04.jpg" alt="" loading="lazy">Gear</button>
+    <div class="grp">Professions</div>
+    <button data-tab="prof"><img src="https://wow.zamimg.com/images/wow/icons/medium/trade_leatherworking.jpg" alt="" loading="lazy">Professions</button>
+    <button data-tab="camps"><img src="https://wow.zamimg.com/images/wow/icons/medium/spell_fire_fire.jpg" alt="" loading="lazy">Camps &amp; Crates</button>
+    <div class="grp">More</div>
+    <button data-tab="pvp"><img src="https://wow.zamimg.com/images/wow/icons/medium/ability_dualwield.jpg" alt="" loading="lazy">PvP</button>
+    <button data-tab="setup"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_gear_01.jpg" alt="" loading="lazy">Setup</button>
+    <button data-tab="deep"><img src="https://wow.zamimg.com/images/wow/icons/medium/inv_misc_book_11.jpg" alt="" loading="lazy">Deep dive</button>
+  </nav>
+<main class="content">
   <!-- TODAY -->
   <section id="today" class="panel on">
     <div id="hero" class="hero"></div>
@@ -178,20 +183,21 @@
     <details class="dd"><summary>Sources</summary><ul id="src"></ul><p class="small muted">Researched the day after launch. Data updated <span id="meta-upd"></span>.</p></details>
   </section>
 </main>
+</div>
 <footer class="wrap small muted">Fan-made reference. Not affiliated with Blizzard.</footer>
-<script src="data.js?v=1795043098"></script>
-<script src="research.js?v=1795043098"></script>
-<script src="trainer.js?v=1795043098"></script>
-<script src="professions.js?v=1795043098"></script>
-<script src="pvp.js?v=1795043098"></script>
-<script src="qol.js?v=1795043098"></script>
-<script src="gear.js?v=1795043098"></script>
-<script src="camps.js?v=1795043098"></script>
-<script src="enchants.js?v=1795043098"></script>
-<script src="gold.js?v=1795043098"></script>
-<script src="spec2.js?v=1795043098"></script>
-<script src="classquests.js?v=1795043098"></script>
-<script src="talent-tree.js?v=1795043098"></script>
-<script src="app.js?v=1795043098"></script>
+<script src="data.js?v=1795043275"></script>
+<script src="research.js?v=1795043275"></script>
+<script src="trainer.js?v=1795043275"></script>
+<script src="professions.js?v=1795043275"></script>
+<script src="pvp.js?v=1795043275"></script>
+<script src="qol.js?v=1795043275"></script>
+<script src="gear.js?v=1795043275"></script>
+<script src="camps.js?v=1795043275"></script>
+<script src="enchants.js?v=1795043275"></script>
+<script src="gold.js?v=1795043275"></script>
+<script src="spec2.js?v=1795043275"></script>
+<script src="classquests.js?v=1795043275"></script>
+<script src="talent-tree.js?v=1795043275"></script>
+<script src="app.js?v=1795043275"></script>
 </body>
 </html>
