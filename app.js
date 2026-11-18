@@ -127,7 +127,7 @@
     Dodge: f => f[0] === "Dodge", Armor: f => f[0] === "Armor", Stamina: f => f[0] === "Stamina", "Attack power": f => f[0] === "AP",
   };
 
-  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw"), pvpCls: store.get("pvpCls", null) };
+  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw"), pvpCls: store.get("pvpCls", null), spec2: store.get("spec2", "cat") };
   const ptsAt = L => Math.max(0, Math.min(51, L - 9));
   const ranksAt = n => { const r = {}; ORDER.slice(0, n).forEach(k => r[k] = (r[k] || 0) + 1); return r; };
   const FINAL = ranksAt(51);
@@ -407,7 +407,29 @@
     renderDetail(state.sel || next || "primalBite", r);
     $("#order").innerHTML = (state.level > 10 ? `<p class="hidnote" style="grid-column:1/-1">${Math.min(51, state.level - 10)} earlier levels hidden. Lower your level at the top to see them.</p>` : "") + ORDER.map((k, i) => i + 10 < state.level ? "" : `<div class="ostep ${i + 10 < state.level ? "past" : i + 10 === state.level ? "now" : ""}"><span class="l">${i + 10}</span>${img(T_UI[k][0], "ico sm")}<div>${esc(TALENTS[k].name)}<br><small>${ORDER.slice(0, i + 1).filter(x => x === k).length}/${TALENTS[k].max}</small></div></div>`).join("");
     const v = validate();
+    renderSpec2();
     $("#validator").textContent = v.length ? "⚠ " + v.join(" · ") : "✓ Checked: 51 points, every row unlocked in time, level requirements (Lacerate 25, Primal Bite 40) and prerequisites met.";
+  }
+  function renderSpec2() { const S = window.SPEC2, el = $("#spec2"); if (!S || !el) return;
+    const k = state.spec2 || "cat", b = S[k], n = ptsAt(state.level), r = {}, fin = {};
+    b.order.slice(0, n).forEach(x => r[x] = (r[x] || 0) + 1); b.order.forEach(x => fin[x] = (fin[x] || 0) + 1);
+    const TREES = window.TREE || {}, BG = { B: 283, F: 281, R: 282 };
+    const trees = ["B", "F", "R"].map(tr => { const list = TREES[tr] || [], byK = Object.fromEntries(list.map(t => [t.k, t]));
+      const have = list.reduce((a, t) => a + (r[t.k] || 0), 0), f = list.reduce((a, t) => a + (fin[t.k] || 0), 0);
+      const arrows = list.filter(t => t.req && byK[t.req]).map(t => `<i class="arrow ${(r[t.req] || 0) >= byK[t.req].max ? "on" : ""}" style="grid-column:${t.col + 1};grid-row:${byK[t.req].row + 1}/${t.row + 2}"></i>`).join("");
+      return `<div class="tree" style="--bg:url(https://wow.zamimg.com/images/wow/talents/backgrounds/classic/${BG[tr]}.jpg)"><header><b>${TREE_NAMES[tr]}</b><span>${have} now · ${f} at 60</span></header><div class="tgrid">${arrows}
+        ${list.map(t => { const v = r[t.k] || 0; return `<a class="tn ${v >= t.max ? "max" : v ? "have" : ""} ${fin[t.k] ? "plan" : ""}" href="https://www.wowhead.com/forever/spell=${t.spell}" target="_blank" rel="noopener" style="grid-row:${t.row + 1};grid-column:${t.col + 1}" title="${esc(t.name)}">${img(t.icon, "", t.name)}<span class="pts">${v}/${t.max}</span></a>`; }).join("")}</div></div>`; }).join("");
+    const all = Object.values(TREES).flat(), nm = x => (all.find(t => t.k === x) || {}).name || x;
+    const now = Object.entries(r).map(([x, v]) => `${esc(nm(x))} ${v}`).join(", ");
+    const later = Object.entries(fin).filter(([x, v]) => (r[x] || 0) < v).map(([x, v]) => `${esc(nm(x))} ${(r[x] || 0) ? `${r[x]}→${v}` : v}`).join(", ");
+    el.innerHTML = `${plist(S.dual)}
+      <div class="seg" id="spec2-seg">${["cat", "balance"].map(x => `<button data-s="${x}" class="${x === k ? "on" : ""}">${x === "cat" ? "Feral cat DPS" : "Balance"}</button>`).join("")}</div>
+      <div class="card"><div class="label">${esc(b.title)} · ${esc(b.total)} at 60</div><p style="margin:0">${rich(b.why)}</p></div>
+      <div class="card"><div class="label">Spend your ${n} points (level ${state.level}) like this</div><p style="margin:0">${now}.</p>${later ? `<p class="small muted" style="margin:8px 0 0">As you level: ${later}.</p>` : ""}</div>
+      <div class="trees">${trees}</div>
+      ${fold("Talent notes", plist(b.notes))}${fold("What to press", `<ol class="steps">${b.rotation.map(x => `<li>${rich(x)}</li>`).join("")}</ol>`)}${fold("Stats to look for", `<p>${rich(b.stats)}</p>`)}
+      ${srcHtml([...b.sources, ...S.dual_sources])}`;
+    el.querySelectorAll("#spec2-seg button").forEach(x => x.onclick = () => { state.spec2 = x.dataset.s; store.set("spec2", state.spec2); renderSpec2(); refreshWH(); });
   }
   function renderDetail(k, r) {
     const g = Object.values(window.TREE || {}).flat().find(x => x.k === k), t = TALENTS[k] || {};
