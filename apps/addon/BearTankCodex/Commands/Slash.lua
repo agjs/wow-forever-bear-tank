@@ -5,6 +5,7 @@ local Window = ns.module("UI.Window")
 local Store = ns.module("Core.Store")
 local Text = ns.module("Core.Text")
 local QuestTags = ns.module("QuestTags")
+local Api = ns.module("Services.Api")
 
 local TAB_ALIASES = { now = "now", dungeons = "dungeons", dq = "dungeons", prof = "professions", professions = "professions" }
 
@@ -17,6 +18,11 @@ local COMMANDS = {
   end,
   debug = function()
     Text.say("version " .. ns.version)
+    local spells = 0
+    for _ in pairs(Api.spellRanks()) do
+      spells = spells + 1
+    end
+    print("  spellbook: " .. spells .. " spells read")
     for _, line in ipairs(QuestTags.debugLines()) do
       print("  " .. line)
     end

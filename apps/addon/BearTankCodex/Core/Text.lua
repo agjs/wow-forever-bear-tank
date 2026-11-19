@@ -64,6 +64,11 @@ function Text.list(items)
   return table.concat(items, ", ", 1, n - 1) .. " and " .. items[n]
 end
 
+-- Texture path of a game icon by its file name ("ability_druid_maul").
+function Text.icon(name)
+  return "Interface\\Icons\\" .. (name or "INV_Misc_QuestionMark")
+end
+
 function Text.say(msg)
   print(Text.color("gold", "Bear Tank Codex:") .. " " .. msg)
 end

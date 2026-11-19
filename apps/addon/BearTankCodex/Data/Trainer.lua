@@ -8,6 +8,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1126,
     cost = 10,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 4,
@@ -15,6 +18,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 774,
     cost = 100,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 4,
@@ -22,6 +28,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 8921,
     cost = 100,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 6,
@@ -29,6 +38,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 5177,
     cost = 100,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 6,
@@ -36,6 +48,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 467,
     cost = 100,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 8,
@@ -43,6 +58,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 339,
     cost = 200,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 8,
@@ -50,6 +68,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 5186,
     cost = 200,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 10,
@@ -57,6 +78,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 5487,
     cost = 0,
+    icon = "ability_racial_bearform",
+    optional = false,
+    quest = true,
   },
   {
     level = 10,
@@ -64,6 +88,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 16689,
     cost = 300,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 10,
@@ -71,6 +98,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 99,
     cost = 300,
+    icon = "ability_druid_demoralizingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 10,
@@ -78,6 +108,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1058,
     cost = 300,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 10,
@@ -85,6 +118,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 5232,
     cost = 300,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 10,
@@ -92,6 +128,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 8924,
     cost = 300,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 12,
@@ -99,6 +138,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 5229,
     cost = 800,
+    icon = "ability_druid_enrage",
+    optional = false,
+    quest = false,
   },
   {
     level = 12,
@@ -106,6 +148,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 437138,
     cost = 800,
+    icon = "ability_druid_lunarguidance",
+    optional = false,
+    quest = false,
   },
   {
     level = 12,
@@ -113,6 +158,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 8936,
     cost = 800,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 14,
@@ -120,6 +168,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 5211,
     cost = 900,
+    icon = "ability_druid_bash",
+    optional = false,
+    quest = false,
   },
   {
     level = 14,
@@ -127,6 +178,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 8946,
     cost = 0,
+    icon = "spell_nature_nullifypoison",
+    optional = false,
+    quest = true,
   },
   {
     level = 14,
@@ -134,6 +188,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 5178,
     cost = 900,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 14,
@@ -141,6 +198,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 782,
     cost = 900,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 14,
@@ -148,6 +208,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 5187,
     cost = 900,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 16,
@@ -155,6 +218,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 779,
     cost = 1800,
+    icon = "inv_misc_monsterclaw_03",
+    optional = false,
+    quest = false,
   },
   {
     level = 16,
@@ -162,6 +228,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 1066,
     cost = 0,
+    icon = "ability_druid_aquaticform",
+    optional = false,
+    quest = true,
   },
   {
     level = 16,
@@ -169,6 +238,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1430,
     cost = 1800,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 16,
@@ -176,6 +248,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 8925,
     cost = 1800,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 18,
@@ -183,6 +258,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 770,
     cost = 1900,
+    icon = "spell_nature_faeriefire",
+    optional = false,
+    quest = false,
   },
   {
     level = 18,
@@ -190,6 +268,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 2637,
     cost = 1900,
+    icon = "spell_nature_sleep",
+    optional = true,
+    quest = false,
   },
   {
     level = 18,
@@ -197,6 +278,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1062,
     cost = 1900,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 18,
@@ -204,6 +288,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 8938,
     cost = 1900,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 18,
@@ -211,6 +298,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 6808,
     cost = 1900,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 18,
@@ -218,6 +308,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 16810,
     cost = 95,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 20,
@@ -225,6 +318,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 16864,
     cost = 2400,
+    icon = "spell_nature_crystalball",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -232,6 +328,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 768,
     cost = 2000,
+    icon = "ability_druid_catform",
+    optional = false,
+    quest = true,
   },
   {
     level = 20,
@@ -239,6 +338,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 2912,
     cost = 2000,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 20,
@@ -246,6 +348,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 5221,
     cost = 3000,
+    icon = "spell_shadow_vampiricaura",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -253,6 +358,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1082,
     cost = 2000,
+    icon = "ability_druid_rake",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -260,6 +368,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1079,
     cost = 2000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -267,6 +378,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 5215,
     cost = 2000,
+    icon = "ability_ambush",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -274,6 +388,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 6756,
     cost = 2000,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -281,6 +398,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 20484,
     cost = 2000,
+    icon = "spell_nature_reincarnation",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -288,6 +408,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 5188,
     cost = 2000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 20,
@@ -295,6 +418,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1735,
     cost = 2000,
+    icon = "ability_druid_demoralizingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 22,
@@ -302,6 +428,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 5179,
     cost = 3000,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 22,
@@ -309,6 +438,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 2090,
     cost = 3000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 22,
@@ -316,6 +448,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 8926,
     cost = 3000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 22,
@@ -323,6 +458,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 2908,
     cost = 3000,
+    icon = "ability_hunter_beastsoothe",
+    optional = true,
+    quest = false,
   },
   {
     level = 24,
@@ -330,6 +468,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 5217,
     cost = 4000,
+    icon = "ability_mount_jungletiger",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -337,6 +478,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1822,
     cost = 4000,
+    icon = "ability_druid_disembowel",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -344,6 +488,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 780,
     cost = 4000,
+    icon = "inv_misc_monsterclaw_03",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -351,6 +498,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 2782,
     cost = 4000,
+    icon = "spell_holy_removecurse",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -358,6 +508,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1328618,
     cost = 4526,
+    icon = "ability_druid_ferociousbite",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -365,6 +518,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1075,
     cost = 4000,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -372,6 +528,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 8939,
     cost = 4000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 24,
@@ -379,6 +538,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1237948,
     cost = 3800,
+    icon = "ability_druid_lunarguidance",
+    optional = false,
+    quest = false,
   },
   {
     level = 26,
@@ -386,6 +548,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 2893,
     cost = 4500,
+    icon = "spell_nature_nullifypoison_02",
+    optional = false,
+    quest = false,
   },
   {
     level = 26,
@@ -393,6 +558,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 1850,
     cost = 4500,
+    icon = "ability_druid_dash",
+    optional = false,
+    quest = false,
   },
   {
     level = 26,
@@ -400,6 +568,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 8949,
     cost = 4500,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 26,
@@ -407,6 +578,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 5189,
     cost = 4500,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 26,
@@ -414,6 +588,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 6809,
     cost = 4500,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -421,6 +598,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 5209,
     cost = 5000,
+    icon = "ability_druid_challangingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -428,6 +608,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 3029,
     cost = 5000,
+    icon = "ability_druid_rake",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -435,6 +618,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 8998,
     cost = 5000,
+    icon = "ability_druid_cower",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -442,6 +628,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 2091,
     cost = 5000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -449,6 +638,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 5195,
     cost = 5000,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 28,
@@ -456,6 +648,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 9492,
     cost = 5000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 28,
@@ -463,6 +658,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 16811,
     cost = 250,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 28,
@@ -470,6 +668,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 8927,
     cost = 5000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 30,
@@ -477,6 +678,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 783,
     cost = 6000,
+    icon = "ability_druid_travelform",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -484,6 +688,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 740,
     cost = 6000,
+    icon = "spell_nature_tranquility",
+    optional = true,
+    quest = false,
   },
   {
     level = 30,
@@ -491,6 +698,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 6800,
     cost = 6000,
+    icon = "spell_shadow_vampiricaura",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -498,6 +708,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 24974,
     cost = 300,
+    icon = "spell_nature_insectswarm",
+    optional = true,
+    quest = false,
   },
   {
     level = 30,
@@ -505,6 +718,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 5180,
     cost = 6000,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 30,
@@ -512,6 +728,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 778,
     cost = 6000,
+    icon = "spell_nature_faeriefire",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -519,6 +738,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 8940,
     cost = 6000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -526,6 +748,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 20739,
     cost = 6000,
+    icon = "spell_nature_reincarnation",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -533,6 +758,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 5234,
     cost = 6000,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 30,
@@ -540,6 +768,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 6798,
     cost = 6000,
+    icon = "ability_druid_bash",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -547,6 +778,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 1328829,
     cost = 6315,
+    icon = "ability_racial_darkflight",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -554,6 +788,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 22568,
     cost = 8000,
+    icon = "ability_druid_ferociousbite",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -561,6 +798,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 6785,
     cost = 8000,
+    icon = "ability_druid_ravage",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -568,6 +808,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 5225,
     cost = 8000,
+    icon = "ability_tracking",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -575,6 +818,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 6778,
     cost = 8000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 32,
@@ -582,6 +828,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9490,
     cost = 8000,
+    icon = "ability_druid_demoralizingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -589,6 +838,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 8950,
     cost = 10000,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 34,
@@ -596,6 +848,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1328616,
     cost = 7368,
+    icon = "ability_druid_lacerate",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -603,6 +858,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1823,
     cost = 10000,
+    icon = "ability_druid_disembowel",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -610,6 +868,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 769,
     cost = 10000,
+    icon = "inv_misc_monsterclaw_03",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -617,6 +878,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 3627,
     cost = 10000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -624,6 +888,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 8972,
     cost = 10000,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -631,6 +898,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 8914,
     cost = 10000,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 34,
@@ -638,6 +908,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 8928,
     cost = 10000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 36,
@@ -645,6 +918,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 22842,
     cost = 11000,
+    icon = "ability_bullrush",
+    optional = false,
+    quest = false,
   },
   {
     level = 36,
@@ -652,6 +928,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 9005,
     cost = 11000,
+    icon = "ability_druid_supriseattack",
+    optional = false,
+    quest = false,
   },
   {
     level = 36,
@@ -659,6 +938,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 8941,
     cost = 11000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 36,
@@ -666,6 +948,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1237949,
     cost = 8000,
+    icon = "ability_druid_lunarguidance",
+    optional = false,
+    quest = false,
   },
   {
     level = 36,
@@ -673,6 +958,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9493,
     cost = 11000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 38,
@@ -680,6 +968,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 5196,
     cost = 12000,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 38,
@@ -687,6 +978,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 16812,
     cost = 600,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 38,
@@ -694,6 +988,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 6780,
     cost = 12000,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 38,
@@ -701,6 +998,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 8903,
     cost = 12000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 38,
@@ -708,6 +1008,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 5201,
     cost = 12000,
+    icon = "ability_druid_rake",
+    optional = false,
+    quest = false,
   },
   {
     level = 38,
@@ -715,6 +1018,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 18657,
     cost = 12000,
+    icon = "spell_nature_sleep",
+    optional = true,
+    quest = false,
   },
   {
     level = 38,
@@ -722,6 +1028,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 8992,
     cost = 12000,
+    icon = "spell_shadow_vampiricaura",
+    optional = false,
+    quest = false,
   },
   {
     level = 38,
@@ -729,6 +1038,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 8955,
     cost = 12000,
+    icon = "ability_hunter_beastsoothe",
+    optional = true,
+    quest = false,
   },
   {
     level = 40,
@@ -736,6 +1048,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 9634,
     cost = 14000,
+    icon = "ability_racial_bearform",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -743,6 +1058,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 29166,
     cost = 14000,
+    icon = "spell_nature_lightning",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -750,6 +1068,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 20719,
     cost = 14000,
+    icon = "inv_feather_01",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -757,6 +1078,9 @@ ns.data.trainer = {
     rank = 1,
     spellId = 16914,
     cost = 14000,
+    icon = "spell_nature_cyclone",
+    optional = true,
+    quest = false,
   },
   {
     level = 40,
@@ -764,6 +1088,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 8918,
     cost = 14000,
+    icon = "spell_nature_tranquility",
+    optional = true,
+    quest = false,
   },
   {
     level = 40,
@@ -771,6 +1098,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 6783,
     cost = 14000,
+    icon = "ability_ambush",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -778,6 +1108,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 22827,
     cost = 14000,
+    icon = "ability_druid_ferociousbite",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -785,6 +1118,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 24975,
     cost = 700,
+    icon = "spell_nature_insectswarm",
+    optional = true,
+    quest = false,
   },
   {
     level = 40,
@@ -792,6 +1128,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 8910,
     cost = 14000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -799,6 +1138,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 8907,
     cost = 14000,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -806,6 +1148,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 9000,
     cost = 14000,
+    icon = "ability_druid_cower",
+    optional = false,
+    quest = false,
   },
   {
     level = 40,
@@ -813,6 +1158,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 8929,
     cost = 14000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 40,
@@ -820,6 +1168,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 20742,
     cost = 14000,
+    icon = "spell_nature_reincarnation",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -827,6 +1178,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 414644,
     cost = 12000,
+    icon = "ability_druid_lacerate",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -834,6 +1188,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 6787,
     cost = 16000,
+    icon = "ability_druid_ravage",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -841,6 +1198,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9747,
     cost = 16000,
+    icon = "ability_druid_demoralizingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -848,6 +1208,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 8951,
     cost = 16000,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 42,
@@ -855,6 +1218,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9749,
     cost = 16000,
+    icon = "spell_nature_faeriefire",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -862,6 +1228,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9750,
     cost = 16000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 42,
@@ -869,6 +1238,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9745,
     cost = 16000,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -876,6 +1248,9 @@ ns.data.trainer = {
     rank = 0,
     spellId = 22812,
     cost = 18000,
+    icon = "spell_nature_stoneclawtotem",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -883,6 +1258,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9754,
     cost = 18000,
+    icon = "inv_misc_monsterclaw_03",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -890,6 +1268,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1824,
     cost = 18000,
+    icon = "ability_druid_disembowel",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -897,6 +1278,9 @@ ns.data.trainer = {
     rank = 8,
     spellId = 9758,
     cost = 18000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -904,6 +1288,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9756,
     cost = 18000,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 44,
@@ -911,6 +1298,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9752,
     cost = 18000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 46,
@@ -918,6 +1308,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 8983,
     cost = 20000,
+    icon = "ability_druid_bash",
+    optional = false,
+    quest = false,
   },
   {
     level = 46,
@@ -925,6 +1318,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 9821,
     cost = 20000,
+    icon = "ability_druid_dash",
+    optional = false,
+    quest = false,
   },
   {
     level = 46,
@@ -932,6 +1328,9 @@ ns.data.trainer = {
     rank = 8,
     spellId = 9839,
     cost = 20000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 46,
@@ -939,6 +1338,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 9823,
     cost = 20000,
+    icon = "ability_druid_supriseattack",
+    optional = false,
+    quest = false,
   },
   {
     level = 46,
@@ -946,6 +1348,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 8905,
     cost = 20000,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 46,
@@ -953,6 +1358,9 @@ ns.data.trainer = {
     rank = 8,
     spellId = 9833,
     cost = 20000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 46,
@@ -960,6 +1368,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9829,
     cost = 20000,
+    icon = "spell_shadow_vampiricaura",
+    optional = false,
+    quest = false,
   },
   {
     level = 48,
@@ -967,6 +1378,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 22828,
     cost = 22000,
+    icon = "ability_druid_ferociousbite",
+    optional = false,
+    quest = false,
   },
   {
     level = 48,
@@ -974,6 +1388,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 1237950,
     cost = 17000,
+    icon = "ability_druid_lunarguidance",
+    optional = false,
+    quest = false,
   },
   {
     level = 48,
@@ -981,6 +1398,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 9856,
     cost = 22000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 48,
@@ -988,6 +1408,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9849,
     cost = 22000,
+    icon = "ability_druid_rake",
+    optional = false,
+    quest = false,
   },
   {
     level = 48,
@@ -995,6 +1418,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9852,
     cost = 22000,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 48,
@@ -1002,6 +1428,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 16813,
     cost = 1100,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1009,6 +1438,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1238214,
     cost = 18000,
+    icon = "ability_druid_flourish",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1016,6 +1448,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9880,
     cost = 23000,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1023,6 +1458,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 24976,
     cost = 1150,
+    icon = "spell_nature_insectswarm",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1030,6 +1468,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 17401,
     cost = 23000,
+    icon = "spell_nature_cyclone",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1037,6 +1478,9 @@ ns.data.trainer = {
     rank = 2,
     spellId = 1238069,
     cost = 8000,
+    icon = "ability_racial_cannibalize",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1044,6 +1488,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 1235826,
     cost = 18000,
+    icon = "ability_druid_lacerate",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1051,6 +1498,9 @@ ns.data.trainer = {
     rank = 9,
     spellId = 9888,
     cost = 23000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1058,6 +1508,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9862,
     cost = 23000,
+    icon = "spell_nature_tranquility",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1065,6 +1518,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 20747,
     cost = 23000,
+    icon = "spell_nature_reincarnation",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1072,6 +1528,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9875,
     cost = 23000,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 50,
@@ -1079,6 +1538,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9866,
     cost = 23000,
+    icon = "ability_druid_ravage",
+    optional = false,
+    quest = false,
   },
   {
     level = 50,
@@ -1086,6 +1548,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9884,
     cost = 23000,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 52,
@@ -1093,6 +1558,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9898,
     cost = 26000,
+    icon = "ability_druid_demoralizingroar",
+    optional = false,
+    quest = false,
   },
   {
     level = 52,
@@ -1100,6 +1568,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9892,
     cost = 26000,
+    icon = "ability_druid_cower",
+    optional = false,
+    quest = false,
   },
   {
     level = 52,
@@ -1107,6 +1578,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9894,
     cost = 26000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 52,
@@ -1114,6 +1588,9 @@ ns.data.trainer = {
     rank = 9,
     spellId = 9840,
     cost = 26000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 52,
@@ -1121,6 +1598,9 @@ ns.data.trainer = {
     rank = 9,
     spellId = 9834,
     cost = 26000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 54,
@@ -1128,6 +1608,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9908,
     cost = 28000,
+    icon = "inv_misc_monsterclaw_03",
+    optional = false,
+    quest = false,
   },
   {
     level = 54,
@@ -1135,6 +1618,9 @@ ns.data.trainer = {
     rank = 8,
     spellId = 9912,
     cost = 28000,
+    icon = "spell_nature_abolishmagic",
+    optional = true,
+    quest = false,
   },
   {
     level = 54,
@@ -1142,6 +1628,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9830,
     cost = 28000,
+    icon = "spell_shadow_vampiricaura",
+    optional = false,
+    quest = false,
   },
   {
     level = 54,
@@ -1149,6 +1638,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9907,
     cost = 28000,
+    icon = "spell_nature_faeriefire",
+    optional = false,
+    quest = false,
   },
   {
     level = 54,
@@ -1156,6 +1648,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9904,
     cost = 28000,
+    icon = "ability_druid_disembowel",
+    optional = false,
+    quest = false,
   },
   {
     level = 54,
@@ -1163,6 +1658,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9910,
     cost = 28000,
+    icon = "spell_nature_thorns",
+    optional = false,
+    quest = false,
   },
   {
     level = 54,
@@ -1170,6 +1668,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9901,
     cost = 28000,
+    icon = "ability_hunter_beastsoothe",
+    optional = true,
+    quest = false,
   },
   {
     level = 54,
@@ -1177,6 +1678,9 @@ ns.data.trainer = {
     rank = 8,
     spellId = 9857,
     cost = 28000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 56,
@@ -1184,6 +1688,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9827,
     cost = 30000,
+    icon = "ability_druid_supriseattack",
+    optional = false,
+    quest = false,
   },
   {
     level = 56,
@@ -1191,6 +1698,9 @@ ns.data.trainer = {
     rank = 10,
     spellId = 9889,
     cost = 30000,
+    icon = "spell_nature_healingtouch",
+    optional = false,
+    quest = false,
   },
   {
     level = 56,
@@ -1198,6 +1708,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 22829,
     cost = 30000,
+    icon = "ability_druid_ferociousbite",
+    optional = false,
+    quest = false,
   },
   {
     level = 58,
@@ -1205,6 +1718,9 @@ ns.data.trainer = {
     rank = 10,
     spellId = 9835,
     cost = 32000,
+    icon = "spell_nature_starfall",
+    optional = true,
+    quest = false,
   },
   {
     level = 58,
@@ -1212,6 +1728,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9867,
     cost = 32000,
+    icon = "ability_druid_ravage",
+    optional = false,
+    quest = false,
   },
   {
     level = 58,
@@ -1219,6 +1738,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 1235827,
     cost = 22000,
+    icon = "ability_druid_lacerate",
+    optional = false,
+    quest = false,
   },
   {
     level = 58,
@@ -1226,6 +1748,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 9850,
     cost = 32000,
+    icon = "ability_druid_rake",
+    optional = false,
+    quest = false,
   },
   {
     level = 58,
@@ -1233,6 +1758,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 9881,
     cost = 32000,
+    icon = "ability_druid_maul",
+    optional = false,
+    quest = false,
   },
   {
     level = 58,
@@ -1240,6 +1768,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9853,
     cost = 32000,
+    icon = "spell_nature_stranglevines",
+    optional = true,
+    quest = false,
   },
   {
     level = 58,
@@ -1247,6 +1778,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 17329,
     cost = 1600,
+    icon = "spell_nature_natureswrath",
+    optional = true,
+    quest = false,
   },
   {
     level = 58,
@@ -1254,6 +1788,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9876,
     cost = 32000,
+    icon = "spell_arcane_starfire",
+    optional = true,
+    quest = false,
   },
   {
     level = 58,
@@ -1261,6 +1798,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 18658,
     cost = 32000,
+    icon = "spell_nature_sleep",
+    optional = true,
+    quest = false,
   },
   {
     level = 58,
@@ -1268,6 +1808,9 @@ ns.data.trainer = {
     rank = 10,
     spellId = 9841,
     cost = 32000,
+    icon = "spell_nature_rejuvenation",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1275,6 +1818,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1238070,
     cost = 17000,
+    icon = "ability_racial_cannibalize",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1282,6 +1828,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 1238215,
     cost = 24000,
+    icon = "ability_druid_flourish",
+    optional = true,
+    quest = false,
   },
   {
     level = 60,
@@ -1289,6 +1838,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 17402,
     cost = 34000,
+    icon = "spell_nature_cyclone",
+    optional = true,
+    quest = false,
   },
   {
     level = 60,
@@ -1296,6 +1848,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 24977,
     cost = 1700,
+    icon = "spell_nature_insectswarm",
+    optional = true,
+    quest = false,
   },
   {
     level = 60,
@@ -1303,6 +1858,9 @@ ns.data.trainer = {
     rank = 9,
     spellId = 9858,
     cost = 34000,
+    icon = "spell_nature_resistnature",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1310,6 +1868,9 @@ ns.data.trainer = {
     rank = 6,
     spellId = 9896,
     cost = 34000,
+    icon = "ability_ghoulfrenzy",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1317,6 +1878,9 @@ ns.data.trainer = {
     rank = 4,
     spellId = 9863,
     cost = 34000,
+    icon = "spell_nature_tranquility",
+    optional = true,
+    quest = false,
   },
   {
     level = 60,
@@ -1324,6 +1888,9 @@ ns.data.trainer = {
     rank = 7,
     spellId = 9885,
     cost = 34000,
+    icon = "spell_nature_regeneration",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1331,6 +1898,9 @@ ns.data.trainer = {
     rank = 3,
     spellId = 9913,
     cost = 34000,
+    icon = "ability_ambush",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1338,6 +1908,9 @@ ns.data.trainer = {
     rank = 5,
     spellId = 20748,
     cost = 34000,
+    icon = "spell_nature_reincarnation",
+    optional = false,
+    quest = false,
   },
   {
     level = 60,
@@ -1345,5 +1918,8 @@ ns.data.trainer = {
     rank = 5,
     spellId = 1237951,
     cost = 24000,
+    icon = "ability_druid_lunarguidance",
+    optional = false,
+    quest = false,
   },
 }

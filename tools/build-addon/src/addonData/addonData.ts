@@ -1,5 +1,13 @@
 /** Maps @btc/guide-data into the addon's data contract (see addonData.types.ts). Pure functions only. */
-import type { DungeonQuestList, Professions, QuestRef, RouteStep, Talent, TrainerSpell } from "@btc/guide-data";
+import type {
+  DungeonQuestList,
+  Professions,
+  QuestRef,
+  RouteStep,
+  Talent,
+  TrainerSpell,
+  TrainerSpellInfo,
+} from "@btc/guide-data";
 import { questStops } from "@btc/guide-data";
 import type {
   AddonDataFile,
@@ -75,8 +83,22 @@ export function toQuestTags(
 export const toRoute = (route: readonly RouteStep[]): AddonRouteStep[] =>
   route.map((r) => ({ lo: r.levels.min, hi: r.levels.max, zones: r.zones, hub: r.hub, how: r.how }));
 
-export const toTrainer = (spells: readonly TrainerSpell[]): AddonTrainerSpell[] =>
-  spells.map(({ level, name, rank, spellId, cost }) => ({ level, name, rank, spellId, cost }));
+const UNKNOWN_ICON = "inv_misc_questionmark";
+
+export const toTrainer = (
+  spells: readonly TrainerSpell[],
+  info: Readonly<Record<string, TrainerSpellInfo>>,
+): AddonTrainerSpell[] =>
+  spells.map(({ level, name, rank, spellId, cost, fromQuest }) => ({
+    level,
+    name,
+    rank,
+    spellId,
+    cost,
+    icon: info[name]?.icon ?? UNKNOWN_ICON,
+    optional: info[name]?.category === "skip",
+    quest: fromQuest,
+  }));
 
 export const toTalents = (talents: Readonly<Record<string, Talent>>): Record<string, AddonTalent> =>
   Object.fromEntries(
@@ -141,6 +163,7 @@ export interface GuideInput {
   readonly questChains: Readonly<Record<string, readonly QuestRef[]>>;
   readonly route: readonly RouteStep[];
   readonly trainerSpells: readonly TrainerSpell[];
+  readonly trainerSpellInfo: Readonly<Record<string, TrainerSpellInfo>>;
   readonly talentOrder: readonly string[];
   readonly talents: Readonly<Record<string, Talent>>;
   readonly professions: Professions;
@@ -163,7 +186,7 @@ export function addonDataFiles(guide: GuideInput): AddonDataFile[] {
       },
     },
     { file: "Route.lua", entries: { route: toRoute(guide.route) } },
-    { file: "Trainer.lua", entries: { trainer: toTrainer(guide.trainerSpells) } },
+    { file: "Trainer.lua", entries: { trainer: toTrainer(guide.trainerSpells, guide.trainerSpellInfo) } },
     { file: "Talents.lua", entries: { talentOrder: guide.talentOrder, talents: toTalents(guide.talents) } },
     { file: "Professions.lua", entries: { professions: toProfessions(guide.professions) } },
   ];

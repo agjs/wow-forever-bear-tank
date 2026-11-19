@@ -54,7 +54,7 @@ describe("Addon integration", function()
     SlashCmdList.BEARTANKCODEX("sunken")
     local text = plain()
     expect(text).toContain("Sunken Temple")
-    expect(text).toContain("The Sunken Temple  done")
+    expect(text).toContain("The Sunken Temple  Horde  done")
     expect(text).toContain("Into the Depths  in your log")
   end)
 

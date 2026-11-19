@@ -139,7 +139,13 @@ function Selectors.rows(ctx, list, key)
       if q.req > ctx.level then
         tags = tags .. "  " .. Text.color("orange", "level " .. q.req)
       end
-      rows[#rows + 1] = { kind = "line", indent = 1, text = status.icon .. " " .. name .. "  " .. status.label .. tags }
+      rows[#rows + 1] = {
+        kind = "line",
+        indent = 1,
+        text = status.icon .. " " .. name .. tags,
+        right = status.label,
+        tooltip = { quest = q.id },
+      }
       if s ~= DONE then
         local from = "From " .. q.giver .. (q.where and (" (" .. q.where .. ")") or "") .. "."
         rows[#rows + 1] =

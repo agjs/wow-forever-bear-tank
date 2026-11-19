@@ -15,7 +15,7 @@ local WIDTH, HEIGHT = 470, 580
 local CONTENT_WIDTH = WIDTH - 50
 local ALL_TOPICS = { "player", "quests", "spells", "skills", "bags" }
 
-local frame, scroll, list
+local frame, scroll, list, title
 local tabButtons = {}
 
 local function activeTab()
@@ -27,6 +27,8 @@ function Window.render()
     return
   end
   local tab = activeTab()
+  local ctx = State.context()
+  title:SetText("Bear Tank Codex  " .. Text.color("muted", "level " .. (ctx.level or "?")))
   for id, button in pairs(tabButtons) do
     if id == tab.id then
       button:LockHighlight()
@@ -34,7 +36,7 @@ function Window.render()
       button:UnlockHighlight()
     end
   end
-  List.render(list, tab.build(State.context()))
+  List.render(list, tab.build(ctx))
 end
 
 local function scheduleRender()
@@ -120,7 +122,7 @@ local function createFrame()
   tinsert(UISpecialFrames, "BearTankCodexFrame") -- Escape closes it
   f:SetScript("OnShow", scheduleRender)
 
-  local title = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+  title = f:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
   title:SetPoint("TOP", 0, -5)
   title:SetText("Bear Tank Codex")
 

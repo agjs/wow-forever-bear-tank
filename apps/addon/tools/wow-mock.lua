@@ -200,7 +200,9 @@ function M.visibleText()
   for _, f in ipairs(registry.frames) do
     local fs = rawget(f, "text")
     if f._kind == "Button" and f._shown and type(fs) == "table" and fs._text and fs._text ~= "" then
-      out[#out + 1] = fs._text
+      local right = rawget(f, "right")
+      local rightText = type(right) == "table" and right._text or ""
+      out[#out + 1] = fs._text .. (rightText ~= "" and ("  " .. rightText) or "")
     end
   end
   return table.concat(out, "\n")

@@ -25,6 +25,7 @@ local RESET = {
   end,
   spells = function()
     cache.spells = {}
+    cache.spellRanks = nil
   end,
   skills = function()
     cache.skills = nil
@@ -68,6 +69,14 @@ local function isSpellKnown(id)
   return v
 end
 
+-- Highest rank of a spell you know, by name (nil if you don't know it).
+local function spellRank(name)
+  if not cache.spellRanks then
+    cache.spellRanks = Api.spellRanks()
+  end
+  return cache.spellRanks[name]
+end
+
 local function skill(name)
   if not cache.skills then
     cache.skills = Api.skills()
@@ -94,6 +103,7 @@ function State.context()
     zone = cache.zone,
     questStatus = questStatus,
     isSpellKnown = isSpellKnown,
+    spellRank = spellRank,
     skill = skill,
     itemCount = itemCount,
   }

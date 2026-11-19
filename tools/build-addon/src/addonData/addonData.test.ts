@@ -1,6 +1,6 @@
 import type { DungeonQuestList } from "@btc/guide-data";
 import { describe, expect, it } from "vitest";
-import { toDungeonQuests, toQuestTags } from "./addonData.ts";
+import { toDungeonQuests, toQuestTags, toTrainer } from "./addonData.ts";
 
 const SUNKEN_TEMPLE: DungeonQuestList = {
   key: "st",
@@ -77,5 +77,26 @@ describe("toQuestTags", () => {
     expect(tags["1445"]).toEqual(["st", false]);
     expect(tags["1424"]).toEqual(["st", true]);
     expect(tags["3446"]).toEqual(["st", false]);
+  });
+});
+
+describe("toTrainer", () => {
+  it("adds the icon and marks optional caster spells and class-quest spells", () => {
+    const spells = toTrainer(
+      [
+        { level: 50, name: "Maul", rank: 7, spellId: 9881, cost: 100, fromQuest: false },
+        { level: 50, name: "Starfire", rank: 5, spellId: 9, cost: 100, fromQuest: false },
+        { level: 10, name: "Bear Form", rank: 0, spellId: 5487, cost: 0, fromQuest: true },
+      ],
+      {
+        Maul: { category: "bear", icon: "ability_druid_maul", text: "" },
+        Starfire: { category: "skip", icon: "spell_arcane_starfire", text: "" },
+      },
+    );
+    expect(spells.map((s) => [s.icon, s.optional, s.quest])).toEqual([
+      ["ability_druid_maul", false, false],
+      ["spell_arcane_starfire", true, false],
+      ["inv_misc_questionmark", false, true],
+    ]);
   });
 });

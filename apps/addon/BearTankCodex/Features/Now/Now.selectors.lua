@@ -15,26 +15,60 @@ function Selectors.routeFor(route, level)
   return found, nextStep
 end
 
--- Trainer spells you can learn now (level reached, not known yet) and the next visit after that.
+-- Spells the spellbook drops once a newer one is learned: knowing the newer one counts.
+Selectors.REPLACED_BY = { ["Bear Form"] = "Dire Bear Form" }
+
+-- Whether you have this rank of a spell, or a higher one (by spellbook name and rank, then by spell ID).
+function Selectors.knows(ctx, spell)
+  local need = math.max(spell.rank or 0, 1)
+  local names = { spell.name, Selectors.REPLACED_BY[spell.name] }
+  for _, name in ipairs(names) do
+    local have = ctx.spellRank and ctx.spellRank(name)
+    if have and (name ~= spell.name or have >= need) then
+      return true
+    end
+  end
+  return ctx.isSpellKnown(spell.spellId) == true
+end
+
+-- What to learn: for each spell, only the highest rank your level allows, and only if you don't have it.
+-- Optional caster spells are listed apart and not counted. Class-quest spells cost nothing at the trainer.
 function Selectors.trainer(ctx, trainer)
-  local now, cost, nextLevel = {}, 0, nil
+  local best, names, nextLevel = {}, {}, nil
   for _, t in ipairs(trainer) do
     if t.level <= ctx.level then
-      if not ctx.isSpellKnown(t.spellId) then
-        now[#now + 1] = t
-        cost = cost + (t.cost or 0)
+      local current = best[t.name]
+      if not current then
+        names[#names + 1] = t.name
       end
-    elseif not nextLevel or t.level < nextLevel then
+      if not current or (t.rank or 0) > (current.rank or 0) then
+        best[t.name] = t
+      end
+    elseif not t.optional and (not nextLevel or t.level < nextLevel) then
       nextLevel = t.level
+    end
+  end
+  local now, optional, cost = {}, {}, 0
+  for _, name in ipairs(names) do
+    local t = best[name]
+    if not Selectors.knows(ctx, t) then
+      if t.optional then
+        optional[#optional + 1] = t
+      else
+        now[#now + 1] = t
+        if not t.quest then
+          cost = cost + (t.cost or 0)
+        end
+      end
     end
   end
   local upcoming = {}
   for _, t in ipairs(trainer) do
-    if t.level == nextLevel then
+    if t.level == nextLevel and not t.optional then
       upcoming[#upcoming + 1] = t
     end
   end
-  return { now = now, cost = cost, nextLevel = nextLevel, upcoming = upcoming }
+  return { now = now, optional = optional, cost = cost, nextLevel = nextLevel, upcoming = upcoming }
 end
 
 -- The talent point the guide spends at a level (first point at 10), and the rank it reaches.
@@ -98,18 +132,35 @@ function Selectors.rows(ctx, data, counts)
   local tr = Selectors.trainer(ctx, data.trainer)
   rows[#rows + 1] = { kind = "heading", text = "Druid trainer" }
   if #tr.now > 0 then
-    local names = {}
-    for _, t in ipairs(tr.now) do
-      names[#names + 1] = spellName(t)
-    end
     rows[#rows + 1] = {
       kind = "line",
       indent = 1,
-      text = Text.ICONS.todo .. " " .. Text.color("white", Text.plural(#tr.now, "spell") .. " to learn") .. " (" .. Text.money(tr.cost) .. ")",
+      text = Text.ICONS.todo .. " " .. Text.color("white", Text.plural(#tr.now, "spell") .. " to learn"),
+      right = Text.color("gold", Text.money(tr.cost)),
     }
-    rows[#rows + 1] = { kind = "note", indent = 2, text = Text.list(names) .. "." }
+    for _, t in ipairs(tr.now) do
+      rows[#rows + 1] = {
+        kind = "line",
+        indent = 2,
+        icon = Text.icon(t.icon),
+        text = spellName(t),
+        right = t.quest and Text.color("muted", "class quest") or Text.color("muted", Text.money(t.cost)),
+        tooltip = { spell = t.spellId },
+      }
+    end
   else
     rows[#rows + 1] = { kind = "line", indent = 1, text = Text.ICONS.done .. " You know everything for your level." }
+  end
+  if #tr.optional > 0 then
+    local names = {}
+    for _, t in ipairs(tr.optional) do
+      names[#names + 1] = t.name
+    end
+    rows[#rows + 1] = {
+      kind = "note",
+      indent = 1,
+      text = Text.color("muted", "Optional caster spells (a bear rarely uses them): " .. Text.list(names) .. "."),
+    }
   end
   if tr.nextLevel then
     local names = {}

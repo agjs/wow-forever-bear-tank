@@ -44,6 +44,34 @@ function Api.isSpellKnown(id)
   return book and book.IsSpellKnown and book.IsSpellKnown(id) or false
 end
 
+local SPELL_BANK_PLAYER = Enum and Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or 0
+local FUTURE_SPELL = Enum and Enum.SpellBookItemType and Enum.SpellBookItemType.FutureSpell or 2
+
+-- Highest rank of every spell in your spellbook, by name: { ["Maul"] = 6, ["Bear Form"] = 1 }.
+-- Unranked spells count as rank 1. Spells the book shows but you haven't learned yet are skipped.
+-- Matching by name and rank doesn't depend on every rank's spell ID being right.
+function Api.spellRanks()
+  local out = {}
+  local book = C_SpellBook
+  if not (book and book.GetNumSpellBookSkillLines and book.GetSpellBookSkillLineInfo and book.GetSpellBookItemInfo) then
+    return out
+  end
+  for line = 1, book.GetNumSpellBookSkillLines() or 0 do
+    local info = book.GetSpellBookSkillLineInfo(line)
+    local offset, count = info and info.itemIndexOffset or 0, info and info.numSpellBookItems or 0
+    for slot = offset + 1, offset + count do
+      local item = book.GetSpellBookItemInfo(slot, SPELL_BANK_PLAYER)
+      if item and item.name and item.itemType ~= FUTURE_SPELL then
+        local rank = tonumber((item.subName or ""):match("(%d+)")) or 1
+        if rank > (out[item.name] or 0) then
+          out[item.name] = rank
+        end
+      end
+    end
+  end
+  return out
+end
+
 -- { ["Leatherworking"] = { rank = 187, max = 225 }, ... } for every skill line the character has.
 function Api.skills()
   local out = {}

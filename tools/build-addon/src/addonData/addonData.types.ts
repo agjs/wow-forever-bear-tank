@@ -59,6 +59,12 @@ export interface AddonTrainerSpell {
   readonly rank: number;
   readonly spellId: number;
   readonly cost: number;
+  /** Icon file name under Interface\\Icons. */
+  readonly icon: string;
+  /** A caster spell a bear rarely uses: shown, but not counted as "to learn". */
+  readonly optional: boolean;
+  /** Learned from a class quest, not bought from the trainer. */
+  readonly quest: boolean;
 }
 
 export interface AddonTalent {
