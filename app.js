@@ -320,7 +320,10 @@
         <div class="dqcount"><span><i class="dot d"></i>${n2} done</span><span><i class="dot l"></i>${n1} in your log</span><span><i class="dot n"></i>${n0} not picked up</span></div>
         <div class="dqnext"><span class="label">Next step</span><p>${next}</p></div>
         <div class="dqsync"><span class="small muted"><b>Check in game what you've done.</b> 1. Once per login, paste the setup line into chat: it answers "Quest check ready". 2. Paste the dungeon check: it prints each quest's number (shown next to every quest below) as DONE, IN LOG or not done. The "Copy in-game check" on a single quest works after the setup too.</span>
-          <button class="copy" data-copy="${esc(SETUP)}">1. Copy setup</button> ${dunChecks(sel).map(c => `<button class="copy" data-copy="${esc(c)}">2. Copy dungeon check</button>`).join(" ")}</div>
+          <button class="copy" data-copy="${esc(SETUP)}">1. Copy setup</button> ${dunChecks(sel).map(c => `<button class="copy" data-copy="${esc(c)}">2. Copy dungeon check</button>`).join(" ")}
+          <details class="dqpaste"><summary>3. Paste or type the results here to update this page</summary>
+            <textarea id="dq-res" rows="5" placeholder="1445 not done&#10;3380 DONE&#10;3446 IN LOG"></textarea>
+            <button class="copy" id="dq-apply">Update my quests</button> <span class="small muted" id="dq-msg"></span></details></div>
       </div>
       ${stops.map((g, i) => { const left = g.q.filter(x => S(x[0]) === 0).length;
         return `<div class="dqstop${left ? "" : " clear"}"><div class="dqsh"><span class="num">${g.k === "__in" ? "★" : i + 1}</span><div><b>${esc(g.title)}</b>
@@ -328,6 +331,10 @@
           ${g.way ? `<button class="copy" data-copy="${esc(g.way)}" title="Needs the TomTom addon">Copy /way</button>` : ""}</div>
           <ul class="dqql">${g.q.map(qrow).join("")}</ul></div>`; }).join("")}
       <p class="small muted psrc"><b>If the setup prints nothing:</b> type <code>/run print("test")</code>. If even that shows nothing, the game is blocking scripts. If "test" works but the setup doesn't, type <code>/console scriptErrors 1</code> and paste the setup again: the game will show the error, and you can send it to me. "Copy /way" puts a map arrow on the spot if you use the TomTom addon. Quests come from Wowhead's Forever dungeon guides, with faction and level checked in the Wowhead Forever database. Class-only and Blacksmith-only quests are left out.</p>`;
+    $("#dq-apply").onclick = () => { let n = 0; ($("#dq-res").value.match(/\d+\s+(done|in log|not done)/gi) || []).forEach(m => {
+        const [, id, t] = m.match(/(\d+)\s+(.+)/), v = /^done/i.test(t) ? 2 : /log/i.test(t) ? 1 : 0;
+        if (D.some(d => d.q.some(x => x[0] === +id))) { if (v) st[id] = v; else delete st[id]; n++; } });
+      store.set("dqst", st); renderDQ(); refreshWH(); const m = $("#dq-msg"); if (m) m.textContent = n ? `Updated ${n} quest${n === 1 ? "" : "s"}.` : "No quest numbers from this guide found."; };
     el.querySelectorAll(".dqchips .chip").forEach(b => b.onclick = () => { state.dqsel = b.dataset.d; store.set("dqsel", state.dqsel); renderDQ(); refreshWH(); });
     el.querySelectorAll(".seg3 button").forEach(b => b.onclick = () => setS(+b.dataset.q, +b.dataset.v));
     el.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => { const t = b.textContent; try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied ✓"; } catch { b.textContent = "Copy failed"; } setTimeout(() => b.textContent = t, 1400); });
