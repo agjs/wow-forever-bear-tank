@@ -1,0 +1,14 @@
+---
+import { KeybindsAndAddons, Macros, QualityOfLife } from "../features/setup/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="setup">
+  <h2>Setup</h2>
+  <p class="lead">Make the game easier: bars that follow your form, settings, habits, macros and addons.</p>
+  <QualityOfLife />
+  <h3>Macros</h3>
+  <p class="small muted">“Untested” means standard Classic macro text that hasn't been tried in the Forever client yet.</p>
+  <Macros client:visible />
+  <KeybindsAndAddons />
+</GuideLayout>

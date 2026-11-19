@@ -7,7 +7,7 @@
     "node": ">=26.4.0"
   },
   "scripts": {
-    "dev": "pnpm --filter @btc/web dev",
+    "dev": "pnpm build:addon && pnpm --filter @btc/web dev",
     "build": "pnpm build:addon && pnpm --filter @btc/web build",
     "build:addon": "pnpm --filter @btc/build-addon start",
     "typecheck": "tsc -b",

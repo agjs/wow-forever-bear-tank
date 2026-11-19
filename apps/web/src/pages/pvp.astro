@@ -1,0 +1,10 @@
+---
+import { Pvp } from "../features/pvp/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="pvp">
+  <h2>PvP</h2>
+  <p class="lead">Pick the class you're fighting to see what to watch out for and how to beat it.</p>
+  <Pvp client:load />
+</GuideLayout>

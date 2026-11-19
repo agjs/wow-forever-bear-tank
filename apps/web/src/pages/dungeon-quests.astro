@@ -1,0 +1,53 @@
+---
+import { DungeonQuests } from "../features/dungeonQuests/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const updater = new URL(`${base}update.ps1`, Astro.site).href;
+---
+
+<GuideLayout slug="dungeon-quests">
+  <h2>Dungeon quests</h2>
+  <p class="lead">
+    In Forever, dungeon enemies give little experience, so the quests are what make a run worth it. Pick a dungeon,
+    follow the stops in order, and mark each quest as you pick it up and finish it. Only Horde and both-faction quests
+    are listed.
+  </p>
+  <details class="dd" id="addon">
+    <summary>Get the in-game addon (shows your real quest status)</summary>
+    <p>
+      Bear Tank Codex is an addon built from this guide. Type <code>/btq</code> in game to open it. It has three tabs:
+      <b>Now</b> (where to quest, what to train and which talent to take at your level), <b>Dungeons</b> (these quests
+      with your real status) and <b>Professions</b> (your next rank and what to craft, counted from your bags).
+    </p>
+    <h4>Install on Windows (recommended)</h4>
+    <ol class="steps">
+      <li>Open PowerShell: press the Windows key, type <code>powershell</code> and press Enter.</li>
+      <li>
+        Paste this line and press Enter:
+        <pre>irm {updater} | iex</pre>
+      </li>
+      <li>
+        It finds your WoW: Forever folder (or asks once), installs the addon, and offers to check for updates every
+        time you log in to Windows. It also removes the old BearTankQuests addon if you had it.
+      </li>
+      <li>Log in to the game (or type <code>/reload</code>) and type <code>/btq</code>.</li>
+    </ol>
+    <h4>Install by hand</h4>
+    <ol class="steps">
+      <li><a href={`${base}BearTankCodex.zip`} download>Download BearTankCodex.zip</a>.</li>
+      <li>
+        Unzip it into <code>World of Warcraft\_forever_\Interface\AddOns</code>, so you end up with
+        <code>Interface\AddOns\BearTankCodex</code>. Delete the old <code>BearTankQuests</code> folder if you have it.
+      </li>
+      <li>Log in (or type <code>/reload</code>) and type <code>/btq</code>.</li>
+    </ol>
+    <p class="small muted">
+      The addon also marks dungeon quests in your quest log and quest tracker: the title takes the dungeon's color, with
+      a thin colored stripe beside it (faint for an earlier step of the chain), and the tooltip names the dungeon. Type
+      <code>/btq tags</code> to turn this off or on. If WoW lists it as out of date on the AddOns screen, tick "Load out
+      of date AddOns".
+    </p>
+  </details>
+  <DungeonQuests client:load />
+</GuideLayout>

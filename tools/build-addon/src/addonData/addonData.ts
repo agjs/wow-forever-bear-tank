@@ -1,5 +1,6 @@
 /** Maps @btc/guide-data into the addon's data contract (see addonData.types.ts). Pure functions only. */
 import type { DungeonQuestList, Professions, QuestRef, RouteStep, Talent, TrainerSpell } from "@btc/guide-data";
+import { questStops } from "@btc/guide-data";
 import type {
   AddonDataFile,
   AddonDungeon,
@@ -32,58 +33,29 @@ export const DUNGEON_STYLE: Readonly<Record<string, readonly [short: string, col
 };
 const DEFAULT_COLOR = "f2c46d";
 
-// ---------- where a quest is picked up ----------
+// ---------- dungeon quests ----------
 
-const INSIDE = /^(inside|drops|a random drop)/i;
-const COORDS = /\(([\d.]+),\s*([\d.]+)\)\s*$/;
-
-/** "Kargath, Badlands (4, 47)" -> { place: "Kargath, Badlands", zone: "Badlands", x: 4, y: 47 } */
-export function parseWhere(where: string) {
-  if (INSIDE.test(where)) return { inside: true as const };
-  const text = where.replace(/,?\s*walks around\s*$/, ""); // roaming NPCs: "Desolace (48.4, 87.0), walks around"
-  const m = text.match(COORDS);
-  const place = text.replace(/\s*\([^)]*\)\s*$/, "");
-  const zone =
-    place
-      .split(",")
-      .map((s) => s.trim())
-      .at(-1) ?? place;
-  return { inside: false as const, place, zone, ...(m ? { x: Number(m[1]), y: Number(m[2]) } : {}) };
-}
-
-/** Groups a dungeon's quests into pickup stops, in data order, with the in-dungeon stop last. */
+/** A dungeon's quests as pickup stops (see questStops in @btc/guide-data), in the addon's shape. */
 export function toDungeonQuests(list: DungeonQuestList): AddonDungeonQuests {
-  const stops: { key: string; stop: AddonStop & { quests: AddonQuest[] } }[] = [];
-  for (const q of list.quests) {
-    const where = parseWhere(q.where);
-    const key = where.inside ? "__inside" : where.place;
-    let entry = stops.find((s) => s.key === key);
-    if (!entry) {
-      const stop: AddonStop & { quests: AddonQuest[] } = where.inside
-        ? { title: `Inside ${list.name}`, inside: true, quests: [] }
-        : {
-            title: where.place,
-            zone: where.zone,
-            ...(where.x !== undefined ? { x: where.x, y: where.y } : {}),
-            inside: false,
-            quests: [],
-          };
-      entry = { key, stop };
-      stops.push(entry);
-    }
-    entry.stop.quests.push({
-      id: q.id,
-      name: q.name,
-      horde: q.faction === "horde",
-      req: q.requiredLevel,
-      giver: q.giver,
-      ...(where.inside ? { where: q.where } : {}),
-      ...(q.note ? { note: q.note } : {}),
-    });
-  }
-  const ordered = stops.map((s) => s.stop).sort((a, b) => Number(a.inside) - Number(b.inside));
+  const stops: AddonStop[] = questStops(list).map(({ title, pickup, quests }) => ({
+    title,
+    ...(pickup.inside
+      ? { inside: true }
+      : { zone: pickup.zone, ...(pickup.x !== undefined ? { x: pickup.x, y: pickup.y } : {}), inside: false }),
+    quests: quests.map(
+      (q): AddonQuest => ({
+        id: q.id,
+        name: q.name,
+        horde: q.faction === "horde",
+        req: q.requiredLevel,
+        giver: q.giver,
+        ...(pickup.inside ? { where: q.where } : {}),
+        ...(q.note ? { note: q.note } : {}),
+      }),
+    ),
+  }));
   const [short, color] = DUNGEON_STYLE[list.key] ?? [list.name, DEFAULT_COLOR];
-  return { key: list.key, name: list.name, short, color, lo: list.levels.min, hi: list.levels.max, stops: ordered };
+  return { key: list.key, name: list.name, short, color, lo: list.levels.min, hi: list.levels.max, stops };
 }
 
 /** Every dungeon quest, then every other step of its chain, mapped to its dungeon. The quest itself wins. */

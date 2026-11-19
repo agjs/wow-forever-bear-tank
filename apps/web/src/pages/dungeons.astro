@@ -1,0 +1,10 @@
+---
+import { Dungeons } from "../features/dungeons/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="dungeons">
+  <h2>Dungeon cheat sheets</h2>
+  <p class="lead">Quests to grab, the route, and every boss. Your level's dungeons are highlighted.</p>
+  <Dungeons client:load />
+</GuideLayout>

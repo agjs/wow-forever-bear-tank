@@ -1,4 +1,4 @@
 {
   "files": [],
-  "references": [{ "path": "packages/guide-data" }, { "path": "tools/build-addon" }]
+  "references": [{ "path": "packages/guide-data" }, { "path": "tools/build-addon" }, { "path": "apps/web" }]
 }

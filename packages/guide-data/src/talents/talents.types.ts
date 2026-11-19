@@ -65,3 +65,9 @@ export interface SecondSpecBuild {
   readonly stats: string;
   readonly sources: readonly Source[];
 }
+
+/** A talent's icon and a one-line, plain-language summary for lists and cards. */
+export interface TalentSummary {
+  readonly icon: string;
+  readonly summary: string;
+}

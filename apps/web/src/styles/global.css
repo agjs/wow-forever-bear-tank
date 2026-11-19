@@ -1,0 +1,38 @@
+/* Tailwind utilities without its preflight reset: the guide's own stylesheet sets the base styles. */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "./guide.css" layer(base);
+
+.brand {
+  color: inherit;
+}
+.brand:hover {
+  color: inherit;
+}
+
+/* Interactive elements the original site drew as divs */
+button.tn {
+  border: 0;
+  padding: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+/* Button groups are fieldsets for accessibility; keep the original look */
+fieldset.stepper,
+fieldset.seg,
+fieldset.seg3 {
+  margin: 0;
+  min-width: 0;
+}
+fieldset.seg3 {
+  border: 0;
+  padding: 0;
+}
+
+/* "Earlier levels hidden" spans the whole talent order grid */
+.order .hidnote {
+  grid-column: 1 / -1;
+}

@@ -35,3 +35,11 @@ export interface Ability {
   readonly text: string;
   readonly kind: "core" | "util" | "cat";
 }
+
+/** A big moment on the way to 60, shown as "coming up" on the Today page. */
+export interface Milestone {
+  readonly level: number;
+  readonly title: string;
+  readonly icon: string;
+  readonly text: string;
+}

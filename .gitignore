@@ -4,3 +4,9 @@ node_modules/
 dist/
 .astro/
 *.tsbuildinfo
+.tsbuild
+
+# Built by tools/build-addon (pnpm build:addon); CI rebuilds them on every deploy
+apps/web/public/BearTankCodex.zip
+apps/web/public/addon-version.txt
+apps/web/public/update.ps1

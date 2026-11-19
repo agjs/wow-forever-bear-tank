@@ -1,5 +1,5 @@
 // Bear Tank Codex guide data. The website and the addon are both built from this package.
-import type { Source } from "../common/index.ts";
+import type { Source, WowheadLinks } from "../common/index.ts";
 import type { Meta } from "./meta.types.ts";
 
 export const meta: Meta = {
@@ -49,3 +49,35 @@ export const sources: readonly Source[] = [
     url: "https://wowtbc.gg/warcraftforever/bis-list/feral-tank-druid/",
   },
 ];
+
+/** Spells and items named in guide text that no other domain links. Name -> Wowhead path. */
+export const extraLinks: WowheadLinks = {
+  "Mark of the Wild": "spell=1126",
+  Thorns: "spell=467",
+  "Bear Form": "spell=5487",
+  "Cat Form": "spell=768",
+  "Travel Form": "spell=783",
+  "Aquatic Form": "spell=1066",
+  "Remove Curse": "spell=2782",
+  "Abolish Poison": "spell=2893",
+  "Cure Poison": "spell=8946",
+  "Omen of Clarity": "spell=16864",
+  Bash: "spell=5211",
+  "Healing Touch": "spell=5185",
+  Rejuvenation: "spell=774",
+  Regrowth: "spell=8936",
+  Moonfire: "spell=8921",
+  Hibernate: "spell=2637",
+  "Entangling Roots": "spell=339",
+  "Teleport: Moonglade": "spell=18960",
+  "Soothe Animal": "spell=2908",
+  Wrath: "spell=5176",
+  Tranquility: "spell=740",
+  "Feline Grace": "spell=20719",
+  "Wolfshead Helm": "item=8345",
+  "Enraged Idol": "item=272428",
+  "Idol of Shifting Tides": "item=263411",
+  "Rugged Armor Kit": "item=15564",
+  "Greater Stoneshield Potion": "item=13455",
+  "Elixir of the Mongoose": "item=13452",
+};

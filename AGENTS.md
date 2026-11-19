@@ -28,7 +28,6 @@ packages/
 tools/
   build-addon/    guide-data -> addon Lua data files, release zip, addon-version.txt, update.ps1
   updater/        update.ps1: Windows updater (installs and keeps the addon current)
-legacy/           the old static site, kept until the Astro site replaces it
 ```
 
 ## Guide data (`packages/guide-data`)
@@ -50,6 +49,18 @@ src/common/              # shared types: LevelRange, Source, TitledText, QuestRe
   filler: leave a fact out rather than hedge it.
 - Add an integrity test when a rule can be checked mechanically.
 - Field names are descriptive camelCase (`requiredLevel`, not `req`). Level ranges are `LevelRange`, never strings.
+
+## Website (`apps/web`)
+
+- One Astro page per section in `src/pages`, all inside `src/layouts/GuideLayout.astro`. Sections are listed once in
+  `src/navigation/navigation.constants.ts` (sidebar, titles, SEO descriptions, redirects from old `#tab` links).
+- Anything that depends on the player's level is a React island (`client:load`). Islands render on the server at
+  level 10 so every page's full content is in the HTML for search engines, then switch to the saved level.
+- Browser state goes through `lib/storage` (`storedValue` + `useStored`). Keys keep the original site's `btc:` names,
+  so saved levels, ticks and quest statuses carry over.
+- Guide text renders through `<Rich>`, which links spell, item, NPC and quest names to Wowhead (`lib/wowhead`).
+- `src/styles/guide.css` is the site's design (ported from the first version). Tailwind utilities are available, its
+  base reset is not loaded.
 
 ## Code standards
 

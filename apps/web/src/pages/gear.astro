@@ -1,0 +1,13 @@
+---
+import { Gear } from "../features/gear/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="gear">
+  <h2>What to wear</h2>
+  <p class="lead">
+    For each slot: the best item from this guide you can wear at your level, and the next upgrade. "Best" means highest
+    item level, so glance at the stats too.
+  </p>
+  <Gear client:load />
+</GuideLayout>

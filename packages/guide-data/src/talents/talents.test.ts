@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { secondSpec, talentOrder, talents, talentTree } from "./talents.data.ts";
+import { secondSpec, talentOrder, talentSummaries, talents, talentTree } from "./talents.data.ts";
 
 const TALENT_POINTS_AT_60 = 51;
 const POINTS_PER_ROW = 5;
@@ -55,5 +55,11 @@ describe("talent data", () => {
     ["balance second spec", secondSpec.balance.order],
   ])("%s follows tree rules (row gates, max ranks, prerequisites)", (_, order) => {
     expect(firstViolation(order, nodes)).toBeNull();
+  });
+});
+
+describe("talent summaries", () => {
+  it("cover every talent in the tank order", () => {
+    for (const key of new Set(talentOrder)) expect(talentSummaries[key], key).toBeDefined();
   });
 });

@@ -1,5 +1,5 @@
 // Bear Tank Codex guide data. The website and the addon are both built from this package.
-import type { SecondSpec, Talent, TalentTree, TalentTreeNames } from "./talents.types.ts";
+import type { SecondSpec, Talent, TalentSummary, TalentTree, TalentTreeNames } from "./talents.types.ts";
 
 export const talents: Readonly<Record<string, Talent>> = {
   ferocity: {
@@ -1690,4 +1690,39 @@ export const secondSpec: SecondSpec = {
       url: "https://timesaver.gg/blog/wow-forever-dual-spec-respec-cost",
     },
   ],
+};
+
+export const talentSummaries: Readonly<Record<string, TalentSummary>> = {
+  ferocity: { icon: "ability_hunter_pet_hyena", summary: "Maul, Swipe and Primal Bite cost 1 less rage per rank" },
+  furor: { icon: "spell_holy_blessingofstamina", summary: "20% chance per rank: +10 rage when you shift into bear" },
+  feralSwiftness: { icon: "spell_nature_spiritwolf", summary: "4% more dodge, and Cat Form runs much faster" },
+  feralInstinct: { icon: "ability_ambush", summary: "Swipe hits 30% harder (more threat on groups)" },
+  brutalImpact: { icon: "ability_druid_bash", summary: "Longer Bash stun (mostly for PvP)" },
+  thickHide: { icon: "inv_misc_pelt_bear_03", summary: "More armor in bear form" },
+  feralCharge: { icon: "ability_hunter_pet_bear", summary: "Jump at an enemy in bear form and interrupt its spell" },
+  shreddingAttacks: { icon: "spell_shadow_vampiricaura", summary: "Cheaper Shred (Cat Form only)" },
+  savageFury: { icon: "ability_druid_ravage", summary: "Maul and Swipe deal 10% more damage" },
+  sharpenedClaws: { icon: "inv_misc_monsterclaw_04", summary: "6% more critical hits in bear and cat form" },
+  predatoryStrikes: { icon: "ability_hunter_pet_cat", summary: "More attack power in forms (90 at level 60)" },
+  lacerate: {
+    icon: "ability_druid_lacerate",
+    summary: "New button: a bleed that stacks up to 5 times and makes lots of threat",
+  },
+  predatoryDiscipline: { icon: "spell_druid_savagery", summary: "Changes a Cat Form finishing move" },
+  bloodFrenzy: { icon: "ability_ghoulfrenzy", summary: "Your critical hits give you extra rage" },
+  leaderOfThePack: { icon: "spell_nature_unyeildingstamina", summary: "Your whole group gets 3% more critical hits" },
+  naturalInstinct: { icon: "ability_druid_predatoryinstincts", summary: "Crits hit harder (2.0× → 2.2×)" },
+  rendAndTear: { icon: "ability_druid_primalagression", summary: "+15% damage on bleeding targets" },
+  naturalReaction: { icon: "ability_bullrush", summary: "+5% dodge, rage when you dodge" },
+  primalBite: { icon: "ability_racial_cannibalize", summary: "New button: big threat bite, 6 second cooldown" },
+  shiftingPower: { icon: "spell_druid_displacement", summary: "Cat energy button" },
+  naturesFocus: { icon: "spell_nature_healingwavegreater", summary: "Caster pushback (skip)" },
+  heartOfTheWild: { icon: "spell_holy_blessingofagility", summary: "+20% Stamina in bear" },
+  naturalist: { icon: "spell_nature_healingtouch", summary: "+10% to all your damage" },
+  reflection: { icon: "spell_frost_windwalkon", summary: "Mana regen while casting" },
+  naturalShapeshifter: { icon: "spell_nature_wispsplode", summary: "Shifting forms costs less mana" },
+  bloom: { icon: "inv_misc_herb_felblossom", summary: "Extra healing when your heal-over-time spells end" },
+  genesis: { icon: "spell_arcane_arcane03", summary: "Bleeds 10% stronger (mostly taken to unlock the next row)" },
+  naturesMajesty: { icon: "inv_staff_01", summary: "4% more critical hits" },
+  naturesReach: { icon: "spell_nature_naturetouchgrow", summary: "4% more chance to hit (you need 8% total)" },
 };

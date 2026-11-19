@@ -1,5 +1,15 @@
 // Bear Tank Codex guide data. The website and the addon are both built from this package.
-import type { Keybind, Macro, Mechanic, Rotation, StatPriority } from "./combat.types.ts";
+import type {
+  EmergencyButton,
+  Keybind,
+  Macro,
+  Mechanic,
+  PriorityListKey,
+  PriorityStep,
+  Rotation,
+  SpellInfo,
+  StatPriority,
+} from "./combat.types.ts";
 
 export const rotation: Rotation = {
   prePull: [
@@ -318,5 +328,168 @@ export const keybinds: readonly Keybind[] = [
   {
     key: "Ctrl-1",
     action: "Rebirth / Innervate macro",
+  },
+];
+
+/** Icon and Forever spell ID for every button the rotation, PvP and emergency lists name. */
+export const spells: Readonly<Record<string, SpellInfo>> = {
+  Lacerate: { icon: "ability_druid_lacerate", spellId: 1235827 },
+  "Primal Bite": { icon: "ability_racial_cannibalize", spellId: 1238070 },
+  Maul: { icon: "ability_druid_maul", spellId: 9881 },
+  Swipe: { icon: "inv_misc_monsterclaw_03", spellId: 9908 },
+  "Demoralizing Roar": { icon: "ability_druid_demoralizingroar", spellId: 9898 },
+  "Faerie Fire": { icon: "spell_nature_faeriefire", spellId: 9907 },
+  Enrage: { icon: "ability_druid_enrage", spellId: 5229 },
+  Barkskin: { icon: "spell_nature_stoneclawtotem", spellId: 22812 },
+  "Frenzied Regeneration": { icon: "ability_bullrush", spellId: 22842 },
+  "Challenging Roar": { icon: "ability_druid_challangingroar", spellId: 5209 },
+  Growl: { icon: "ability_physical_taunt", spellId: 6795 },
+  "Feral Charge": { icon: "ability_hunter_pet_bear", spellId: 16979 },
+  Claw: { icon: "ability_druid_rake", spellId: 1082 },
+  Rake: { icon: "ability_druid_disembowel", spellId: 1822 },
+  Shred: { icon: "spell_shadow_vampiricaura", spellId: 5221 },
+  Rip: { icon: "ability_ghoulfrenzy", spellId: 1079 },
+  "Ferocious Bite": { icon: "ability_druid_ferociousbite", spellId: 22568 },
+  Prowl: { icon: "ability_ambush", spellId: 5215 },
+  Ravage: { icon: "ability_druid_ravage", spellId: 6785 },
+  "Tiger's Fury": { icon: "ability_mount_jungletiger", spellId: 5217 },
+  "Dire Bear Form": { icon: "ability_racial_bearform", spellId: 9634 },
+  Innervate: { icon: "spell_nature_lightning", spellId: 29166 },
+  Rebirth: { icon: "spell_nature_reincarnation", spellId: 20748 },
+};
+
+/** Press the first button that applies, then start again from the top. */
+export const priorityLists: Readonly<Record<PriorityListKey, readonly PriorityStep[]>> = {
+  single: [
+    {
+      spell: "Lacerate",
+      text: "Once it has 5 stacks, renew it when 3 seconds or less are left. Don't let it run out.",
+      unlock: { talent: "lacerate" },
+    },
+    { spell: "Faerie Fire", text: "If the enemy doesn't have it yet. It lowers their armor.", unlock: { level: 18 } },
+    {
+      spell: "Primal Bite",
+      text: "Every time it's ready. It makes the most threat of anything you have.",
+      unlock: { talent: "primalBite" },
+    },
+    {
+      spell: "Demoralizing Roar",
+      text: "If the enemy doesn't have it yet. It makes them hit you softer.",
+      unlock: { level: 10 },
+    },
+    {
+      spell: "Lacerate",
+      text: "When nothing above is needed, use it to build up to 5 stacks.",
+      unlock: { talent: "lacerate" },
+    },
+    {
+      spell: "Swipe",
+      text: "When nothing above is needed (until you get Lacerate).",
+      unlock: { level: 16, onlyBefore: "lacerate" },
+    },
+    {
+      spell: "Maul",
+      text: "Doesn't use up a turn, so press it on top of everything else when you have more than 35 rage. Skip it if Primal Bite is about to be ready and you'd be short on rage for it.",
+      unlock: { level: 10 },
+    },
+  ],
+  cleave: [
+    { spell: "Faerie Fire", text: "On your main target.", unlock: { level: 18 } },
+    { spell: "Primal Bite", text: "Every time it's ready.", unlock: { talent: "primalBite" } },
+    { spell: "Demoralizing Roar", text: "Keep it on the enemies.", unlock: { level: 10 } },
+    {
+      spell: "Lacerate",
+      text: "If your main target isn't bleeding. Your other attacks hit harder against bleeding enemies.",
+      unlock: { talent: "lacerate" },
+    },
+    { spell: "Swipe", text: "When nothing above is needed.", unlock: { level: 16 } },
+    { spell: "Maul", text: "On top of everything else, when you have more than 35 rage.", unlock: { level: 10 } },
+  ],
+  aoe: [
+    { spell: "Faerie Fire", text: "On the main target.", unlock: { level: 18 } },
+    { spell: "Demoralizing Roar", text: "Hits every enemy around you.", unlock: { level: 10 } },
+    { spell: "Swipe", text: "Press it over and over. It hits 3 enemies at once.", unlock: { level: 16 } },
+    { spell: "Maul", text: "On top of everything else, when you have more than 35 rage.", unlock: { level: 10 } },
+    {
+      spell: "Challenging Roar",
+      text: "Emergency only: forces every enemy around you to attack you for 6 seconds. Usable once every 10 minutes.",
+      unlock: { level: 28 },
+    },
+  ],
+  cat: [
+    {
+      spell: "Prowl",
+      text: "Before the fight. Prowl is Cat Form's stealth: enemies can't see you, but you move slower. Sneak up behind the enemy.",
+      unlock: { level: 20 },
+    },
+    {
+      spell: "Ravage",
+      text: "Your first hit from Prowl, standing behind the enemy. A very big hit.",
+      unlock: { level: 32 },
+    },
+    {
+      spell: "Shred",
+      text: "Your first hit from Prowl before level 32. Also use it any time you're standing behind the enemy, or when Omen of Clarity makes your next ability free.",
+      unlock: { level: 20 },
+    },
+    {
+      spell: "Feral Charge",
+      text: "In Cat Form, Feral Charge leaps you behind the enemy from 8 to 25 yards away. Follow it with Shred. Usable every 30 seconds.",
+      unlock: { talent: "feralCharge" },
+    },
+    {
+      spell: "Tiger's Fury",
+      text: "At the start of the fight: 15% more damage for 6 seconds. Usable every 30 seconds.",
+      unlock: { level: 24 },
+    },
+    {
+      spell: "Rake",
+      text: "If the enemy isn't bleeding from Rake yet. It hits, then keeps hurting over 9 seconds.",
+      unlock: { level: 24 },
+    },
+    {
+      spell: "Ferocious Bite",
+      text: "At 5 combo points, to finish off the enemy. Most questing enemies die quickly, so this is usually your best finisher.",
+      unlock: { level: 24 },
+    },
+    {
+      spell: "Rip",
+      text: "At 4 or 5 combo points on an enemy with a lot of health (it hurts over 12 seconds). Before level 32 it's your only finisher, so use it at 3 or more combo points.",
+      unlock: { level: 20 },
+    },
+    {
+      spell: "Claw",
+      text: "When nothing above applies. Builds 1 combo point. Your main button when you're facing the enemy.",
+      unlock: { level: 20 },
+    },
+  ],
+};
+
+/** Explains combo points and when to leave Cat Form, shown above the cat priority list. */
+export const catFormNote: readonly string[] = [
+  "For questing alone, one enemy at a time. Claw, Shred, Rake and Ravage each give you a combo point (the dots on the enemy's portrait, up to 5). Rip and Ferocious Bite are finishers: they spend all your combo points, and more points means a stronger hit.",
+  "Switch to Bear Form if a second enemy joins, or if you drop below about half health. Your talents are built for bear, so Cat Form hits softer than it would for a damage-focused druid, but it still kills single enemies faster.",
+];
+
+export const emergencyButtons: readonly EmergencyButton[] = [
+  {
+    spell: "Barkskin",
+    text: "You take 20% less physical damage for 15 seconds. Ready again after 1 minute. In Forever it works in bear form, so use it often.",
+    level: 44,
+  },
+  {
+    spell: "Frenzied Regeneration",
+    text: "Turns your rage into health for 10 seconds, up to a full heal. Press it before you're low, not when you're almost dead. Ready again after 3 minutes.",
+    level: 36,
+  },
+  {
+    spell: "Challenging Roar",
+    text: "Forces every enemy around you to attack you for 6 seconds. Use it when enemies run off to hit someone else.",
+    level: 28,
+  },
+  {
+    spell: "Enrage",
+    text: "Gives you rage right away, but you take a bit more damage for 10 seconds. Use it before a fight or when you're out of rage.",
+    level: 12,
   },
 ];

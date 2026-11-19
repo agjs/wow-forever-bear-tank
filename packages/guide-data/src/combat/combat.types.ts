@@ -37,3 +37,31 @@ export interface Keybind {
   readonly key: string;
   readonly action: string;
 }
+
+/** Which of the rotation's priority lists: bear on one, two or three+ enemies, or cat while questing. */
+export type PriorityListKey = "single" | "cleave" | "aoe" | "cat";
+
+/** When a button becomes available: a trained level, a talent, or (onlyBefore) until a talent replaces it. */
+export interface Unlock {
+  readonly level?: number;
+  readonly talent?: string;
+  readonly onlyBefore?: string;
+}
+
+export interface PriorityStep {
+  readonly spell: string;
+  readonly text: string;
+  readonly unlock: Unlock;
+}
+
+export interface EmergencyButton {
+  readonly spell: string;
+  readonly text: string;
+  readonly level: number;
+}
+
+/** A spell's Wowhead icon name and Forever spell ID. */
+export interface SpellInfo {
+  readonly icon: string;
+  readonly spellId: number;
+}

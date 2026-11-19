@@ -1,6 +1,6 @@
 import type { DungeonQuestList } from "@btc/guide-data";
 import { describe, expect, it } from "vitest";
-import { parseWhere, toDungeonQuests, toQuestTags } from "./addonData.ts";
+import { toDungeonQuests, toQuestTags } from "./addonData.ts";
 
 const SUNKEN_TEMPLE: DungeonQuestList = {
   key: "st",
@@ -43,38 +43,6 @@ const SUNKEN_TEMPLE: DungeonQuestList = {
     },
   ],
 };
-
-describe("parseWhere", () => {
-  it("splits place, zone and coordinates", () => {
-    expect(parseWhere("Kargath, Badlands (4, 47)")).toEqual({
-      inside: false,
-      place: "Kargath, Badlands",
-      zone: "Badlands",
-      x: 4,
-      y: 47,
-    });
-  });
-
-  it("handles places without coordinates and roaming NPCs", () => {
-    expect(parseWhere("walks around Desolace")).toEqual({
-      inside: false,
-      place: "walks around Desolace",
-      zone: "walks around Desolace",
-    });
-    expect(parseWhere("south of Mannoroc Coven, Desolace (48.4, 87.0), walks around")).toEqual({
-      inside: false,
-      place: "south of Mannoroc Coven, Desolace",
-      zone: "Desolace",
-      x: 48.4,
-      y: 87,
-    });
-  });
-
-  it("recognizes quests picked up inside the dungeon", () => {
-    expect(parseWhere("inside, second floor")).toEqual({ inside: true });
-    expect(parseWhere("a random drop")).toEqual({ inside: true });
-  });
-});
 
 describe("toDungeonQuests", () => {
   const result = toDungeonQuests(SUNKEN_TEMPLE);

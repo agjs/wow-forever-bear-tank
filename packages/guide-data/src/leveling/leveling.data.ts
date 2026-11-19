@@ -1,5 +1,5 @@
 // Bear Tank Codex guide data. The website and the addon are both built from this package.
-import type { Ability, Checkpoint, RouteStep } from "./leveling.types.ts";
+import type { Ability, Checkpoint, Milestone, RouteStep } from "./leveling.types.ts";
 
 export const route: readonly RouteStep[] = [
   {
@@ -1114,4 +1114,32 @@ export const abilities: readonly Ability[] = [
     text: "Its strongest rank.",
     kind: "core",
   },
+];
+
+export const milestones: readonly Milestone[] = [
+  { level: 16, title: "Swipe", icon: "inv_misc_monsterclaw_03", text: "Hold several enemies at once" },
+  { level: 20, title: "Cat Form + Feral Charge", icon: "ability_hunter_pet_bear", text: "Questing gets much faster" },
+  { level: 25, title: "Lacerate", icon: "ability_druid_lacerate", text: "Your main single-target button" },
+  {
+    level: 30,
+    title: "Leader of the Pack + Travel Form",
+    icon: "spell_nature_unyeildingstamina",
+    text: "Crit bonus for your group, faster travel",
+  },
+  { level: 36, title: "Frenzied Regeneration", icon: "ability_bullrush", text: "Emergency self-heal" },
+  {
+    level: 40,
+    title: "Dire Bear Form, Primal Bite and a mount",
+    icon: "ability_racial_cannibalize",
+    text: "Your biggest upgrade on the way to 60",
+  },
+  { level: 44, title: "Barkskin", icon: "spell_nature_stoneclawtotem", text: "Take 20% less damage on demand" },
+  {
+    level: 46,
+    title: "Heart of the Wild done",
+    icon: "spell_holy_blessingofagility",
+    text: "20% more Stamina in bear",
+  },
+  { level: 51, title: "Naturalist done", icon: "spell_nature_healingtouch", text: "10% more damage on everything" },
+  { level: 60, title: "Build complete", icon: "ability_racial_bearform", text: "Start gearing for raids" },
 ];

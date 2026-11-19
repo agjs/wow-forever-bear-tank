@@ -1,31 +1,31 @@
-# Bear Tank Codex: WoW: Forever Feral (Bear) Tank
+# Bear Tank Codex
 
-A static reference site for a Windshaper Skyborne Feral Druid tank in WoW: Forever (Patch 1.60.1). It contains:
+A WoW: Forever guide for a Horde Feral Druid bear tank, from level 10 to 60: where to quest, what to train, which
+talent to take, how to tank every dungeon, the Horde dungeon quests for 50–60, gear, enchants, professions, Camps &
+Crates, PvP and the math behind it all.
 
-- a checkpoint plan for levels 13 to 60 (dungeons, items to farm, talents, training)
-- the talent order with automatic validation (tier gates, rank caps, level requirements, prerequisites)
-- a table showing which talent affects which spell or stat
-- the rotation, cooldown use and shapeshifting rules
-- Forever mechanics, stat priority, an armor calculator, enchants, consumables, professions and racials
+- **Website:** https://agjs.github.io/wow-forever-bear-tank/
+- **In-game addon:** type `/btq`. Install or update it on Windows by pasting this into PowerShell:
 
-No build step. Content lives in `data.js`, and `app.js` only renders it.
+  ```powershell
+  irm https://agjs.github.io/wow-forever-bear-tank/update.ps1 | iex
+  ```
 
-## Publish on GitHub Pages
+  Or download [BearTankCodex.zip](https://agjs.github.io/wow-forever-bear-tank/BearTankCodex.zip) and unzip it into
+  `World of Warcraft\_forever_\Interface\AddOns`.
+
+## Development
 
 ```bash
-git init && git add . && git commit -m "Bear Tank Codex"
-gh repo create wow-forever-bear-tank --public --source=. --push
+nvm use && pnpm i
+pnpm dev       # website at http://localhost:4321/wow-forever-bear-tank/
+pnpm verify    # typecheck, Biome, Vitest, addon tests (needs luajit)
+pnpm build     # addon zip + static site in apps/web/dist
 ```
 
-Then go to the repo on GitHub → **Settings → Pages → Build and deployment**, set **Source** to "Deploy from a branch", and pick **Branch** `main` and folder `/ (root)`.
-The site goes live at `https://<user>.github.io/wow-forever-bear-tank/`.
+Pushing to `main` runs the same checks in GitHub Actions and publishes the site to GitHub Pages.
 
-## Updating after patches
+The website (Astro + React islands) and the addon (Lua) are both built from one typed data package,
+`packages/guide-data`. See [AGENTS.md](./AGENTS.md) for the layout and code standards.
 
-Edit `data.js`:
-
-- `TALENTS`: tooltip text, per-rank effects (`fx`), tank rating
-- `ORDER`: 51 talent keys, one for each level from 10 to 60. The page warns you if the build becomes invalid.
-- `CHECKPOINTS`: dungeons and items. Each item has a flag: `v` (confirmed in the Forever database), `q` (quest reward) or `c` (Classic data, not yet confirmed).
-
-To preview locally, run `python3 -m http.server` and open http://localhost:8000.
+Fan-made reference. Not affiliated with Blizzard.
