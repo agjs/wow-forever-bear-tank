@@ -128,7 +128,7 @@
     Dodge: f => f[0] === "Dodge", Armor: f => f[0] === "Armor", Stamina: f => f[0] === "Stamina", "Attack power": f => f[0] === "AP",
   };
 
-  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw"), pvpCls: store.get("pvpCls", null), spec2: store.get("spec2", "cat") };
+  const state = { level: store.get("level", 13), done: store.get("done", {}), tab: store.get("tab", "today"), chip: null, sel: null, rot: "single", prof: store.get("prof", "lw"), pvpCls: store.get("pvpCls", null), spec2: store.get("spec2", "cat"), dqsel: store.get("dqsel", null) };
   const ptsAt = L => Math.max(0, Math.min(51, L - 9));
   const ranksAt = n => { const r = {}; ORDER.slice(0, n).forEach(k => r[k] = (r[k] || 0) + 1); return r; };
   const FINAL = ranksAt(51);
@@ -277,20 +277,62 @@
   /* ---------------- DUNGEON QUESTS ---------------- */
   function renderDQ() {
     const D = window.DQUESTS, el = $("#dq-body"); if (!D || !el) return;
-    const L = state.level, done = new Set(store.get("dqdone", []));
+    const L = state.level;
+    let st = store.get("dqst", null);
+    if (!st) { st = {}; store.get("dqdone", []).forEach(id => st[id] = 2); store.set("dqst", st); }
+    const S = id => st[id] || 0;
+    const setS = (id, v) => { if (v) st[id] = v; else delete st[id]; store.set("dqst", st); renderDQ(); refreshWH(); };
+    const prog = d => { const c = [0, 0, 0]; d.q.forEach(x => c[S(x[0])]++); return c; };
+    const open = D.filter(d => d.lv[1] >= L);
+    let sel = D.find(d => d.key === state.dqsel) || open.find(d => prog(d)[2] < d.q.length) || open[0] || D[0];
     const npcA = (id, n) => id ? `<a href="https://www.wowhead.com/forever/npc=${id}" target="_blank" rel="noopener">${esc(n)}</a>` : esc(n);
-    const row = ([id, n, side, req, npc, giver, where, note]) => `<li class="dq${done.has(id) ? " done" : ""}"><label><input type="checkbox" data-q="${id}"${done.has(id) ? " checked" : ""}></label><div>
-      <a href="https://www.wowhead.com/forever/quest=${id}" target="_blank" rel="noopener"><b>${esc(n)}</b></a> <span class="tag ${side === "H" ? "q" : "v"}">${side === "H" ? "Horde" : "Both factions"}</span>${req > L ? ` <span class="tag c">needs level ${req}</span>` : ""}
-      <small>From ${npcA(npc, giver)}, ${rich(where)}.${note ? ` ${rich(note)}` : ""}</small></div></li>`;
-    const block = d => { const n = d.q.filter(x => done.has(x[0])).length;
-      return `<div class="card dqcard"><div class="dqh"><b>${esc(d.name)}</b><span class="muted small">Levels ${d.lv[0]}–${d.lv[1]}${d.forever ? " · new in Forever" : ""} · ${n}/${d.q.length} done · <a href="https://www.wowhead.com/forever/guide/${d.guide}" target="_blank" rel="noopener">Wowhead guide</a></span></div><ul class="dqlist">${d.q.map(row).join("")}</ul></div>`; };
-    const now = D.filter(d => d.lv[1] >= L && d.lv[0] <= L + 3), later = D.filter(d => d.lv[0] > L + 3), past = D.filter(d => d.lv[1] < L);
-    el.innerHTML = `${now.length ? `<h3>Your level now</h3>${now.map(block).join("")}` : ""}
-      ${later.length ? `<h3>Coming up</h3>${later.map(d => fold(`${esc(d.name)} <span class="muted small">levels ${d.lv[0]}–${d.lv[1]} · ${d.q.length} quests</span>`, block(d))).join("")}` : ""}
-      ${past.length ? fold(`Dungeons below your level (${past.map(d => esc(d.name)).join(", ")})`, past.map(block).join("")) : ""}
-      <p class="small muted psrc">Source: Wowhead's Forever dungeon guides, with each quest's faction and level checked in the Wowhead Forever database. Class-only and Blacksmith-only quests are left out.</p>`;
-    el.querySelectorAll("input[data-q]").forEach(c => c.onchange = () => { const id = +c.dataset.q; c.checked ? done.add(id) : done.delete(id); store.set("dqdone", [...done]); renderDQ(); refreshWH(); });
+    const inside = w => /^(inside|drops|a random drop)/i.test(w);
+    const place = w => w.replace(/\s*\([^)]*\)\s*$/, "").replace(/, walks around$/, "");
+    const coords = w => (w.match(/\(([\d.]+),\s*([\d.]+)\)/) || []).slice(1);
+    const zoneOf = w => { const p = place(w).split(",").map(x => x.trim()); return p[p.length - 1]; };
+    const wayCmd = w => { const c = coords(w); return c.length ? `/way ${zoneOf(w)} ${c[0]} ${c[1]} ${place(w)}` : ""; };
+    const CHK = `C.IsQuestFlaggedCompleted(q)and"|cff40ff40done"or(GetQuestLogIndexByID(q)or 0)>0 and"|cffffd040in log"or"|cffff6060not done"`;
+    const oneCheck = (id, n) => `/run local C,q=C_QuestLog,${id} print("${n.replace(/"/g, "")}:",${CHK})`;
+    const dunChecks = d => { const ids = d.q.map(x => x[0]), out = []; let cur = [];
+      const mk = a => `/run local C=C_QuestLog for _,q in ipairs({${a.join(",")}})do print(q,C.GetQuestInfo and C.GetQuestInfo(q)or"",${CHK})end`;
+      ids.forEach(id => { if (mk([...cur, id]).length > 255) { out.push(mk(cur)); cur = []; } cur.push(id); }); if (cur.length) out.push(mk(cur)); return out; };
+    const STL = ["Not picked up", "In my quest log", "Done"];
+    const qrow = ([id, n, side, req, npc, giver, where, note]) => { const v = S(id);
+      return `<li class="dqq s${v}">
+        <div class="dqtop"><a class="dqn" href="https://www.wowhead.com/forever/quest=${id}" target="_blank" rel="noopener">${esc(n)}</a>
+          <span class="muted small">#${id}</span> ${side === "H" ? '<span class="tag q">Horde</span>' : ""}${req > L ? ` <span class="tag c">level ${req}</span>` : ""}</div>
+        <div class="dqmeta">Talk to ${npcA(npc, giver)}${inside(where) ? ` (${esc(where)})` : ""}.${note ? ` ${rich(note)}` : ""}</div>
+        <div class="dqact"><div class="seg3">${STL.map((t, k) => `<button data-q="${id}" data-v="${k}" class="${v === k ? "on" : ""}">${t}</button>`).join("")}</div>
+          <button class="copy" data-copy="${esc(oneCheck(id, n))}" title="Paste into the game chat to see if you've done it">Copy in-game check</button></div></li>`; };
+    // group by pickup place, keeping data order
+    const stops = []; sel.q.forEach(x => { const w = x[6], k = inside(w) ? "__in" : place(w); let g = stops.find(s => s.k === k);
+      if (!g) stops.push(g = { k, title: k === "__in" ? `Inside ${sel.name}` : place(sel.q.find(y => y[6] && place(y[6]) === k)[6]), way: k === "__in" ? "" : wayCmd(w), q: [] }); g.q.push(x); });
+    stops.sort((a, b) => (a.k === "__in") - (b.k === "__in"));
+    const [n0, n1, n2] = prog(sel), tot = sel.q.length;
+    const todo = stops.filter(s => s.k !== "__in" && s.q.some(x => S(x[0]) === 0));
+    const next = todo.length ? `Go to <b>${esc(todo[0].title)}</b> and pick up ${todo[0].q.filter(x => S(x[0]) === 0).map(x => `<b>${esc(x[1])}</b>`).join(", ")}.${todo.length > 1 ? ` Then ${todo.length - 1} more stop${todo.length > 2 ? "s" : ""} below.` : ""}`
+      : n2 === tot ? `All ${tot} quests done. Pick the next dungeon above.` : `You have everything you can pick up outside. Run ${esc(sel.name)} and finish the ${n1} quest${n1 === 1 ? "" : "s"} in your log.`;
+    const chip = d => { const [, , c] = prog(d); return `<button class="chip${d === sel ? " on" : ""}${d.lv[1] < L ? " past" : ""}" data-d="${d.key}">${esc(d.name)} <small>${c}/${d.q.length}</small></button>`; };
+    el.innerHTML = `<div class="chips dqchips">${open.map(chip).join("")}${D.filter(d => d.lv[1] < L).length ? `<details class="dqpast"><summary>Lower level</summary>${D.filter(d => d.lv[1] < L).map(chip).join("")}</details>` : ""}</div>
+      <div class="card dqhead">
+        <div class="dqh"><b>${esc(sel.name)}</b><span class="muted small">Levels ${sel.lv[0]}–${sel.lv[1]}${sel.forever ? " · new in Forever" : ""} · <a href="https://www.wowhead.com/forever/guide/${sel.guide}" target="_blank" rel="noopener">Wowhead guide</a></span></div>
+        <div class="dqbar"><i class="d" style="width:${n2 / tot * 100}%"></i><i class="l" style="width:${n1 / tot * 100}%"></i></div>
+        <div class="dqcount"><span><i class="dot d"></i>${n2} done</span><span><i class="dot l"></i>${n1} in your log</span><span><i class="dot n"></i>${n0} not picked up</span></div>
+        <div class="dqnext"><span class="label">Next step</span><p>${next}</p></div>
+        <div class="dqsync"><span class="small muted">Not sure what you've done? Paste this into the game chat. It prints each quest's number (shown next to every quest below) as done, in log or not done. Then set them below.</span>
+          ${dunChecks(sel).map((c, i, a) => `<button class="copy" data-copy="${esc(c)}">Copy in-game check${a.length > 1 ? ` ${i + 1} of ${a.length}` : ""}</button>`).join(" ")}</div>
+      </div>
+      ${stops.map((g, i) => { const left = g.q.filter(x => S(x[0]) === 0).length;
+        return `<div class="dqstop${left ? "" : " clear"}"><div class="dqsh"><span class="num">${g.k === "__in" ? "★" : i + 1}</span><div><b>${esc(g.title)}</b>
+          <small>${g.k === "__in" ? "Picked up or dropped inside the dungeon." : left ? `${left} to pick up here` : "Nothing left to pick up here"}</small></div>
+          ${g.way ? `<button class="copy" data-copy="${esc(g.way)}" title="Needs the TomTom addon">Copy /way</button>` : ""}</div>
+          <ul class="dqql">${g.q.map(qrow).join("")}</ul></div>`; }).join("")}
+      <p class="small muted psrc">"Copy /way" puts a map arrow on the spot if you use the TomTom addon. Quests come from Wowhead's Forever dungeon guides, with faction and level checked in the Wowhead Forever database. Class-only and Blacksmith-only quests are left out.</p>`;
+    el.querySelectorAll(".dqchips .chip").forEach(b => b.onclick = () => { state.dqsel = b.dataset.d; store.set("dqsel", state.dqsel); renderDQ(); refreshWH(); });
+    el.querySelectorAll(".seg3 button").forEach(b => b.onclick = () => setS(+b.dataset.q, +b.dataset.v));
+    el.querySelectorAll("[data-copy]").forEach(b => b.onclick = async () => { const t = b.textContent; try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = "Copied ✓"; } catch { b.textContent = "Copy failed"; } setTimeout(() => b.textContent = t, 1400); });
   }
+
 
   /* ---------------- CAMPS & CRATES ---------------- */
   function renderCamps() {
