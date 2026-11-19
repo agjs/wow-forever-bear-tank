@@ -1,49 +1,98 @@
--- Marks dungeon quests (and the earlier and later steps of their chains) in the quest log and the quest tracker
--- with a colored tag like [ST] or [ST chain]. The quest list is fixed (Data.lua); nothing is looked up from the web.
--- Only dungeons you haven't outleveled are tagged. Blizzard's code always runs first; we only prepend text afterwards.
+-- Marks dungeon quests (and the other steps of their chains) in the quest log and the quest tracker.
+-- It never changes any text: longer text overflowed the line the game had already sized. Instead, on quest TITLES only:
+--   * the title is colored in the dungeon's color,
+--   * a thin colored stripe is drawn left of the title (solid for the dungeon quest, faint for a chain step),
+--   * the hover tooltip gets a line "Bear Tank Codex: <dungeon>".
+-- The quest list is fixed (Data.lua). Only dungeons you haven't outleveled are marked.
 local _, ns = ...
 
 local BYKEY = {}
 for _, d in ipairs(ns.DUNGEONS) do BYKEY[d.key] = d end
 
-local PREFIX = "^|cff%x%x%x%x%x%x%[[^%]]*%]|r "   -- our own tag, so we never add it twice
+local OLD_PREFIX = "^|cff%x%x%x%x%x%x%[[^%]]*%]|r "   -- text tag from version 1.1; stripped if a line still has it
 
-local function tagFor(id)
+local function rgb(hex) return tonumber(hex:sub(1, 2), 16) / 255, tonumber(hex:sub(3, 4), 16) / 255, tonumber(hex:sub(5, 6), 16) / 255 end
+
+local function infoFor(id)
   if BearTankQuestsDB and BearTankQuestsDB.tags == false then return nil end
   local t = id and ns.TAGS[id]
   if not t then return nil end
   local d = BYKEY[t.k]
   if not d or d.hi < (UnitLevel("player") or 1) then return nil end
-  return ("|cff%s[%s%s]|r "):format(d.color, d.short, t.chain and " chain" or "")
+  return d, t.chain
 end
 
-local function decorate(fs, id)
+local function paint(owner)
+  local fs = owner._btqFS
+  if not fs then return end
+  local d, chain = infoFor(owner._btqID)
+  if not d then
+    if owner._btqBar then owner._btqBar:Hide() end
+    if owner._btqColored and owner._btqOrig then fs:SetTextColor(unpack(owner._btqOrig)) end
+    owner._btqColored = false
+    return
+  end
+  local r, g, b = rgb(d.color)
+  if not owner._btqColored then owner._btqOrig = { fs:GetTextColor() } end
+  fs:SetTextColor(r, g, b)
+  owner._btqColored = true
+  if not owner._btqBar then
+    owner._btqBar = owner:CreateTexture(nil, "OVERLAY")
+    owner._btqBar:SetWidth(3)
+  end
+  local bar = owner._btqBar
+  bar:ClearAllPoints()
+  bar:SetPoint("TOPRIGHT", fs, "TOPLEFT", -2, 0)
+  bar:SetPoint("BOTTOMRIGHT", fs, "BOTTOMLEFT", -2, 0)
+  bar:SetColorTexture(r, g, b, chain and 0.45 or 1)
+  bar:Show()
+end
+
+local function onEnter(owner)
+  local d, chain = infoFor(owner._btqID)
+  if not d or not GameTooltip:IsShown() or GameTooltip:GetOwner() ~= owner then return end
+  local r, g, b = rgb(d.color)
+  GameTooltip:AddLine(("Bear Tank Codex: %s%s"):format(d.name, chain and " (a step in the chain)" or " quest"), r, g, b)
+  GameTooltip:Show()
+end
+
+local function decorate(owner, fs, id)
   if not fs or not fs.GetText then return end
   local cur = fs:GetText()
-  if not cur or cur == "" then return end
-  local plain = cur:gsub(PREFIX, "")
-  local tag = tagFor(id)
-  local want = tag and (tag .. plain) or plain
-  if want ~= cur then fs:SetText(want) end
+  if cur and cur:find(OLD_PREFIX) then fs:SetText((cur:gsub(OLD_PREFIX, ""))) end
+  if owner._btqID ~= id then owner._btqColored = false end   -- pooled frame reused for another quest
+  owner._btqFS, owner._btqID = fs, id
+  if not owner._btqHooked and owner.HookScript then
+    owner._btqHooked = true
+    pcall(owner.HookScript, owner, "OnLeave", paint)   -- the game recolors titles when the mouse leaves
+    pcall(owner.HookScript, owner, "OnEnter", onEnter)
+  end
+  paint(owner)
 end
 
--- Walk a frame tree a few levels deep and decorate anything that looks like a quest line.
-local function scan(frame, depth, textKey)
+-- Walk a frame tree a few levels deep. In the quest log, only Buttons are quest titles; objective lines are plain
+-- Frames with the same fields, so they're skipped. In the tracker, only quest blocks have a HeaderText.
+local function scan(frame, depth, textKey, titlesOnly)
   if not frame or depth < 0 or not frame.GetChildren then return end
   for _, child in ipairs({ frame:GetChildren() }) do
     local id = rawget(child, "questID") or rawget(child, "id")
     local fs = rawget(child, textKey)
-    if type(id) == "number" and fs then decorate(fs, id) end
-    scan(child, depth - 1, textKey)
+    if type(id) == "number" and fs and (not titlesOnly or (child.GetObjectType and child:GetObjectType() == "Button")) then
+      decorate(child, fs, id)
+    elseif fs and fs.GetText then
+      local cur = fs:GetText()   -- clean up text tags left by version 1.1 on any line
+      if cur and cur:find(OLD_PREFIX) then fs:SetText((cur:gsub(OLD_PREFIX, ""))) end
+    end
+    scan(child, depth - 1, textKey, titlesOnly)
   end
 end
 
 local function scanLog()
-  if QuestScrollFrame then pcall(scan, QuestScrollFrame, 4, "Text") end
+  if QuestScrollFrame then pcall(scan, QuestScrollFrame, 4, "Text", true) end
 end
 
 local function scanTracker()
-  if ObjectiveTrackerFrame then pcall(scan, ObjectiveTrackerFrame, 5, "HeaderText") end
+  if ObjectiveTrackerFrame then pcall(scan, ObjectiveTrackerFrame, 5, "HeaderText", false) end
 end
 
 function ns.RefreshTags()
