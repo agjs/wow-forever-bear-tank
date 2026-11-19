@@ -1,0 +1,101 @@
+---
+import { meta } from "@btc/guide-data";
+import { LevelStepper } from "../components/LevelStepper/index.ts";
+import { iconUrl } from "../lib/wowhead/index.ts";
+import { pageHref, SECTION_GROUPS, SECTIONS, sectionBySlug } from "../navigation/index.ts";
+import "../styles/global.css";
+
+interface Props {
+  /** The section this page shows ("" for Today). */
+  readonly slug: string;
+}
+
+const { slug } = Astro.props;
+const section = sectionBySlug(slug);
+const base = import.meta.env.BASE_URL;
+const title = slug ? `${section.heading} · Bear Tank Codex` : "Bear Tank Codex: WoW: Forever bear tank guide";
+const canonical = new URL(pageHref(base, slug), Astro.site).href;
+const legacyTabs = Object.fromEntries(SECTIONS.map((s) => [s.legacyHash, pageHref(base, s.slug)]));
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={section.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={iconUrl("ability_racial_bearform", "medium")} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={section.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={iconUrl("ability_racial_bearform")} />
+    <link rel="sitemap" href={pageHref(base, "sitemap-index.xml").replace(/\/$/, "")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      const whTooltips = { colorLinks: true, iconizeLinks: false, renameLinks: false };
+    </script>
+    <script is:inline src="https://wow.zamimg.com/js/tooltips.js" defer></script>
+    {
+      slug === "" && (
+        <script is:inline define:vars={{ legacyTabs }}>
+          const target = legacyTabs[location.hash.slice(1)];
+          if (target && target !== location.pathname) location.replace(target);
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap wide bar">
+        <a class="brand" href={pageHref(base, "")}>
+          <img class="logo" src={iconUrl("ability_racial_bearform")} alt="Bear Form" />
+          <div><b>Bear Tank Codex</b><small>WoW: Forever · Patch {meta.patch}</small></div>
+        </a>
+        <LevelStepper client:load />
+      </div>
+    </header>
+
+    <div class="shell">
+      <nav class="tabs side" aria-label="Sections">
+        {
+          SECTION_GROUPS.map((group) => (
+            <>
+              <div class="grp">{group}</div>
+              {SECTIONS.filter((s) => s.group === group).map((s) => (
+                <a
+                  href={pageHref(base, s.slug)}
+                  class={s.slug === slug ? "on" : undefined}
+                  aria-current={s.slug === slug ? "page" : undefined}
+                >
+                  <img src={iconUrl(s.icon, "medium")} alt="" loading="lazy" />
+                  {s.title}
+                </a>
+              ))}
+            </>
+          ))
+        }
+      </nav>
+      <main class="content">
+        <section class="panel on" id={section.legacyHash}>
+          <slot />
+        </section>
+      </main>
+    </div>
+    <footer class="wrap small muted">Fan-made reference. Not affiliated with Blizzard.</footer>
+    <script>
+      const header = document.querySelector<HTMLElement>(".top");
+      const setHeaderHeight = () =>
+        document.documentElement.style.setProperty("--toph", `${header?.offsetHeight ?? 72}px`);
+      setHeaderHeight();
+      window.addEventListener("resize", setHeaderHeight);
+      document.querySelector(".side a.on")?.scrollIntoView({ block: "nearest", inline: "center" });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+---
+import { Road } from "../features/road/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="road">
+  <h2>Road to 60</h2>
+  <p class="lead">Your current stop and what comes next. Tags on loot: <span class="tag v">Confirmed</span> stats confirmed for Forever, <span class="tag q">Quest</span> quest reward, <span class="tag c">Classic</span> Classic item whose stats may have changed.</p>
+  <Road client:load />
+</GuideLayout>

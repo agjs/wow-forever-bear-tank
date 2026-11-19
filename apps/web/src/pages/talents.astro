@@ -1,0 +1,10 @@
+---
+import { Talents } from "../features/talents/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="talents">
+  <h2>Talents</h2>
+  <p class="lead">At 60: <b>9 Balance, 32 Feral, 10 Restoration</b>. Click a talent to read it.</p>
+  <Talents client:load />
+</GuideLayout>

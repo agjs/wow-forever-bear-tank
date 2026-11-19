@@ -1,0 +1,9 @@
+---
+import { Professions } from "../features/professions/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="professions">
+  <h2>Professions</h2>
+  <Professions client:load />
+</GuideLayout>

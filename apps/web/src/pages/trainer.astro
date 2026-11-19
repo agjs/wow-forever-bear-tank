@@ -1,0 +1,10 @@
+---
+import { Trainer } from "../features/trainer/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="trainer">
+  <h2>Trainer: new spells by level</h2>
+  <p class="lead">New spells come on even levels only. Optional spells are caster spells a bear rarely uses.</p>
+  <Trainer client:load />
+</GuideLayout>

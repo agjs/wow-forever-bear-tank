@@ -1,0 +1,30 @@
+local ns = loadAddon({ "Core/Namespace.lua", "Core/Text.lua" })
+local Text = ns.module("Core.Text")
+
+describe("Text", function()
+  it("formats money and skips zero parts", function()
+    expect(Text.money(12345)).toBe("1g 23s 45c")
+    expect(Text.money(20000)).toBe("2g")
+    expect(Text.money(0)).toBe("0c")
+  end)
+
+  it("strips color codes", function()
+    expect(Text.plain("|cffff8040[53] Yuka Screwspigot|r")).toBe("[53] Yuka Screwspigot")
+  end)
+
+  it("wraps text in named or hex colors", function()
+    expect(Text.color("gold", "x")).toBe("|cfff2c46dx|r")
+    expect(Text.color("123456", "x")).toBe("|cff123456x|r")
+  end)
+
+  it("joins lists in plain English", function()
+    expect(Text.list({ "a" })).toBe("a")
+    expect(Text.list({ "a", "b" })).toBe("a and b")
+    expect(Text.list({ "a", "b", "c" })).toBe("a, b and c")
+  end)
+
+  it("pluralizes", function()
+    expect(Text.plural(1, "quest")).toBe("1 quest")
+    expect(Text.plural(3, "quest")).toBe("3 quests")
+  end)
+end)

@@ -1,0 +1,54 @@
+---
+import {
+  Abilities,
+  ArmorCalculator,
+  DerivedStats,
+  EnchantsAndConsumables,
+  Mechanics,
+  Racials,
+  Sources,
+  StatPriority,
+  TalentMatrix,
+} from "../features/deepDive/index.ts";
+import GuideLayout from "../layouts/GuideLayout.astro";
+---
+
+<GuideLayout slug="deep-dive">
+  <h2>Deep dive</h2>
+  <p class="lead">The math and the details. Everything here is optional.</p>
+  <details class="dd" open>
+    <summary>Your numbers at this level</summary>
+    <p class="small muted">Worked out from the talents you have at your level. Multipliers stack.</p>
+    <DerivedStats client:load />
+  </details>
+  <details class="dd"><summary>What changed from Classic</summary><Mechanics /></details>
+  <details class="dd"><summary>Stat priority</summary><StatPriority /></details>
+  <details class="dd"><summary>Armor calculator</summary><ArmorCalculator client:visible /></details>
+  <details class="dd"><summary>Talent ↔ spell table (all effects)</summary><TalentMatrix /></details>
+  <details class="dd"><summary>Enchants &amp; consumables</summary><EnchantsAndConsumables /></details>
+  <details class="dd">
+    <summary>Professions, camping, Legacy points</summary>
+    <ul class="kv">
+      <li>
+        <b>While leveling</b>Leatherworking and Skinning. Skin the animals you kill, then make your own leather armor,
+        armor kits, and later the Wolfshead Helm and the Warbear pieces.
+      </li>
+      <li>
+        <b>At 60</b>Many tanks switch to Engineering plus Leatherworking. Engineering bombs (Sapper Charges) reportedly
+        work in bear form in Forever.
+      </li>
+      <li><b>Always</b>Cooking, First Aid and Fishing. They don't use up a profession slot.</li>
+      <li>
+        <b>Camping</b>Forever lets you set up a camp with useful items. Wowhead recommends the Fish Bowl (more stats),
+        First Aid Kit, Sharpening Wheel, Lodestone and Camp Tent (rested experience).
+      </li>
+      <li>
+        <b>Legacy points</b>Forever's account-wide bonuses. Spend the first 5 on Thrill of Adventure, the next 5 on Well
+        Rested, then Talented, then the rest on Thrill of Adventure.
+      </li>
+    </ul>
+  </details>
+  <details class="dd"><summary>Windshaper Skyborne racials</summary><Racials /></details>
+  <details class="dd"><summary>All abilities by level</summary><Abilities /></details>
+  <details class="dd"><summary>Sources</summary><Sources /></details>
+</GuideLayout>

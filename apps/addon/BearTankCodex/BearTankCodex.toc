@@ -1,0 +1,37 @@
+## Interface: 16001, 16002, 16003, 16100
+## Title: Bear Tank Codex
+## Notes: The Bear Tank Codex guide in game: what to do at your level, dungeon quests with live status, professions with the materials in your bags, and colored dungeon quests in your quest log. Type /btq.
+## Author: Bear Tank Codex
+## Version: 2.0.0
+## SavedVariables: BearTankCodexDB
+
+Core\Namespace.lua
+Core\Text.lua
+Core\Scheduler.lua
+Core\Events.lua
+Core\Store.lua
+
+Data\Dungeons.lua
+Data\Route.lua
+Data\Trainer.lua
+Data\Talents.lua
+Data\Professions.lua
+
+Services\Api.lua
+Services\State.lua
+
+UI\Tabs.lua
+UI\Widgets\List.lua
+
+Features\Dungeons\Dungeons.selectors.lua
+Features\Dungeons\Dungeons.tab.lua
+Features\Now\Now.selectors.lua
+Features\Now\Now.tab.lua
+Features\Professions\Professions.selectors.lua
+Features\Professions\Professions.tab.lua
+Features\QuestTags\QuestTags.utils.lua
+Features\QuestTags\QuestTags.lua
+
+UI\Window\Window.lua
+Commands\Slash.lua
+Init.lua
