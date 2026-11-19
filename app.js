@@ -294,8 +294,11 @@
     // Robust in-game check: works whether the client has C_QuestLog or only the old global functions; plain text, no color codes.
     // Paste SETUP once per game session; it defines QD(questId). Then the short checks work.
     const SETUP = `/run local C=C_QuestLog or{}local D,I=C.IsQuestFlaggedCompleted or IsQuestFlaggedCompleted,C.GetLogIndexForQuestID or GetQuestLogIndexByID function QD(q)return D(q)and"DONE"or(I(q)or 0)>0 and"IN LOG"or"not done"end print("Quest check ready")`;
-    const oneCheck = id => `/run print(${id},QD(${id}))`;
-    const dunChecks = d => [`/run for _,q in ipairs({${d.q.map(x => x[0]).join(",")}})do print(q,QD(q))end`];
+    const qs = n => `"${n.replace(/["\\|]/g, "")}"`;
+    const oneCheck = (id, n) => `/run print(${qs(n)},QD(${id}))`;
+    const dunChecks = d => { const out = []; let cur = [];
+      const mk = a => `/run local t={${a.map(x => `${x[0]},${qs(x[1])}`).join(",")}}for i=1,#t,2 do print(t[i+1].." -",QD(t[i]))end`;
+      d.q.forEach(x => { if (cur.length && mk([...cur, x]).length > 255) { out.push(mk(cur)); cur = []; } cur.push(x); }); out.push(mk(cur)); return out; };
     const STL = ["Not picked up", "In my quest log", "Done"];
     const qrow = ([id, n, side, req, npc, giver, where, note]) => { const v = S(id);
       return `<li class="dqq s${v}">
@@ -303,7 +306,7 @@
           <span class="muted small">#${id}</span> ${side === "H" ? '<span class="tag q">Horde</span>' : ""}${req > L ? ` <span class="tag c">level ${req}</span>` : ""}</div>
         <div class="dqmeta">Talk to ${npcA(npc, giver)}${inside(where) ? ` (${esc(where)})` : ""}.${note ? ` ${rich(note)}` : ""}</div>
         <div class="dqact"><div class="seg3">${STL.map((t, k) => `<button data-q="${id}" data-v="${k}" class="${v === k ? "on" : ""}">${t}</button>`).join("")}</div>
-          <button class="copy" data-copy="${esc(oneCheck(id))}" title="Paste into the game chat to see if you've done it">Copy in-game check</button></div></li>`; };
+          <button class="copy" data-copy="${esc(oneCheck(id, n))}" title="Paste into the game chat to see if you've done it">Copy in-game check</button></div></li>`; };
     // group by pickup place, keeping data order
     const stops = []; sel.q.forEach(x => { const w = x[6], k = inside(w) ? "__in" : place(w); let g = stops.find(s => s.k === k);
       if (!g) stops.push(g = { k, title: k === "__in" ? `Inside ${sel.name}` : place(sel.q.find(y => y[6] && place(y[6]) === k)[6]), way: k === "__in" ? "" : wayCmd(w), q: [] }); g.q.push(x); });
@@ -319,10 +322,10 @@
         <div class="dqbar"><i class="d" style="width:${n2 / tot * 100}%"></i><i class="l" style="width:${n1 / tot * 100}%"></i></div>
         <div class="dqcount"><span><i class="dot d"></i>${n2} done</span><span><i class="dot l"></i>${n1} in your log</span><span><i class="dot n"></i>${n0} not picked up</span></div>
         <div class="dqnext"><span class="label">Next step</span><p>${next}</p></div>
-        <div class="dqsync"><span class="small muted"><b>Check in game what you've done.</b> 1. Once per login, paste the setup line into chat: it answers "Quest check ready". 2. Paste the dungeon check: it prints each quest's number (shown next to every quest below) as DONE, IN LOG or not done. The "Copy in-game check" on a single quest works after the setup too.</span>
-          <button class="copy" data-copy="${esc(SETUP)}">1. Copy setup</button> ${dunChecks(sel).map(c => `<button class="copy" data-copy="${esc(c)}">2. Copy dungeon check</button>`).join(" ")}
+        <div class="dqsync"><span class="small muted"><b>Check in game what you've done.</b> 1. Once per login, paste the setup line into chat: it answers "Quest check ready". 2. Paste the dungeon check: it lists every quest here by name as DONE, IN LOG or not done. The "Copy in-game check" on a single quest works after the setup too.</span>
+          <button class="copy" data-copy="${esc(SETUP)}">1. Copy setup</button> ${dunChecks(sel).map((c, i, a) => `<button class="copy" data-copy="${esc(c)}">2. Copy dungeon check${a.length > 1 ? ` (${i + 1} of ${a.length})` : ""}</button>`).join(" ")}
           <details class="dqpaste"><summary>3. Paste or type the results here to update this page</summary>
-            <textarea id="dq-res" rows="5" placeholder="1445 not done&#10;3380 DONE&#10;3446 IN LOG"></textarea>
+            <textarea id="dq-res" rows="5" placeholder="The Temple of Atal&#39;Hakkar - not done&#10;The Sunken Temple - DONE&#10;Into the Depths - IN LOG"></textarea>
             <button class="copy" id="dq-apply">Update my quests</button> <span class="small muted" id="dq-msg"></span></details></div>
       </div>
       ${stops.map((g, i) => { const left = g.q.filter(x => S(x[0]) === 0).length;
@@ -331,9 +334,11 @@
           ${g.way ? `<button class="copy" data-copy="${esc(g.way)}" title="Needs the TomTom addon">Copy /way</button>` : ""}</div>
           <ul class="dqql">${g.q.map(qrow).join("")}</ul></div>`; }).join("")}
       <p class="small muted psrc"><b>If the setup prints nothing:</b> type <code>/run print("test")</code>. If even that shows nothing, the game is blocking scripts. If "test" works but the setup doesn't, type <code>/console scriptErrors 1</code> and paste the setup again: the game will show the error, and you can send it to me. "Copy /way" puts a map arrow on the spot if you use the TomTom addon. Quests come from Wowhead's Forever dungeon guides, with faction and level checked in the Wowhead Forever database. Class-only and Blacksmith-only quests are left out.</p>`;
-    $("#dq-apply").onclick = () => { let n = 0; ($("#dq-res").value.match(/\d+\s+(done|in log|not done)/gi) || []).forEach(m => {
-        const [, id, t] = m.match(/(\d+)\s+(.+)/), v = /^done/i.test(t) ? 2 : /log/i.test(t) ? 1 : 0;
-        if (D.some(d => d.q.some(x => x[0] === +id))) { if (v) st[id] = v; else delete st[id]; n++; } });
+    $("#dq-apply").onclick = () => { let n = 0; ($("#dq-res").value.split(/\n/)).forEach(line => {
+        const m = line.match(/(DONE|IN LOG|not done)\s*$/i); if (!m) return; const v = /^done/i.test(m[1]) ? 2 : /log/i.test(m[1]) ? 1 : 0;
+        const head = line.slice(0, m.index).replace(/\s*-\s*$/, "").trim().toLowerCase(), num = +(head.match(/^\d+$/) || [0])[0];
+        const hit = D.flatMap(d => d.q).find(x => x[0] === num || x[1].toLowerCase() === head); if (!hit) return;
+        if (v) st[hit[0]] = v; else delete st[hit[0]]; n++; });
       store.set("dqst", st); renderDQ(); refreshWH(); const m = $("#dq-msg"); if (m) m.textContent = n ? `Updated ${n} quest${n === 1 ? "" : "s"}.` : "No quest numbers from this guide found."; };
     el.querySelectorAll(".dqchips .chip").forEach(b => b.onclick = () => { state.dqsel = b.dataset.d; store.set("dqsel", state.dqsel); renderDQ(); refreshWH(); });
     el.querySelectorAll(".seg3 button").forEach(b => b.onclick = () => setS(+b.dataset.q, +b.dataset.v));
