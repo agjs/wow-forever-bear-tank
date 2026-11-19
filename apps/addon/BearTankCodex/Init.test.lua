@@ -64,6 +64,19 @@ describe("Addon integration", function()
     expect(plain()).toContain("Into the Depths  done")
   end)
 
+  it("adds a minimap button that opens the window and can be hidden", function()
+    local button = _G.BearTankCodexMinimapButton
+    expect(button ~= nil).toBe(true)
+    local window = _G.BearTankCodexFrame
+    local wasShown = window._shown
+    button._scripts.OnClick(button)
+    expect(window._shown).toBe(not wasShown)
+    SlashCmdList.BEARTANKCODEX("minimap")
+    expect(BearTankCodexDB.minimapHidden).toBe(true)
+    SlashCmdList.BEARTANKCODEX("minimap")
+    expect(BearTankCodexDB.minimapHidden).toBe(false)
+  end)
+
   it("toggles quest log colors", function()
     SlashCmdList.BEARTANKCODEX("tags")
     expect(BearTankCodexDB.questTags).toBe(false)

@@ -16,7 +16,7 @@ const updater = new URL(`${base}update.ps1`, Astro.site).href;
   <details class="dd" id="addon">
     <summary>Get the in-game addon (shows your real quest status)</summary>
     <p>
-      Bear Tank Codex is an addon built from this guide. Type <code>/btq</code> in game to open it. It has three tabs:
+      Bear Tank Codex is an addon built from this guide. Type <code>/btq</code> in game or click the bear button on your minimap. It has three tabs:
       <b>Now</b> (where to quest, what to train and which talent to take at your level), <b>Dungeons</b> (these quests
       with your real status) and <b>Professions</b> (your next rank and what to craft, counted from your bags).
     </p>
@@ -43,10 +43,10 @@ const updater = new URL(`${base}update.ps1`, Astro.site).href;
       <li>Log in (or type <code>/reload</code>) and type <code>/btq</code>.</li>
     </ol>
     <p class="small muted">
-      The addon also marks dungeon quests in your quest log and quest tracker: the title takes the dungeon's color, with
-      a thin colored stripe beside it (faint for an earlier step of the chain), and the tooltip names the dungeon. Type
-      <code>/btq tags</code> to turn this off or on. If WoW lists it as out of date on the AddOns screen, tick "Load out
-      of date AddOns".
+      The addon also colors dungeon quests in your quest log and quest tracker with the dungeon's color, and their
+      tooltip names the dungeon. Type <code>/btq tags</code> to turn this off or on. Click the bear button on your minimap
+      to open the addon, or drag it to move it (<code>/btq minimap</code> hides it). If WoW lists it as out of date on the
+      AddOns screen, tick "Load out of date AddOns".
     </p>
   </details>
   <DungeonQuests client:load />

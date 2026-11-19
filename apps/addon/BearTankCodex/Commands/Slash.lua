@@ -6,6 +6,7 @@ local Store = ns.module("Core.Store")
 local Text = ns.module("Core.Text")
 local QuestTags = ns.module("QuestTags")
 local Api = ns.module("Services.Api")
+local MinimapButton = ns.module("MinimapButton")
 
 local TAB_ALIASES = { now = "now", dungeons = "dungeons", dq = "dungeons", prof = "professions", professions = "professions" }
 
@@ -27,10 +28,14 @@ local COMMANDS = {
       print("  " .. line)
     end
   end,
+  minimap = function()
+    MinimapButton.toggle()
+  end,
   help = function()
     Text.say("/btq opens the window. /btq now, /btq dungeons, /btq prof jump to a tab.")
     print("  /btq sunken (any part of a dungeon name) opens that dungeon's quests.")
-    print("  /btq tags turns quest log colors on or off. /btq debug prints diagnostics.")
+    print("  /btq tags turns quest log colors on or off. /btq minimap hides or shows the minimap button.")
+    print("  /btq debug prints diagnostics.")
   end,
 }
 

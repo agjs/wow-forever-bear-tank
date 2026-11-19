@@ -65,11 +65,6 @@ local function createRow(parent)
   row.highlight:SetPoint("TOPLEFT", -4, 2)
   row.highlight:SetPoint("BOTTOMRIGHT", 4, -2)
   row.highlight:SetColorTexture(1, 0.85, 0.4, 0.08)
-  row.bar = row:CreateTexture(nil, "BACKGROUND")
-  row.bar:SetPoint("TOPLEFT", -6, 2)
-  row.bar:SetPoint("BOTTOMLEFT", -6, -2)
-  row.bar:SetWidth(3)
-  row.bar:SetColorTexture(0.95, 0.77, 0.43, 0.9)
   row.rule = row:CreateTexture(nil, "BACKGROUND")
   row.rule:SetHeight(1)
   row.rule:SetPoint("BOTTOMLEFT", 0, -3)
@@ -97,7 +92,6 @@ local function resetRow(row)
   row:EnableMouse(false)
   row.tooltipSpec = nil
   row.highlight:Hide()
-  row.bar:Hide()
   row.rule:Hide()
   row.icon:Hide()
   row.right:SetText("")
@@ -170,9 +164,6 @@ function List.render(list, rows)
         row.prev:Show()
         row.next:Show()
       end
-      if spec.kind == "callout" then
-        row.bar:Show()
-      end
       if style.rule then
         row.rule:Show()
       end
@@ -189,7 +180,7 @@ function List.render(list, rows)
       end
 
       row:ClearAllPoints()
-      row:SetPoint("TOPLEFT", indent + (spec.kind == "callout" and 6 or 0), -y)
+      row:SetPoint("TOPLEFT", indent, -y)
       row:SetSize(rowWidth, height)
       row:Show()
       y = y + height + style.after

@@ -1,5 +1,5 @@
--- QuestTags: colors dungeon quests (and their chain steps) in the quest log and quest tracker, adds a thin
--- stripe beside the title and a tooltip line. Runs after Blizzard redraws (hooksecurefunc) and never changes the
+-- QuestTags: colors dungeon quests (and their chain steps) in the quest log and quest tracker, and adds a
+-- tooltip line naming the dungeon. Runs after Blizzard redraws (hooksecurefunc) and never changes the
 -- visible text, so line sizes stay exactly what the game set.
 local _, ns = ...
 local QuestTags = ns.module("QuestTags")
@@ -26,27 +26,11 @@ local function paint(owner)
   end
   local mark = markFor(owner._btcQuest)
   if not mark then
-    if owner._btcBar then
-      owner._btcBar:Hide()
-    end
     return
   end
   local colored = Utils.recolor(text, mark.dungeon.color)
   if colored ~= text then
     fs:SetText(colored)
-  end
-  if not owner._btcBar and owner.CreateTexture then
-    owner._btcBar = owner:CreateTexture(nil, "OVERLAY")
-    owner._btcBar:SetWidth(3)
-  end
-  local bar = owner._btcBar
-  if bar then
-    local r, g, b = Utils.rgb(mark.dungeon.color)
-    bar:ClearAllPoints()
-    bar:SetPoint("TOPRIGHT", fs, "TOPLEFT", -2, 0)
-    bar:SetPoint("BOTTOMRIGHT", fs, "BOTTOMLEFT", -2, 0)
-    bar:SetColorTexture(r, g, b, mark.chain and 0.45 or 1)
-    bar:Show()
   end
 end
 

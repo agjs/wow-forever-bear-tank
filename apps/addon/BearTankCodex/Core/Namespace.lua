@@ -2,7 +2,7 @@
 local addonName, ns = ...
 
 ns.name = addonName
-ns.version = "2.1.0"
+ns.version = "2.2.0"
 ns.data = ns.data or {}
 
 local modules = {}

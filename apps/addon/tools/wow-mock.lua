@@ -109,6 +109,10 @@ function M.install(state)
     return frame(kind, name)
   end
   _G.UIParent = frame("Frame")
+  _G.Minimap = frame("Frame")
+  _G.GetCursorPosition = function()
+    return 0, 0
+  end
   _G.UISpecialFrames = {}
   _G.tinsert = table.insert
   _G.SlashCmdList = {}

@@ -7,6 +7,8 @@ Store.DEFAULTS = {
   dungeon = nil, -- selected dungeon key; nil = pick the first one for your level
   questTags = true, -- color dungeon quests in the quest log and tracker
   position = nil, -- { point, relativePoint, x, y }
+  minimapAngle = nil, -- degrees around the minimap; nil = default spot
+  minimapHidden = false,
 }
 
 local function fill(target, defaults)
