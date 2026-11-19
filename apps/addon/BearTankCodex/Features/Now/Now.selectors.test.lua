@@ -127,7 +127,7 @@ describe("Now selectors", function()
   it("renders every section with an action to open a dungeon", function()
     local rows = Selectors.rows(ctx(50, {}), DATA, Dungeons.counts)
     local text, opens = {}, 0
-    for _, r in ipairs(rows) do
+    for _, r in ipairs(flatRows(rows)) do
       text[#text + 1] = Text.plain(r.text or "")
       if r.action and r.action.type == "openDungeon" then
         opens = opens + 1

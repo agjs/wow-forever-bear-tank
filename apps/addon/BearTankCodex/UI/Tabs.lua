@@ -1,5 +1,6 @@
--- Tabs: registry of window tabs. Each feature registers one in its <Feature>.tab.lua.
--- tab = { id, label, order, topics = { "quests", ... }, build = function(ctx) return rows end }
+-- Tabs: registry of the window's sections. Each feature registers one in its <Feature>.tab.lua.
+-- tab = { id, label, icon, group, order, topics = { "quests", ... }, build = function(ctx) return rows end }
+-- Sections show in the sidebar by `order`, under their `group` heading (Play, Your bear, Professions).
 local _, ns = ...
 local Tabs = ns.module("UI.Tabs")
 

@@ -56,6 +56,25 @@ describe("parseWhere", () => {
   });
 });
 
+describe("questStops with chains", () => {
+  it("files a chained quest under the place its chain starts", () => {
+    const zapper = {
+      ...quest(4146, "Ratchet, The Barrens (62.2, 38.4)"),
+      chain: [
+        {
+          id: 4145,
+          name: "Larion and Muigin",
+          giver: "Larion",
+          where: "Marshal's Refuge, Un'Goro Crater (45.4, 8.4)",
+          task: "Hunt Bloodpetals.",
+        },
+      ],
+    };
+    const stops = questStops({ ...SUNKEN_TEMPLE, quests: [zapper] });
+    expect(stops.map((s) => s.title)).toEqual(["Marshal's Refuge, Un'Goro Crater"]);
+  });
+});
+
 describe("questStops", () => {
   const stops = questStops(SUNKEN_TEMPLE);
 

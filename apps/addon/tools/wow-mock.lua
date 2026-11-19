@@ -85,6 +85,9 @@ local function frame(kind, name)
   function f:GetHeight()
     return self._height
   end
+  function f:GetFrameLevel()
+    return 1
+  end
   function f:GetVerticalScroll()
     return 0
   end
@@ -110,6 +113,11 @@ function M.install(state)
   end
   _G.UIParent = frame("Frame")
   _G.Minimap = frame("Frame")
+  _G.CreateFont = function(name)
+    local font = object("Font")
+    _G[name] = font
+    return font
+  end
   _G.GetCursorPosition = function()
     return 0, 0
   end

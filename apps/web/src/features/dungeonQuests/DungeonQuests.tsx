@@ -2,6 +2,7 @@ import {
   type DungeonQuest,
   type DungeonQuestList,
   dungeonQuests,
+  parseWhere,
   type QuestStop,
   questStops,
   wayCommand,
@@ -19,6 +20,7 @@ import {
   progress,
   type QuestStatus,
   type QuestStatuses,
+  questNext,
   STATUS_LABELS,
   statusOf,
   withStatus,
@@ -27,15 +29,99 @@ import {
 const statusStore = storedValue<QuestStatuses>("dqst", {}, isRecordOf(isQuestStatus));
 const selectedStore = storedValue<string | null>("dqsel", null, (v): v is string | null => v === null || isString(v));
 
+const Giver = ({ quest }: { readonly quest: DungeonQuest }) =>
+  quest.npcId ? <WowLink path={`npc=${quest.npcId}`}>{quest.giver}</WowLink> : quest.giver;
+
+interface ChainStepsProps {
+  readonly quest: DungeonQuest;
+  readonly statuses: QuestStatuses;
+  readonly onStepDone: (stepId: number, done: boolean) => void;
+}
+
+/** The quests to do first, in order, each with who gives it, where, what to do and a /way for the map arrow. */
+function ChainSteps({ quest, statuses, onStepDone }: ChainStepsProps) {
+  const next = questNext(quest, statuses);
+  const steps = quest.chain ?? [];
+  return (
+    <div className="dqchain">
+      <p className="dqmeta">
+        {next.kind === "step" ? (
+          <>
+            This quest unlocks after {steps.length} earlier {plural(steps.length, "quest")}. You're on step {next.index}
+            .
+          </>
+        ) : (
+          <>Chain done. Now pick it up:</>
+        )}
+      </p>
+      <ol className="dqsteps">
+        {steps.map((step, index) => {
+          const done = statusOf(statuses, step.id) === 2;
+          const current = next.kind === "step" && next.index === index + 1;
+          const pickup = parseWhere(step.where);
+          const way = wayCommand(pickup);
+          return (
+            <li key={step.id} className={done ? "done" : current ? "now" : undefined}>
+              <label className="dqstep-check">
+                <input type="checkbox" checked={done} onChange={(event) => onStepDone(step.id, event.target.checked)} />
+                <span className="sr-only">Done</span>
+              </label>
+              <div>
+                <a href={wowheadUrl(`quest=${step.id}`)} target="_blank" rel="noopener">
+                  {step.name}
+                </a>
+                <span className="small muted">
+                  {" "}
+                  from {step.npcId ? <WowLink path={`npc=${step.npcId}`}>{step.giver}</WowLink> : step.giver},{" "}
+                  {pickup.inside ? step.where : pickup.place}
+                  {!pickup.inside && pickup.x !== undefined && ` (${pickup.x}, ${pickup.y})`}
+                </span>
+                {!done && step.task && (
+                  <span className="dqtask">
+                    <Rich text={step.task} />
+                  </span>
+                )}
+              </div>
+              {!done && way && <CopyButton text={way} label="Copy /way" title="Needs the TomTom addon" />}
+            </li>
+          );
+        })}
+        <li className={next.kind === "pickup" ? "now" : undefined}>
+          <span className="dqstep-final">★</span>
+          <div>
+            <b>{quest.name}</b>
+            <span className="small muted">
+              {" "}
+              from <Giver quest={quest} />, {parseWhere(quest.where).inside ? quest.where : placeName(quest.where)}
+            </span>
+            {quest.note && (
+              <span className="dqtask">
+                <Rich text={quest.note} />
+              </span>
+            )}
+          </div>
+        </li>
+      </ol>
+    </div>
+  );
+}
+
+const placeName = (where: string) => {
+  const pickup = parseWhere(where);
+  return pickup.inside ? where : pickup.x !== undefined ? `${pickup.place} (${pickup.x}, ${pickup.y})` : pickup.place;
+};
+
 interface QuestRowProps {
   readonly quest: DungeonQuest;
   readonly level: number;
   readonly status: QuestStatus;
+  readonly statuses: QuestStatuses;
   readonly inside: boolean;
   readonly onStatus: (status: QuestStatus) => void;
+  readonly onStepDone: (stepId: number, done: boolean) => void;
 }
 
-function QuestRow({ quest, level, status, inside, onStatus }: QuestRowProps) {
+function QuestRow({ quest, level, status, statuses, inside, onStatus, onStepDone }: QuestRowProps) {
   return (
     <li className={`dqq s${status}`}>
       <div className="dqtop">
@@ -46,11 +132,15 @@ function QuestRow({ quest, level, status, inside, onStatus }: QuestRowProps) {
         {quest.faction === "horde" && <span className="tag q">Horde</span>}
         {quest.requiredLevel > level && <span className="tag c"> level {quest.requiredLevel}</span>}
       </div>
-      <div className="dqmeta">
-        Talk to {quest.npcId ? <WowLink path={`npc=${quest.npcId}`}>{quest.giver}</WowLink> : quest.giver}
-        {inside && ` (${quest.where})`}.{quest.note && " "}
-        <Rich text={quest.note} />
-      </div>
+      {quest.chain && status === 0 ? (
+        <ChainSteps quest={quest} statuses={statuses} onStepDone={onStepDone} />
+      ) : (
+        <div className="dqmeta">
+          Talk to <Giver quest={quest} />
+          {inside && ` (${quest.where})`}.{quest.note && " "}
+          <Rich text={quest.note} />
+        </div>
+      )}
       <div className="dqact">
         <fieldset className="seg3" aria-label={`Status of ${quest.name}`}>
           {STATUS_LABELS.map(([value, label]) => (
@@ -91,7 +181,7 @@ function NextStepText({
     );
   return (
     <>
-      Go to <b>{next.stop.title}</b> and pick up{" "}
+      Go to <b>{next.place}</b> and pick up{" "}
       {next.questNames.map((name, index) => (
         <span key={name}>
           {index > 0 && ", "}
@@ -212,8 +302,10 @@ export function DungeonQuests() {
                   quest={quest}
                   level={level}
                   status={statusOf(statuses, quest.id)}
+                  statuses={statuses}
                   inside={stop.pickup.inside}
                   onStatus={(status) => setStatus(quest.id, status)}
+                  onStepDone={(stepId, isDone) => setStatus(stepId, isDone ? 2 : 0)}
                 />
               ))}
             </ul>

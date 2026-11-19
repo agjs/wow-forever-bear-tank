@@ -1,18 +1,30 @@
 /** Maps @btc/guide-data into the addon's data contract (see addonData.types.ts). Pure functions only. */
 import type {
+  Checkpoint,
+  Dungeon,
   DungeonQuestList,
+  EmergencyButton,
+  EnchantPlan,
+  GearItem,
+  Milestone,
+  PriorityListKey,
+  PriorityStep,
   Professions,
   QuestRef,
   RouteStep,
+  SpellInfo,
   Talent,
+  TalentSummary,
   TrainerSpell,
   TrainerSpellInfo,
 } from "@btc/guide-data";
-import { questStops } from "@btc/guide-data";
+import { type ChainStep, parseWhere, questStops } from "@btc/guide-data";
 import type {
+  AddonChainStep,
   AddonDataFile,
   AddonDungeon,
   AddonDungeonQuests,
+  AddonPlace,
   AddonProfession,
   AddonQuest,
   AddonQuestTags,
@@ -21,6 +33,15 @@ import type {
   AddonTalent,
   AddonTrainerSpell,
 } from "./addonData.types.ts";
+import {
+  toCheckpoints,
+  toDungeonGuides,
+  toEnchantBands,
+  toGear,
+  toMilestones,
+  toRotation,
+  toTalentIcons,
+} from "./content.ts";
 
 /** Quest log tag and color per dungeon. Dungeons without an entry fall back to their name in gold. */
 export const DUNGEON_STYLE: Readonly<Record<string, readonly [short: string, color: string]>> = {
@@ -43,6 +64,17 @@ const DEFAULT_COLOR = "f2c46d";
 
 // ---------- dungeon quests ----------
 
+/** "Kargath, Badlands (4, 47)" -> { place, zone, x, y }; anything inside the dungeon -> { place: "inside" }. */
+export function toPlace(text: string): AddonPlace {
+  const where = parseWhere(text);
+  if (where.inside) return { place: "inside" };
+  return { place: where.place, zone: where.zone, ...(where.x !== undefined ? { x: where.x, y: where.y } : {}) };
+}
+
+export function toChainStep(step: ChainStep): AddonChainStep {
+  return { id: step.id, name: step.name, giver: step.giver, ...toPlace(step.where), task: step.task };
+}
+
 /** A dungeon's quests as pickup stops (see questStops in @btc/guide-data), in the addon's shape. */
 export function toDungeonQuests(list: DungeonQuestList): AddonDungeonQuests {
   const stops: AddonStop[] = questStops(list).map(({ title, pickup, quests }) => ({
@@ -59,6 +91,7 @@ export function toDungeonQuests(list: DungeonQuestList): AddonDungeonQuests {
         giver: q.giver,
         ...(pickup.inside ? { where: q.where } : {}),
         ...(q.note ? { note: q.note } : {}),
+        ...(q.chain?.length ? { chain: q.chain.map(toChainStep), pickup: toPlace(q.where) } : {}),
       }),
     ),
   }));
@@ -66,15 +99,16 @@ export function toDungeonQuests(list: DungeonQuestList): AddonDungeonQuests {
   return { key: list.key, name: list.name, short, color, lo: list.levels.min, hi: list.levels.max, stops };
 }
 
-/** Every dungeon quest, then every other step of its chain, mapped to its dungeon. The quest itself wins. */
+/** Every dungeon quest, then every earlier step of its chain, mapped to its dungeon. The quest itself wins. */
 export function toQuestTags(
   lists: readonly DungeonQuestList[],
-  chains: Readonly<Record<string, readonly QuestRef[]>>,
+  chains: Readonly<Record<string, readonly QuestRef[]>> = {},
 ): AddonQuestTags {
   const tags: Record<string, readonly [string, boolean]> = {};
   for (const list of lists) for (const q of list.quests) tags[q.id] ??= [list.key, false];
   for (const list of lists)
-    for (const q of list.quests) for (const step of chains[String(q.id)] ?? []) tags[step.id] ??= [list.key, true];
+    for (const q of list.quests)
+      for (const step of q.chain ?? chains[String(q.id)] ?? []) tags[step.id] ??= [list.key, true];
   return tags;
 }
 
@@ -100,9 +134,16 @@ export const toTrainer = (
     quest: fromQuest,
   }));
 
-export const toTalents = (talents: Readonly<Record<string, Talent>>): Record<string, AddonTalent> =>
+/** Talents with the website's plain-language summary where there is one, else the in-game rank 1 text. */
+export const toTalents = (
+  talents: Readonly<Record<string, Talent>>,
+  summaries: Readonly<Record<string, TalentSummary>> = {},
+): Record<string, AddonTalent> =>
   Object.fromEntries(
-    Object.entries(talents).map(([k, t]) => [k, { name: t.name, max: t.maxRank, summary: t.rankOneText }]),
+    Object.entries(talents).map(([k, t]) => [
+      k,
+      { name: t.name, max: t.maxRank, summary: summaries[k]?.summary ?? t.rankOneText, tree: t.tree },
+    ]),
   );
 
 // ---------- professions ----------
@@ -157,7 +198,7 @@ export function toProfessions(p: Professions): AddonProfession[] {
 
 // ---------- all files ----------
 
-export interface GuideInput {
+export interface GuideInput extends ContentInput {
   readonly dungeons: readonly { key: string; name: string; levels: { min: number; max: number } }[];
   readonly dungeonQuests: readonly DungeonQuestList[];
   readonly questChains: Readonly<Record<string, readonly QuestRef[]>>;
@@ -167,6 +208,21 @@ export interface GuideInput {
   readonly talentOrder: readonly string[];
   readonly talents: Readonly<Record<string, Talent>>;
   readonly professions: Professions;
+}
+
+/** The parts of @btc/guide-data the website sections in the addon need. */
+export interface ContentInput {
+  readonly gear: readonly GearItem[];
+  readonly enchantPlan: EnchantPlan;
+  readonly priorityLists: Readonly<Record<PriorityListKey, readonly PriorityStep[]>>;
+  readonly spells: Readonly<Record<string, SpellInfo>>;
+  readonly emergencyButtons: readonly EmergencyButton[];
+  readonly rotation: { readonly prePull: readonly string[] };
+  readonly catFormNote: readonly string[];
+  readonly talentSummaries: Readonly<Record<string, TalentSummary>>;
+  readonly milestones: readonly Milestone[];
+  readonly checkpoints: readonly Checkpoint[];
+  readonly dungeonList: readonly Dungeon[];
 }
 
 export function addonDataFiles(guide: GuideInput): AddonDataFile[] {
@@ -187,7 +243,32 @@ export function addonDataFiles(guide: GuideInput): AddonDataFile[] {
     },
     { file: "Route.lua", entries: { route: toRoute(guide.route) } },
     { file: "Trainer.lua", entries: { trainer: toTrainer(guide.trainerSpells, guide.trainerSpellInfo) } },
-    { file: "Talents.lua", entries: { talentOrder: guide.talentOrder, talents: toTalents(guide.talents) } },
+    {
+      file: "Talents.lua",
+      entries: {
+        talentOrder: guide.talentOrder,
+        talents: toTalents(guide.talents, guide.talentSummaries),
+        talentIcons: toTalentIcons(guide.talentSummaries),
+      },
+    },
     { file: "Professions.lua", entries: { professions: toProfessions(guide.professions) } },
+    { file: "Gear.lua", entries: { gear: toGear(guide.gear), enchants: toEnchantBands(guide.enchantPlan) } },
+    {
+      file: "Rotation.lua",
+      entries: {
+        rotation: toRotation({
+          priorityLists: guide.priorityLists,
+          spells: guide.spells,
+          emergencyButtons: guide.emergencyButtons,
+          prePull: guide.rotation.prePull,
+          catFormNote: guide.catFormNote,
+        }),
+      },
+    },
+    {
+      file: "Leveling.lua",
+      entries: { milestones: toMilestones(guide.milestones), checkpoints: toCheckpoints(guide.checkpoints) },
+    },
+    { file: "DungeonGuides.lua", entries: { dungeonGuides: toDungeonGuides(guide.dungeonList) } },
   ];
 }

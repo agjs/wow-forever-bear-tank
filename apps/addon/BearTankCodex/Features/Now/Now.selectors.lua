@@ -107,59 +107,85 @@ local function spellName(t)
   return t.name .. (t.rank and t.rank > 1 and (" rank " .. t.rank) or "")
 end
 
-function Selectors.rows(ctx, data, counts)
-  local rows = { { kind = "title", text = "Level " .. ctx.level .. ": what to do now" } }
+local DONE_COLOR = { 0.36, 0.77, 0.42, 1 }
+local LOG_COLOR = { 0.95, 0.77, 0.43, 1 }
 
-  -- where to quest
-  local step, nextStep = Selectors.routeFor(data.route, ctx.level)
-  rows[#rows + 1] = { kind = "heading", text = "Where to quest" }
+-- The checkpoint for a level: the first one that doesn't end below it.
+function Selectors.checkpointFor(checkpoints, level)
+  for _, c in ipairs(checkpoints or {}) do
+    if level <= c.hi then
+      return c
+    end
+  end
+  return checkpoints and checkpoints[#checkpoints]
+end
+
+local function tiles(ctx, data, step, tr, talent)
+  local talentIcon = talent and data.talentIcons and data.talentIcons[talent.key]
+  return {
+    kind = "tiles",
+    tiles = {
+      {
+        label = "Quest",
+        value = step and step.zones or "Off the route",
+        sub = step and ("Quest town: " .. step.hub) or "",
+        icon = Text.icon("inv_misc_map_01"),
+      },
+      {
+        label = "Trainer",
+        value = #tr.now > 0 and (Text.plural(#tr.now, "spell") .. " to learn") or "Up to date",
+        sub = #tr.now > 0 and Text.money(tr.cost) or (tr.nextLevel and ("Next visit at level " .. tr.nextLevel) or ""),
+        icon = Text.icon("inv_misc_book_09"),
+      },
+      {
+        label = "Talent",
+        value = talent and (talent.name .. " " .. talent.rank .. "/" .. talent.max) or "None this level",
+        sub = talent and talent.summary or "",
+        icon = Text.icon(talentIcon or "ability_druid_catform"),
+        action = { type = "tab", id = "talents" },
+      },
+    },
+  }
+end
+
+local function questCard(step, nextStep, level)
+  local rows = {}
   if step then
-    rows[#rows + 1] = { kind = "line", indent = 1, text = Text.color("white", step.zones) }
-    rows[#rows + 1] = { kind = "note", indent = 1, text = "Quest town: " .. step.hub .. ". " .. step.how }
+    rows[#rows + 1] = { kind = "heading", text = step.zones, icon = Text.icon("inv_misc_map_01") }
+    rows[#rows + 1] = { kind = "line", text = "Quest town: " .. step.hub .. ". " .. step.how }
     if nextStep then
-      rows[#rows + 1] = {
-        kind = "note",
-        indent = 1,
-        text = Text.color("muted", "Next, at level " .. nextStep.lo .. ": " .. nextStep.zones .. "."),
-      }
+      rows[#rows + 1] =
+        { kind = "note", text = Text.color("muted", "Next, at level " .. nextStep.lo .. ": " .. nextStep.zones .. ".") }
     end
   else
-    rows[#rows + 1] = { kind = "note", indent = 1, text = "The guide's route doesn't cover level " .. ctx.level .. "." }
+    rows[#rows + 1] = { kind = "line", text = "The guide's route doesn't cover level " .. level .. "." }
   end
-  rows[#rows + 1] = { kind = "gap" }
+  return { kind = "card", title = "Where to quest", rows = rows }
+end
 
-  -- trainer
-  local tr = Selectors.trainer(ctx, data.trainer)
-  rows[#rows + 1] = { kind = "heading", text = "Druid trainer" }
-  if #tr.now > 0 then
+local function trainerCard(tr)
+  local rows = {}
+  if #tr.now == 0 then
+    rows[#rows + 1] = { kind = "line", text = Text.ICONS.done .. " You know every spell for your level." }
+  end
+  for _, t in ipairs(tr.now) do
     rows[#rows + 1] = {
       kind = "line",
-      indent = 1,
-      text = Text.ICONS.todo .. " " .. Text.color("white", Text.plural(#tr.now, "spell") .. " to learn"),
-      right = Text.color("gold", Text.money(tr.cost)),
+      icon = Text.icon(t.icon),
+      text = spellName(t),
+      right = t.quest and Text.color("muted", "class quest") or Text.color("gold", Text.money(t.cost)),
+      tooltip = { spell = t.spellId },
     }
-    for _, t in ipairs(tr.now) do
-      rows[#rows + 1] = {
-        kind = "line",
-        indent = 2,
-        icon = Text.icon(t.icon),
-        text = spellName(t),
-        right = t.quest and Text.color("muted", "class quest") or Text.color("muted", Text.money(t.cost)),
-        tooltip = { spell = t.spellId },
-      }
-    end
-  else
-    rows[#rows + 1] = { kind = "line", indent = 1, text = Text.ICONS.done .. " You know everything for your level." }
   end
   if #tr.optional > 0 then
     local names = {}
     for _, t in ipairs(tr.optional) do
       names[#names + 1] = t.name
     end
+    rows[#rows + 1] = { kind = "divider" }
     rows[#rows + 1] = {
       kind = "note",
-      indent = 1,
-      text = Text.color("muted", "Optional caster spells (a bear rarely uses them): " .. Text.list(names) .. "."),
+      text = Text.color("muted", "Optional caster spells a bear rarely uses: " .. Text.list(names) .. "."),
     }
   end
   if tr.nextLevel then
@@ -169,57 +195,104 @@ function Selectors.rows(ctx, data, counts)
     end
     rows[#rows + 1] = {
       kind = "note",
-      indent = 1,
       text = Text.color("muted", "Next visit at level " .. tr.nextLevel .. ": " .. Text.list(names) .. "."),
     }
   end
-  rows[#rows + 1] = { kind = "gap" }
+  return {
+    kind = "card",
+    title = "Druid trainer",
+    right = #tr.now > 0 and Text.color("gold", Text.plural(#tr.now, "spell") .. ", " .. Text.money(tr.cost)) or nil,
+    rows = rows,
+  }
+end
 
-  -- talents
-  local now, nextPick = Selectors.talentAt(data.talentOrder, data.talents, ctx.level),
-    Selectors.talentAt(data.talentOrder, data.talents, ctx.level + 1)
-  if now or nextPick then
-    rows[#rows + 1] = { kind = "heading", text = "Talents (the guide's tank order)" }
-    if now then
-      rows[#rows + 1] = {
-        kind = "line",
-        indent = 1,
-        text = "Level " .. ctx.level .. ": " .. Text.color("white", now.name .. " " .. now.rank .. "/" .. now.max),
-      }
-      rows[#rows + 1] = { kind = "note", indent = 2, text = Text.color("muted", now.summary or "") }
-    end
-    if nextPick then
-      rows[#rows + 1] = {
-        kind = "note",
-        indent = 1,
-        text = Text.color("muted", "Level " .. (ctx.level + 1) .. ": " .. nextPick.name .. " " .. nextPick.rank .. "/" .. nextPick.max .. "."),
-      }
-    end
-    rows[#rows + 1] = { kind = "gap" }
-  end
-
-  -- dungeons
+local function dungeonCard(ctx, data, counts)
   local ds = Selectors.dungeonsFor(ctx, data.dungeons, data.dungeonQuests, counts)
-  if #ds > 0 then
-    rows[#rows + 1] = { kind = "heading", text = "Dungeons for your level" }
-    for _, d in ipairs(ds) do
-      local status = ""
-      if d.counts then
-        if d.counts.todo > 0 then
-          status = "  " .. Text.color("red", d.counts.todo .. " to pick up")
-        elseif d.counts.inLog > 0 then
-          status = "  " .. Text.color("yellow", d.counts.inLog .. " in your log")
-        else
-          status = "  " .. Text.color("green", "all quests done")
-        end
-      end
+  if #ds == 0 then
+    return nil
+  end
+  local rows = {}
+  for _, d in ipairs(ds) do
+    if d.counts then
+      local c = d.counts
+      local status = c.done == c.total and Text.color("green", "all done")
+        or (c.todo > 0 and Text.color("red", c.todo .. " to pick up") or Text.color("yellow", c.inLog .. " in your log"))
+      rows[#rows + 1] = {
+        kind = "bar",
+        text = Text.color("white", d.name) .. Text.color("muted", "  levels " .. d.lo .. "-" .. d.hi),
+        right = status,
+        max = c.total,
+        segments = { { value = c.done, color = DONE_COLOR }, { value = c.inLog, color = LOG_COLOR } },
+        action = { type = "openDungeon", key = d.key },
+      }
+    else
       rows[#rows + 1] = {
         kind = "line",
-        indent = 1,
-        text = Text.color("white", d.name) .. Text.color("muted", "  levels " .. d.lo .. "-" .. d.hi) .. status,
-        action = d.counts and { type = "openDungeon", key = d.key } or nil,
+        text = Text.color("white", d.name) .. Text.color("muted", "  levels " .. d.lo .. "-" .. d.hi),
+        right = Text.color("muted", "tank guide"),
+        action = { type = "openGuide", key = d.key },
       }
     end
   end
+  return { kind = "card", title = "Dungeons for your level", right = Text.color("muted", "click one to open it"), rows = rows }
+end
+
+local function lootCard(ctx, data)
+  local checkpoint = Selectors.checkpointFor(data.checkpoints, ctx.level)
+  if not checkpoint or #checkpoint.items == 0 then
+    return nil
+  end
+  local rows = {}
+  for _, item in ipairs(checkpoint.items) do
+    local have = (ctx.isEquipped and item.itemId > 0 and ctx.isEquipped(item.itemId))
+    rows[#rows + 1] = {
+      kind = "line",
+      icon = (ctx.itemIcon and item.itemId > 0 and ctx.itemIcon(item.itemId)) or Text.icon(nil),
+      text = Text.color("white", item.name),
+      hint = item.source,
+      right = have and Text.color("green", "wearing it") or nil,
+      tooltip = item.itemId > 0 and { item = item.itemId } or nil,
+    }
+  end
+  return { kind = "card", title = "Loot worth grabbing", right = Text.color("muted", checkpoint.title), rows = rows }
+end
+
+local MILESTONES_SHOWN = 3
+
+local function comingUpCard(ctx, data)
+  local rows = {}
+  for _, m in ipairs(data.milestones or {}) do
+    if m.level > ctx.level and #rows < MILESTONES_SHOWN then
+      local away = m.level - ctx.level
+      rows[#rows + 1] = {
+        kind = "line",
+        icon = Text.icon(m.icon),
+        iconSize = 26,
+        text = Text.color("white", "Level " .. m.level .. ": " .. m.title),
+        hint = m.text,
+        right = Text.color("muted", "in " .. Text.plural(away, "level")),
+      }
+    end
+  end
+  if #rows == 0 then
+    return nil
+  end
+  return { kind = "card", title = "Coming up", rows = rows }
+end
+
+function Selectors.rows(ctx, data, counts)
+  local step, nextStep = Selectors.routeFor(data.route, ctx.level)
+  local tr = Selectors.trainer(ctx, data.trainer)
+  local talent = Selectors.talentAt(data.talentOrder, data.talents, ctx.level)
+  local rows = {
+    { kind = "title", text = "Level " .. ctx.level .. ": what to do now" },
+    tiles(ctx, data, step, tr, talent),
+    questCard(step, nextStep, ctx.level),
+    trainerCard(tr),
+  }
+  -- cards with nothing to show return nil, so add them one by one
+  rows[#rows + 1] = dungeonCard(ctx, data, counts)
+  rows[#rows + 1] = lootCard(ctx, data)
+  rows[#rows + 1] = comingUpCard(ctx, data)
   return rows
 end

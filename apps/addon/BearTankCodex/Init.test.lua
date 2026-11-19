@@ -18,7 +18,7 @@ local ns = Mock.loadToc("BearTankCodex/", "BearTankCodex")
 local Text = ns.module("Core.Text")
 
 local function plain()
-  return Text.plain(Mock.visibleText())
+  return Text.plain(ns.module("UI.Window").text())
 end
 
 describe("Addon integration", function()
@@ -44,10 +44,9 @@ describe("Addon integration", function()
   it("shows professions with materials from the bags", function()
     SlashCmdList.BEARTANKCODEX("prof")
     local text = plain()
-    expect(text).toContain("Leatherworking  190 / 225")
-    expect(text).toContain("Thick Leather  30 / 25")
-    expect(text).toContain("Cooking  300 / 300")
-    expect(text).toContain("Maxed out.")
+    expect(text).toContain("Leatherworking\n190 / 225")
+    expect(text).toContain("Thick Leather  30 / 25 in bags")
+    expect(text).toContain("Cooking\n300 / 300  maxed out")
   end)
 
   it("opens a dungeon by name with live quest status", function()
@@ -75,6 +74,17 @@ describe("Addon integration", function()
     expect(BearTankCodexDB.minimapHidden).toBe(true)
     SlashCmdList.BEARTANKCODEX("minimap")
     expect(BearTankCodexDB.minimapHidden).toBe(false)
+  end)
+
+  it("opens every section without errors", function()
+    for _, id in ipairs({ "now", "dungeons", "guides", "talents", "rotation", "gear", "professions" }) do
+      SlashCmdList.BEARTANKCODEX(id == "dungeons" and "quests" or (id == "professions" and "prof" or id))
+      expect(#plain() > 0).toBe(true)
+    end
+    SlashCmdList.BEARTANKCODEX("rotation")
+    expect(plain()).toContain("Priority")
+    SlashCmdList.BEARTANKCODEX("gear")
+    expect(plain()).toContain("Wear now")
   end)
 
   it("toggles quest log colors", function()

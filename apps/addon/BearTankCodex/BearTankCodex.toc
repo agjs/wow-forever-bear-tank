@@ -1,8 +1,8 @@
 ## Interface: 16001, 16002, 16003, 16100
 ## Title: Bear Tank Codex
-## Notes: The Bear Tank Codex guide in game: what to do at your level, dungeon quests with live status, professions with the materials in your bags, and colored dungeon quests in your quest log. Type /btq.
+## Notes: The Bear Tank Codex guide in game: what to do at your level, dungeon quests and tank guides, talents, rotation, gear and enchants, professions with the materials in your bags, and colored dungeon quests in your quest log. Type /btq or click the bear on your minimap.
 ## Author: Bear Tank Codex
-## Version: 2.2.0
+## Version: 3.0.0
 ## SavedVariables: BearTankCodexDB
 
 Core\Namespace.lua
@@ -16,10 +16,15 @@ Data\Route.lua
 Data\Trainer.lua
 Data\Talents.lua
 Data\Professions.lua
+Data\Gear.lua
+Data\Rotation.lua
+Data\Leveling.lua
+Data\DungeonGuides.lua
 
 Services\Api.lua
 Services\State.lua
 
+UI\Theme.lua
 UI\Tabs.lua
 UI\Widgets\List.lua
 
@@ -29,6 +34,14 @@ Features\Now\Now.selectors.lua
 Features\Now\Now.tab.lua
 Features\Professions\Professions.selectors.lua
 Features\Professions\Professions.tab.lua
+Features\Guides\Guides.selectors.lua
+Features\Guides\Guides.tab.lua
+Features\Talents\Talents.selectors.lua
+Features\Talents\Talents.tab.lua
+Features\Rotation\Rotation.selectors.lua
+Features\Rotation\Rotation.tab.lua
+Features\Gear\Gear.selectors.lua
+Features\Gear\Gear.tab.lua
 Features\QuestTags\QuestTags.utils.lua
 Features\QuestTags\QuestTags.lua
 Features\MinimapButton\MinimapButton.utils.lua

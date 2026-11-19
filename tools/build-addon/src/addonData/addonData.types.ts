@@ -12,6 +12,29 @@ export interface AddonQuest {
   /** Only for quests picked up inside the dungeon (shown next to the giver). */
   readonly where?: string;
   readonly note?: string;
+  /** Quests to finish first, in order. */
+  readonly chain?: readonly AddonChainStep[];
+  /** Chained quests only: where the quest itself is picked up once the chain is done. */
+  readonly pickup?: AddonPlace;
+}
+
+export interface AddonPlace {
+  readonly place: string;
+  readonly zone?: string;
+  readonly x?: number;
+  readonly y?: number;
+}
+
+export interface AddonChainStep {
+  readonly id: number;
+  readonly name: string;
+  readonly giver: string;
+  /** "Marshal's Refuge, Un'Goro Crater", or "inside" for a step done in the dungeon. */
+  readonly place: string;
+  readonly zone?: string;
+  readonly x?: number;
+  readonly y?: number;
+  readonly task: string;
 }
 
 export interface AddonStop {
@@ -71,6 +94,7 @@ export interface AddonTalent {
   readonly name: string;
   readonly max: number;
   readonly summary: string;
+  readonly tree: "balance" | "feral" | "restoration";
 }
 
 export interface AddonRank {
@@ -107,6 +131,101 @@ export interface AddonProfession {
   readonly name: string;
   readonly trainers: readonly AddonRank[];
   readonly steps: readonly AddonProfessionStep[];
+}
+
+// ---------- website sections ----------
+
+export interface AddonGearItem {
+  readonly name: string;
+  readonly itemId: number;
+  readonly slot: string;
+  /** Level you can wear it from. */
+  readonly level: number;
+  readonly ilvl: number;
+  readonly stats: string;
+  readonly source: string;
+  readonly icon: string;
+  /** 0 poor .. 5 legendary. */
+  readonly quality: number;
+}
+
+export interface AddonEnchant {
+  readonly slot: string;
+  readonly name: string;
+  readonly effect: string;
+  readonly spellId?: number;
+  readonly itemId?: number;
+  /** An armor kit, not an enchant. */
+  readonly kit: boolean;
+  /** How to get it, in one sentence. */
+  readonly how: string;
+  readonly materials?: string;
+}
+
+export interface AddonEnchantBand {
+  readonly lo: number;
+  readonly hi: number;
+  readonly choices: readonly AddonEnchant[];
+}
+
+export interface AddonPriorityStep {
+  readonly spell: string;
+  readonly icon: string;
+  readonly spellId: number;
+  readonly text: string;
+  /** Trained at this level. */
+  readonly level?: number;
+  /** Needs this talent. */
+  readonly talent?: string;
+  /** Only until this talent replaces it. */
+  readonly onlyBefore?: string;
+}
+
+export interface AddonEmergency {
+  readonly spell: string;
+  readonly icon: string;
+  readonly spellId: number;
+  readonly text: string;
+  readonly level: number;
+}
+
+export interface AddonRotation {
+  readonly single: readonly AddonPriorityStep[];
+  readonly cleave: readonly AddonPriorityStep[];
+  readonly aoe: readonly AddonPriorityStep[];
+  readonly cat: readonly AddonPriorityStep[];
+  readonly prePull: readonly string[];
+  readonly catNote: readonly string[];
+  readonly emergency: readonly AddonEmergency[];
+}
+
+export interface AddonMilestone {
+  readonly level: number;
+  readonly title: string;
+  readonly icon: string;
+  readonly text: string;
+}
+
+export interface AddonCheckpoint {
+  readonly lo: number;
+  readonly hi: number;
+  readonly title: string;
+  readonly where: string;
+  readonly doneWhen: string;
+  readonly tips: readonly string[];
+  readonly items: readonly { readonly name: string; readonly itemId: number; readonly source: string }[];
+}
+
+export interface AddonDungeonGuide {
+  readonly key: string;
+  readonly name: string;
+  readonly lo: number;
+  readonly hi: number;
+  readonly where: string;
+  readonly note: string;
+  readonly route: readonly string[];
+  readonly bosses: readonly { readonly name: string; readonly tank: string; readonly abilities: readonly string[] }[];
+  readonly dangers: readonly string[];
 }
 
 /** One generated Lua file: its name and the `ns.data.*` entries in it. */

@@ -40,8 +40,10 @@ BearTankCodex/
 │   ├── <Feature>.utils.lua            # pure helpers (+ .test.lua), when needed
 │   └── <Feature>.tab.lua              # registers the tab: label, topics, build(ctx)
 ├── UI/
-│   ├── Widgets/List.lua       # renders rows into pooled frames
-│   └── Window/Window.lua      # main frame, tab bar, scroll, re-render on topics
+│   ├── Theme.lua              # colors, fonts, fills and borders (matches the website)
+│   ├── Tabs.lua               # section registry: id, label, icon, sidebar group, order, topics, build
+│   ├── Widgets/List.lua       # renders row specs (title, card, tiles, line, bar, segment, pager...) into pooled frames
+│   └── Window/Window.lua      # header, sidebar, scrolling content, actions, re-render on topics
 ├── Commands/Slash.lua         # /btq
 └── Init.lua                   # wiring on ADDON_LOADED / PLAYER_LOGIN
 ```
@@ -52,8 +54,11 @@ BearTankCodex/
   functions) and static data, and return plain tables. That's what makes them testable.
 - **One adapter.** Every game function call lives in `Services/Api.lua`, guarded for missing APIs.
   Features never call `UnitLevel`, `C_QuestLog`, etc. directly.
-- **Rows, not frames.** A tab returns an array of row specs (`{ kind = "line", text = ..., action = ... }`).
-  Actions are data (`{ type = "waypoint", stop = ... }`), resolved by the window. Only `UI/` creates frames.
+- **Rows, not frames.** A tab returns an array of row specs (`{ kind = "line", text = ..., action = ... }`); cards
+  hold their own `rows`. The kinds are documented at the top of `UI/Widgets/List.lua`. Actions are data
+  (`{ type = "waypoint", ... }`, `{ type = "set", key, value }`), resolved by the window. Only `UI/` creates frames.
+- **Look.** Use `UI/Theme.lua` for every color and font. No left accent bars or stripes: group things with cards,
+  headings and spacing instead.
 - **Modules.** Every file starts with `local _, ns = ...` and uses `ns.module("Feature.part")`. No globals
   except the SavedVariables table and slash command entries.
 - **Generated data.** Content comes from `packages/guide-data` through `tools/build-addon`. Fix the data

@@ -40,4 +40,19 @@ export interface DungeonQuest {
   readonly giver: string;
   readonly where: string;
   readonly note?: string;
+  /** Quests you must finish first, in order. The first step is where the whole chain starts. */
+  readonly chain?: readonly ChainStep[];
+}
+
+/** One earlier quest in a dungeon quest's chain. */
+export interface ChainStep {
+  readonly id: number;
+  readonly name: string;
+  /** Who (or what) gives the quest. */
+  readonly giver: string;
+  readonly npcId?: number;
+  /** Same format as DungeonQuest.where: "Marshal's Refuge, Un'Goro Crater (45.4, 8.4)". */
+  readonly where: string;
+  /** What the step asks you to do, in one plain sentence. */
+  readonly task: string;
 }

@@ -13,5 +13,5 @@ read_globals = {
   "ObjectiveTrackerFrame", "QuestObjectiveTracker", "CampaignQuestObjectiveTracker", "tinsert", "IsQuestFlaggedCompleted",
 }
 
-files["**/*.test.lua"] = { globals = { "describe", "it", "expect", "loadAddon" } }
-files["tools/*.lua"] = { globals = { "describe", "it", "expect", "loadAddon" }, std = "max" }
+files["**/*.test.lua"] = { globals = { "describe", "it", "expect", "loadAddon", "flatRows", "rowsText" } }
+files["tools/*.lua"] = { globals = { "describe", "it", "expect", "loadAddon", "flatRows", "rowsText" }, std = "max" }

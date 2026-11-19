@@ -22,7 +22,7 @@ const PUBLIC_DIR = join(ROOT, "apps/web/public");
 mkdirSync(DATA_DIR, { recursive: true });
 mkdirSync(PUBLIC_DIR, { recursive: true });
 
-const files = addonDataFiles(guide);
+const files = addonDataFiles({ ...guide, dungeonList: guide.dungeons });
 for (const { file, entries } of files) writeFileSync(join(DATA_DIR, file), luaDataFile(entries));
 
 const { version, zip } = release({ addonRoot: ADDON_ROOT, addonName: ADDON_NAME, outDir: PUBLIC_DIR });

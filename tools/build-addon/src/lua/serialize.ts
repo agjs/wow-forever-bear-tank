@@ -7,9 +7,23 @@ const IDENTIFIER = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const INTEGER = /^\d+$/;
 const INDENT = "  ";
 
+/** Characters the game's default fonts can't draw, replaced with ones they can. */
+const GAME_TEXT: Readonly<Record<string, string>> = {
+  "→": "->",
+  "←": "<-",
+  "≤": "<=",
+  "≥": ">=",
+  "−": "-",
+  "≈": "~",
+  "★": "*",
+};
+const UNDRAWABLE = new RegExp(`[${Object.keys(GAME_TEXT).join("")}]`, "g");
+
+export const gameText = (value: string): string => value.replace(UNDRAWABLE, (ch) => GAME_TEXT[ch] ?? ch);
+
 /** A Lua string literal. `|` is doubled because the WoW client treats a single `|` as an escape code in text. */
 export function luaString(value: string): string {
-  const escaped = value.replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ").replace(/\|/g, "||");
+  const escaped = gameText(value).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ").replace(/\|/g, "||");
   return `"${escaped}"`;
 }
 

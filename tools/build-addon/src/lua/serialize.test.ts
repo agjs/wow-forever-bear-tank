@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { luaDataFile, luaString, toLua } from "./serialize.ts";
+import { gameText, luaDataFile, luaString, toLua } from "./serialize.ts";
 
 describe("toLua", () => {
   it("writes scalars", () => {
@@ -30,5 +30,12 @@ describe("toLua", () => {
     const file = luaDataFile({ route: [] });
     expect(file).toContain("local _, ns = ...");
     expect(file).toContain("ns.data.route = {}");
+  });
+});
+
+describe("gameText", () => {
+  it("swaps characters the game's fonts can't draw", () => {
+    expect(gameText("2.0× → 2.2×, ≤3s, −1 rage")).toBe("2.0× -> 2.2×, <=3s, -1 rage");
+    expect(luaString("a → b")).toBe('"a -> b"');
   });
 });

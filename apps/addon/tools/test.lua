@@ -113,6 +113,42 @@ end
 
 -- ---------- loading addon files like the client does ----------
 
+-- Every row in a tab's rows, with rows inside cards and tiles flattened, in screen order.
+function flatRows(rows, out)
+  out = out or {}
+  for _, r in ipairs(rows) do
+    out[#out + 1] = r
+    if r.kind == "card" then
+      if r.title then
+        out[#out + 1] = { kind = "cardTitle", text = r.title, right = r.right }
+      end
+      flatRows(r.rows or {}, out)
+    elseif r.kind == "tiles" then
+      for _, t in ipairs(r.tiles) do
+        out[#out + 1] = { kind = "tile", text = (t.label or "") .. ": " .. (t.value or "") .. " " .. (t.sub or ""), action = t.action }
+      end
+    end
+  end
+  return out
+end
+
+-- All visible text of rows (color codes kept), one row per line.
+function rowsText(rows)
+  local lines = {}
+  for _, r in ipairs(flatRows(rows)) do
+    if r.text then
+      lines[#lines + 1] = r.text .. (r.right and ("  " .. r.right) or "")
+    end
+    if r.hint then
+      lines[#lines + 1] = r.hint
+    end
+    if r.sub and r.kind ~= "tile" then
+      lines[#lines + 1] = r.sub
+    end
+  end
+  return table.concat(lines, "\n")
+end
+
 -- loadAddon({ "Core/Namespace.lua", ... }, ns?) runs each file with (addonName, ns) and returns ns.
 function loadAddon(files, ns)
   ns = ns or {}

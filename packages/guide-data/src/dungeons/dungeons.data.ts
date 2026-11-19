@@ -2270,7 +2270,7 @@ export const dungeonQuests: readonly DungeonQuestList[] = [
         npcId: 8496,
         giver: "Liv Rizzlefix",
         where: "Ratchet, The Barrens (62, 38)",
-        note: "Do 2 quests first, starting with Larion and Muigin.",
+        note: "Do 2 quests first: Larion and Muigin from Larion at Marshal's Refuge, Un'Goro Crater (45.4, 8.4), then Marvon's Workshop, which sends you back here.",
       },
       {
         id: 1446,
@@ -2615,7 +2615,7 @@ export const dungeonQuests: readonly DungeonQuestList[] = [
         npcId: 10460,
         giver: "Prospector Ironboot",
         where: "Steamwheedle Port, Tanaris (66, 24)",
-        note: "Do 5 quests first, starting with Screecher Spirits.",
+        note: "Do The Lost Tablets of Mosh'aru first, from the same NPC.",
       },
     ],
   },
@@ -3048,12 +3048,6 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       name: "Return to Fel'Zerul",
     },
   ],
-  "2770": [
-    {
-      id: 2769,
-      name: "The Brassbolts Brothers",
-    },
-  ],
   "2846": [
     {
       id: 2861,
@@ -3079,25 +3073,11 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       id: 2935,
       name: "Consult Master Gadrin",
     },
-    {
-      id: 2937,
-      name: "Summoning Shadra",
-    },
-  ],
-  "3380": [
-    {
-      id: 3444,
-      name: "The Stone Circle",
-    },
   ],
   "3527": [
     {
       id: 3520,
       name: "Screecher Spirits",
-    },
-    {
-      id: 4787,
-      name: "The Ancient Egg",
     },
   ],
   "3528": [
@@ -3120,41 +3100,9 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       name: "Dark Iron Legacy",
     },
   ],
-  "3906": [
-    {
-      id: 3907,
-      name: "Disharmony of Fire",
-    },
-  ],
-  "3981": [
-    {
-      id: 3982,
-      name: "What Is Going On?",
-    },
-    {
-      id: 4001,
-      name: "What Is Going On?",
-    },
-    {
-      id: 4002,
-      name: "The Eastern Kingdoms",
-    },
-    {
-      id: 4003,
-      name: "The Royal Rescue",
-    },
-    {
-      id: 4004,
-      name: "The Princess Saved?",
-    },
-  ],
   "4024": [
     {
       id: 4022,
-      name: "A Taste of Flame",
-    },
-    {
-      id: 4023,
       name: "A Taste of Flame",
     },
   ],
@@ -3166,16 +3114,6 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
     {
       id: 4062,
       name: "The Rise of the Machines",
-    },
-  ],
-  "4132": [
-    {
-      id: 4121,
-      name: "Precarious Predicament",
-    },
-    {
-      id: 4122,
-      name: "Grark Lorkrub",
     },
   ],
   "4134": [
@@ -3210,12 +3148,6 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       name: "Broodling Essence",
     },
   ],
-  "4742": [
-    {
-      id: 4743,
-      name: "Seal of Ascension",
-    },
-  ],
   "4768": [
     {
       id: 4769,
@@ -3242,26 +3174,10 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       name: "The Lost Tablets of Mosh'aru",
     },
   ],
-  "4903": [
-    {
-      id: 4941,
-      name: "Eitrigg's Wisdom",
-    },
-  ],
   "4974": [
     {
       id: 4941,
       name: "Eitrigg's Wisdom",
-    },
-  ],
-  "4981": [
-    {
-      id: 4982,
-      name: "Bijou's Belongings",
-    },
-    {
-      id: 4983,
-      name: "Bijou's Reconnaissance Report",
     },
   ],
   "5160": [
@@ -3402,12 +3318,6 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
       name: "Hands of the Enemy",
     },
   ],
-  "7461": [
-    {
-      id: 7877,
-      name: "The Treasure of the Shen'dralar",
-    },
-  ],
   "7489": [
     {
       id: 7492,
@@ -3416,20 +3326,8 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
   ],
   "92065": [
     {
-      id: 86746,
-      name: "The Legashi Threat",
-    },
-    {
       id: 86777,
       name: "Master Feardred",
-    },
-    {
-      id: 86792,
-      name: "Thinning Their Forces",
-    },
-    {
-      id: 86796,
-      name: "Later, Satyr",
     },
     {
       id: 86797,
@@ -3456,23 +3354,15 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
   ],
   "93404": [
     {
-      id: 92914,
-      name: "Strange Pylons",
-    },
-    {
       id: 93594,
       name: "Word of the Woods",
     },
-    {
-      id: 93601,
-      name: "Passing the Blame",
-    },
-    {
-      id: 93604,
-      name: "Agamaggan's Blood",
-    },
   ],
-  "95283": [
+  "95309": [
+    {
+      id: 95283,
+      name: "The Missing Kor'kron",
+    },
     {
       id: 95284,
       name: "The Elite of the Elite",
@@ -3480,12 +3370,6 @@ export const questChains: Readonly<Record<string, readonly QuestRef[]>> = {
     {
       id: 95285,
       name: "Right Place, Wrong Time",
-    },
-  ],
-  "95309": [
-    {
-      id: 95454,
-      name: "The Honor of the Kor'kron",
     },
   ],
 };

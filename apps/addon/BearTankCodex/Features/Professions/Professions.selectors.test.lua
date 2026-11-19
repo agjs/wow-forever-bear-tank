@@ -53,7 +53,7 @@ describe("Professions selectors", function()
   it("tells you to learn the next rank when you hit the cap", function()
     local rows = Selectors.rows(ctx({ Leatherworking = { rank = 225, max = 225 } }, {}), { LW })
     local all = {}
-    for _, r in ipairs(rows) do
+    for _, r in ipairs(flatRows(rows)) do
       all[#all + 1] = Text.plain(r.text or "")
     end
     expect(table.concat(all, "\n")).toContain("Learn the next rank now: Artisan Leatherworking (up to 300)")
@@ -61,13 +61,9 @@ describe("Professions selectors", function()
 
   it("shows the current craft with materials", function()
     local rows = Selectors.rows(ctx({ Leatherworking = { rank = 190, max = 225 } }, { [4304] = 30 }), { LW })
-    local all = {}
-    for _, r in ipairs(rows) do
-      all[#all + 1] = Text.plain(r.text or "")
-    end
-    local text = table.concat(all, "\n")
-    expect(text).toContain("Make Thick Armor Kit until 195, about 5 more")
-    expect(text).toContain("Thick Leather  30 / 25")
+    local text = Text.plain(rowsText(rows))
+    expect(text).toContain("Make Thick Armor Kit  until 195, about 5 more")
+    expect(text).toContain("Thick Leather  30 / 25 in bags")
   end)
 
   it("skips professions you don't have and says so when you have none", function()

@@ -1,4 +1,4 @@
-import type { DungeonQuestList, QuestStop } from "@btc/guide-data";
+import { type ChainStep, type DungeonQuest, type DungeonQuestList, parseWhere, type QuestStop } from "@btc/guide-data";
 
 /** 0 not picked up, 1 in your quest log, 2 done. Same values the original site saved. */
 export type QuestStatus = 0 | 1 | 2;
@@ -43,29 +43,51 @@ export function pickDungeon(
   );
 }
 
+/** Where one quest stands: done, in your log, a chain step to do first, or ready to pick up (and where). */
+export type QuestNext =
+  | { readonly kind: "done" }
+  | { readonly kind: "inLog" }
+  | { readonly kind: "step"; readonly step: ChainStep; readonly index: number; readonly total: number }
+  | { readonly kind: "pickup"; readonly where: string };
+
+export function questNext(quest: DungeonQuest, statuses: QuestStatuses): QuestNext {
+  const status = statusOf(statuses, quest.id);
+  if (status === 2) return { kind: "done" };
+  if (status === 1) return { kind: "inLog" };
+  const chain = quest.chain ?? [];
+  const index = chain.findIndex((step) => statusOf(statuses, step.id) !== 2);
+  const step = chain[index];
+  return step ? { kind: "step", step, index: index + 1, total: chain.length } : { kind: "pickup", where: quest.where };
+}
+
 export type NextStep =
   | {
-      readonly kind: "pickup";
-      readonly stop: QuestStop;
+      readonly kind: "visit";
+      readonly place: string;
       readonly questNames: readonly string[];
       readonly moreStops: number;
     }
   | { readonly kind: "run"; readonly inLog: number }
   | { readonly kind: "finished"; readonly total: number };
 
-/** What to do next for a dungeon: the first stop with quests left to pick up, else run it, else it's done. */
+/**
+ * What to do next for a dungeon: the first place with something to pick up (a quest, or the next step of its
+ * chain), else run the dungeon, else it's done.
+ */
 export function nextStep(list: DungeonQuestList, stops: readonly QuestStop[], statuses: QuestStatuses): NextStep {
   const [, inLog, done] = progress(list, statuses);
-  const toVisit = stops.filter(
-    (stop) => !stop.pickup.inside && stop.quests.some((q) => statusOf(statuses, q.id) === 0),
-  );
-  const [first] = toVisit;
-  if (first)
-    return {
-      kind: "pickup",
-      stop: first,
-      questNames: first.quests.filter((q) => statusOf(statuses, q.id) === 0).map((q) => q.name),
-      moreStops: toVisit.length - 1,
-    };
+  const visits = new Map<string, string[]>();
+  for (const stop of stops)
+    for (const quest of stop.quests) {
+      const next = questNext(quest, statuses);
+      const where = next.kind === "step" ? next.step.where : next.kind === "pickup" ? next.where : undefined;
+      const pickup = where === undefined ? undefined : parseWhere(where);
+      if (!pickup || pickup.inside) continue;
+      const names = visits.get(pickup.place) ?? [];
+      names.push(next.kind === "step" ? next.step.name : quest.name);
+      visits.set(pickup.place, names);
+    }
+  const [first] = visits;
+  if (first) return { kind: "visit", place: first[0], questNames: first[1], moreStops: visits.size - 1 };
   return done === list.quests.length ? { kind: "finished", total: done } : { kind: "run", inLog };
 }

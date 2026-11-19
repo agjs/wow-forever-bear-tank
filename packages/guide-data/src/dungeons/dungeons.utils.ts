@@ -33,11 +33,14 @@ export interface QuestStop {
 
 const INSIDE_KEY = "__inside";
 
-/** Groups a dungeon's quests by pickup place, in data order, with the in-dungeon stop last. */
+/** Where you go first for a quest: where its chain starts, or where the quest itself is given. */
+export const startOf = (quest: DungeonQuest): string => quest.chain?.[0]?.where ?? quest.where;
+
+/** Groups a dungeon's quests by the place you start them (the chain's first step), with the in-dungeon stop last. */
 export function questStops(list: DungeonQuestList): QuestStop[] {
   const stops = new Map<string, { title: string; pickup: QuestPickup; quests: DungeonQuest[] }>();
   for (const quest of list.quests) {
-    const pickup = parseWhere(quest.where);
+    const pickup = parseWhere(startOf(quest));
     const key = pickup.inside ? INSIDE_KEY : pickup.place;
     const stop = stops.get(key) ?? { title: pickup.inside ? `Inside ${list.name}` : pickup.place, pickup, quests: [] };
     stop.quests.push(quest);

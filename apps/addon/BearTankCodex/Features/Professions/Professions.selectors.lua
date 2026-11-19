@@ -45,75 +45,88 @@ function Selectors.materials(ctx, step, crafts)
   return out
 end
 
+local DONE_COLOR = { 0.36, 0.77, 0.42, 1 }
+local SKILL_COLOR = { 0.95, 0.77, 0.43, 1 }
+
 local function stepRows(ctx, rows, step, rank)
   local crafts = Selectors.craftsLeft(step, rank)
   if step.craft then
     rows[#rows + 1] = {
-      kind = "line",
-      indent = 1,
-      text = "Make " .. Text.color("white", step.craft) .. " until " .. step.to .. (crafts and (", about " .. crafts .. " more") or ""),
+      kind = "heading",
+      text = "Make " .. Text.color("white", step.craft),
+      right = Text.color("gold", "until " .. step.to) .. (crafts and Text.color("muted", ", about " .. crafts .. " more") or ""),
+      tooltip = step.spellId and { spell = step.spellId } or nil,
     }
   else
-    rows[#rows + 1] = { kind = "line", indent = 1, text = "Fish " .. Text.color("white", step.zone or "") .. " until " .. step.to }
-  end
-  local mats = Selectors.materials(ctx, step, crafts or 0)
-  for _, m in ipairs(mats) do
-    local enough = m.have >= m.need
     rows[#rows + 1] = {
-      kind = "note",
-      indent = 2,
-      text = (enough and Text.ICONS.done or Text.ICONS.todo)
-        .. " "
-        .. m.name
-        .. "  "
-        .. Text.color(enough and "green" or "red", m.have .. " / " .. m.need),
+      kind = "heading",
+      text = "Fish in " .. Text.color("white", step.zone or ""),
+      right = Text.color("gold", "until " .. step.to),
     }
   end
-  if step.mats then
-    rows[#rows + 1] = { kind = "note", indent = 2, text = Text.color("muted", "You need " .. step.mats .. ".") }
+  for _, m in ipairs(Selectors.materials(ctx, step, crafts or 0)) do
+    local enough = m.have >= m.need
+    rows[#rows + 1] = {
+      kind = "line",
+      icon = (ctx.itemIcon and ctx.itemIcon(m.itemId)) or Text.icon(nil),
+      text = m.name,
+      right = Text.color(enough and "green" or "red", m.have .. " / " .. m.need) .. Text.color("muted", " in bags"),
+      tooltip = { item = m.itemId },
+    }
   end
-  if step.catch then
-    rows[#rows + 1] = { kind = "note", indent = 2, text = Text.color("muted", "You'll catch " .. step.catch .. ".") }
+  local function note(text)
+    if text and text ~= "" then
+      rows[#rows + 1] = { kind = "note", text = Text.color("muted", text) }
+    end
   end
-  if step.note then
-    rows[#rows + 1] = { kind = "note", indent = 2, text = Text.color("muted", step.note) }
-  end
+  note(step.mats and ("You need " .. step.mats .. "."))
+  note(step.catch and ("You'll catch " .. step.catch .. "."))
+  note(step.recipeFrom and ("Recipe: " .. step.recipeFrom))
+  note(step.note)
 end
 
 function Selectors.rows(ctx, professions)
-  local rows = { { kind = "title", text = "Your professions" } }
+  local rows = { { kind = "title", text = "Professions", sub = "Your skill, what to make next, and what's in your bags." } }
   local any = false
   for _, p in ipairs(professions) do
     local skill = ctx.skill(p.name)
     if skill then
       any = true
-      rows[#rows + 1] = {
-        kind = "heading",
-        text = p.name .. "  " .. Text.color("white", skill.rank .. " / " .. skill.max),
+      local card = {}
+      local maxed = skill.rank >= MAX_SKILL
+      card[#card + 1] = {
+        kind = "bar",
+        text = Text.color("white", skill.rank .. " / " .. skill.max),
+        right = maxed and Text.color("green", "maxed out") or Text.color("muted", "max " .. MAX_SKILL),
+        max = MAX_SKILL,
+        segments = { { value = skill.rank, color = maxed and DONE_COLOR or SKILL_COLOR } },
       }
-      if skill.rank >= MAX_SKILL then
-        rows[#rows + 1] = { kind = "line", indent = 1, text = Text.ICONS.done .. " Maxed out." }
-      else
+      if not maxed then
         local nextRank = Selectors.nextRank(p.trainers, skill.max)
         if nextRank then
           local capped = skill.rank >= skill.max
-          local lead = capped and Text.color("orange", "Learn the next rank now: ") or Text.color("muted", "Next rank at skill " .. nextRank.skill .. ": ")
-          rows[#rows + 1] = {
+          card[#card + 1] = {
             kind = "line",
-            indent = 1,
-            text = (capped and Text.ICONS.todo .. " " or "") .. lead .. Text.color("white", nextRank.what) .. " (up to " .. nextRank.cap .. ")",
+            text = (capped and (Text.ICONS.todo .. " " .. Text.color("orange", "Learn the next rank now: ")) or Text.color(
+              "muted",
+              "Next rank at skill " .. nextRank.skill .. ": "
+            )) .. Text.color("white", nextRank.what) .. " (up to " .. nextRank.cap .. ")",
+            hint = nextRank.where,
           }
-          rows[#rows + 1] = { kind = "note", indent = 2, text = Text.color("muted", nextRank.where) }
         end
         for _, step in ipairs(Selectors.currentSteps(p.steps, skill.rank)) do
-          stepRows(ctx, rows, step, skill.rank)
+          card[#card + 1] = { kind = "divider" }
+          stepRows(ctx, card, step, skill.rank)
         end
       end
-      rows[#rows + 1] = { kind = "gap" }
+      rows[#rows + 1] = { kind = "card", title = p.name, rows = card }
     end
   end
   if not any then
-    rows[#rows + 1] = { kind = "note", text = "None of the guide's professions (Leatherworking, Skinning, Cooking, Fishing) found." }
+    rows[#rows + 1] = {
+      kind = "note",
+      text = "None of the guide's professions (Leatherworking, Skinning, Cooking, Fishing) found.",
+    }
   end
   return rows
 end

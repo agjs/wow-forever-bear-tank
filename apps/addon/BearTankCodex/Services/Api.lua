@@ -95,6 +95,18 @@ function Api.skills()
 end
 
 -- Count of an item in your bags (not the bank).
+-- Whether you're wearing this item right now.
+function Api.isEquipped(id)
+  local item = C_Item
+  return item and item.IsEquippedItem and item.IsEquippedItem(id) == true or false
+end
+
+-- Icon texture of an item (file ID), or nil if the client doesn't know the item yet.
+function Api.itemIcon(id)
+  local item = C_Item
+  return item and item.GetItemIconByID and item.GetItemIconByID(id) or nil
+end
+
 function Api.itemCount(id)
   local item = C_Item
   if item and item.GetItemCount then

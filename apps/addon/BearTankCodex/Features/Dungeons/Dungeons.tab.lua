@@ -5,6 +5,8 @@ local Store = ns.module("Core.Store")
 ns.module("UI.Tabs").register({
   id = "dungeons",
   label = "Dungeon quests",
+  icon = "inv_misc_note_01",
+  group = "Play",
   order = 2,
   topics = { "player", "quests" },
   build = function(ctx)

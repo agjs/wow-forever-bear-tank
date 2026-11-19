@@ -1,6 +1,6 @@
 import type { DungeonQuestList } from "@btc/guide-data";
 import { describe, expect, it } from "vitest";
-import { toDungeonQuests, toQuestTags, toTrainer } from "./addonData.ts";
+import { toChainStep, toDungeonQuests, toQuestTags, toTrainer } from "./addonData.ts";
 
 const SUNKEN_TEMPLE: DungeonQuestList = {
   key: "st",
@@ -68,15 +68,53 @@ describe("toDungeonQuests", () => {
 
 describe("toQuestTags", () => {
   it("tags dungeon quests and their chain steps, preferring the dungeon quest", () => {
-    const tags = toQuestTags([SUNKEN_TEMPLE], {
-      "1445": [
-        { id: 1424, name: "Pool of Tears" },
-        { id: 3446, name: "Into the Depths" },
-      ],
-    });
+    const withChain: DungeonQuestList = {
+      ...SUNKEN_TEMPLE,
+      quests: SUNKEN_TEMPLE.quests.map((q) =>
+        q.id === 1445
+          ? {
+              ...q,
+              chain: [
+                {
+                  id: 1424,
+                  name: "Pool of Tears",
+                  giver: "Fel'zerul",
+                  where: "Stonard, Swamp of Sorrows (47, 54)",
+                  task: "",
+                },
+                { id: 3446, name: "Into the Depths", giver: "Marvon", where: "Tanaris (52, 45)", task: "" },
+              ],
+            }
+          : q,
+      ),
+    };
+    const tags = toQuestTags([withChain]);
     expect(tags["1445"]).toEqual(["st", false]);
     expect(tags["1424"]).toEqual(["st", true]);
     expect(tags["3446"]).toEqual(["st", false]);
+  });
+});
+
+describe("toChainStep", () => {
+  it("splits where a step starts into place, zone and coordinates", () => {
+    expect(
+      toChainStep({
+        id: 4145,
+        name: "Larion and Muigin",
+        giver: "Larion",
+        where: "Marshal's Refuge, Un'Goro Crater (45.4, 8.4)",
+        task: "Hunt Bloodpetals.",
+      }),
+    ).toEqual({
+      id: 4145,
+      name: "Larion and Muigin",
+      giver: "Larion",
+      place: "Marshal's Refuge, Un'Goro Crater",
+      zone: "Un'Goro Crater",
+      x: 45.4,
+      y: 8.4,
+      task: "Hunt Bloodpetals.",
+    });
   });
 });
 

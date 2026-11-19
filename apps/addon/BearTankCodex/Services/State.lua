@@ -6,7 +6,7 @@ local Api = ns.module("Services.Api")
 local Events = ns.module("Core.Events")
 local Scheduler = ns.module("Core.Scheduler")
 
-local cache = { quests = {}, spells = {}, items = {} }
+local cache = { quests = {}, spells = {}, items = {}, equipped = {}, icons = {} }
 
 local TOPICS = {
   player = { "PLAYER_LEVEL_UP", "ZONE_CHANGED_NEW_AREA", "PLAYER_MONEY" },
@@ -14,6 +14,7 @@ local TOPICS = {
   spells = { "LEARNED_SPELL_IN_SKILL_LINE", "SPELLS_CHANGED" },
   skills = { "SKILL_LINES_CHANGED", "CHAT_MSG_SKILL" },
   bags = { "BAG_UPDATE_DELAYED" },
+  gear = { "PLAYER_EQUIPMENT_CHANGED" },
 }
 
 local RESET = {
@@ -32,6 +33,9 @@ local RESET = {
   end,
   bags = function()
     cache.items = {}
+  end,
+  gear = function()
+    cache.equipped = {}
   end,
 }
 
@@ -93,6 +97,25 @@ local function itemCount(id)
   return v
 end
 
+local function isEquipped(id)
+  local v = cache.equipped[id]
+  if v == nil then
+    v = Api.isEquipped(id)
+    cache.equipped[id] = v
+  end
+  return v
+end
+
+-- Item icons never change, so they're cached for the session (nil until the client knows the item).
+local function itemIcon(id)
+  local v = cache.icons[id]
+  if v == nil then
+    v = Api.itemIcon(id)
+    cache.icons[id] = v
+  end
+  return v
+end
+
 -- The context every selector receives: plain values plus lookup functions. Tests build their own.
 function State.context()
   if not cache.level then
@@ -106,5 +129,7 @@ function State.context()
     spellRank = spellRank,
     skill = skill,
     itemCount = itemCount,
+    isEquipped = isEquipped,
+    itemIcon = itemIcon,
   }
 end

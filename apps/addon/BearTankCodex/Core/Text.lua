@@ -19,6 +19,7 @@ Text.ICONS = {
   todo = "|TInterface\\RaidFrame\\ReadyCheck-NotReady:14:14|t",
   active = "|TInterface\\RaidFrame\\ReadyCheck-Waiting:14:14|t",
   done = "|TInterface\\RaidFrame\\ReadyCheck-Ready:14:14|t",
+  warning = "|TInterface\\DialogFrame\\UI-Dialog-Icon-AlertNew:14:14|t",
 }
 
 -- color("ff0000", "x") or color("gold", "x")
