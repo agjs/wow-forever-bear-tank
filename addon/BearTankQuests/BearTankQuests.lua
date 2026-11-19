@@ -266,6 +266,10 @@ SLASH_BEARTANKQUESTS1 = "/btq"
 SLASH_BEARTANKQUESTS2 = "/beartank"
 SlashCmdList.BEARTANKQUESTS = function(msg)
   msg = (msg or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+  if msg == "debug" then
+    if ns.DebugTags then ns.DebugTags() end
+    return
+  end
   if msg == "tags" then
     BearTankQuestsDB.tags = BearTankQuestsDB.tags == false
     print("|cfff2c46dBear Tank Codex:|r quest log tags " .. (BearTankQuestsDB.tags and "on" or "off") .. ".")

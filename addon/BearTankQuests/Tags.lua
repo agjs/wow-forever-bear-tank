@@ -22,30 +22,36 @@ local function infoFor(id)
   return d, t.chain
 end
 
+-- strip color codes so we can compare and re-wrap text; escape codes don't take up space on screen
+local function plain(t) return (t:gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", "")) end
+
 local function paint(owner)
   local fs = owner._btqFS
-  if not fs then return end
+  if not fs or not fs.GetText then return end
+  local cur = fs:GetText()
+  if not cur or cur == "" then return end
   local d, chain = infoFor(owner._btqID)
   if not d then
     if owner._btqBar then owner._btqBar:Hide() end
-    if owner._btqColored and owner._btqOrig then fs:SetTextColor(unpack(owner._btqOrig)) end
-    owner._btqColored = false
+    if cur:find("^|cff" .. (owner._btqHex or "zzzzzz")) then fs:SetText(owner._btqOrigText or plain(cur)) end
     return
   end
+  local wrapped = "|cff" .. d.color .. plain(cur) .. "|r"
+  if cur ~= wrapped then owner._btqOrigText = cur; fs:SetText(wrapped) end
+  owner._btqHex = d.color
   local r, g, b = rgb(d.color)
-  if not owner._btqColored then owner._btqOrig = { fs:GetTextColor() } end
-  fs:SetTextColor(r, g, b)
-  owner._btqColored = true
-  if not owner._btqBar then
+  if not owner._btqBar and owner.CreateTexture then
     owner._btqBar = owner:CreateTexture(nil, "OVERLAY")
     owner._btqBar:SetWidth(3)
   end
   local bar = owner._btqBar
-  bar:ClearAllPoints()
-  bar:SetPoint("TOPRIGHT", fs, "TOPLEFT", -2, 0)
-  bar:SetPoint("BOTTOMRIGHT", fs, "BOTTOMLEFT", -2, 0)
-  bar:SetColorTexture(r, g, b, chain and 0.45 or 1)
-  bar:Show()
+  if bar then
+    bar:ClearAllPoints()
+    bar:SetPoint("TOPRIGHT", fs, "TOPLEFT", -2, 0)
+    bar:SetPoint("BOTTOMRIGHT", fs, "BOTTOMLEFT", -2, 0)
+    bar:SetColorTexture(r, g, b, chain and 0.45 or 1)
+    bar:Show()
+  end
 end
 
 local function onEnter(owner)
@@ -60,7 +66,6 @@ local function decorate(owner, fs, id)
   if not fs or not fs.GetText then return end
   local cur = fs:GetText()
   if cur and cur:find(OLD_PREFIX) then fs:SetText((cur:gsub(OLD_PREFIX, ""))) end
-  if owner._btqID ~= id then owner._btqColored = false end   -- pooled frame reused for another quest
   owner._btqFS, owner._btqID = fs, id
   if not owner._btqHooked and owner.HookScript then
     owner._btqHooked = true
@@ -70,29 +75,58 @@ local function decorate(owner, fs, id)
   paint(owner)
 end
 
--- Walk a frame tree a few levels deep. In the quest log, only Buttons are quest titles; objective lines are plain
--- Frames with the same fields, so they're skipped. In the tracker, only quest blocks have a HeaderText.
-local function scan(frame, depth, textKey, titlesOnly)
+-- Is this line the quest's title (not one of its objective lines)? Compare against the game's own title text.
+local function isTitle(id, fs)
+  local t = C_QuestLog and C_QuestLog.GetTitleForQuestID and C_QuestLog.GetTitleForQuestID(id)
+  local txt = fs.GetText and fs:GetText()
+  if not t or not txt then return false end
+  -- the log may put a level like "[53] " in front; objective lines such as "Speak with <name>" don't count
+  local p = plain(txt):gsub("^%s+", ""):gsub("^%[[^%]]*%]%s*", ""):gsub("%s+$", "")
+  return p == t
+end
+
+ns.stats = {}
+-- Walk a frame tree a few levels deep and mark quest titles.
+local function scan(frame, depth, where)
   if not frame or depth < 0 or not frame.GetChildren then return end
   for _, child in ipairs({ frame:GetChildren() }) do
     local id = rawget(child, "questID") or rawget(child, "id")
-    local fs = rawget(child, textKey)
-    if type(id) == "number" and fs and (not titlesOnly or (child.GetObjectType and child:GetObjectType() == "Button")) then
-      decorate(child, fs, id)
-    elseif fs and fs.GetText then
-      local cur = fs:GetText()   -- clean up text tags left by version 1.1 on any line
-      if cur and cur:find(OLD_PREFIX) then fs:SetText((cur:gsub(OLD_PREFIX, ""))) end
+    if type(id) == "number" then
+      local st = ns.stats[where]; st.withId = st.withId + 1
+      for _, key in ipairs({ "Text", "HeaderText", "Title", "TitleText" }) do
+        local fs = rawget(child, key)
+        if type(fs) == "table" and fs.GetText then
+          local cur = fs:GetText()
+          if cur and cur:find(OLD_PREFIX) then fs:SetText((cur:gsub(OLD_PREFIX, ""))) end
+          if isTitle(id, fs) then
+            st.titles = st.titles + 1
+            if ns.TAGS[id] then st.tagged = st.tagged + 1 end
+            decorate(child, fs, id)
+          end
+        end
+      end
     end
-    scan(child, depth - 1, textKey, titlesOnly)
+    scan(child, depth - 1, where)
   end
 end
 
-local function scanLog()
-  if QuestScrollFrame then pcall(scan, QuestScrollFrame, 4, "Text", true) end
+local function run(where, root, depth)
+  ns.stats[where] = { withId = 0, titles = 0, tagged = 0, found = root ~= nil }
+  if root then local ok, err = pcall(scan, root, depth, where); if not ok then ns.stats[where].err = err end end
 end
 
-local function scanTracker()
-  if ObjectiveTrackerFrame then pcall(scan, ObjectiveTrackerFrame, 5, "HeaderText", false) end
+local function scanLog() run("questlog", QuestScrollFrame, 6) end
+local function scanTracker() run("tracker", ObjectiveTrackerFrame, 7) end
+
+function ns.DebugTags()
+  ns.RefreshTags()
+  local hooks = {}
+  for k in pairs(ns.hooked) do hooks[#hooks + 1] = k end
+  print("|cfff2c46dBear Tank Codex debug:|r tags " .. ((BearTankQuestsDB.tags == false) and "OFF" or "on") .. ", level " .. (UnitLevel("player") or "?") .. ", hooks: " .. (#hooks > 0 and table.concat(hooks, ", ") or "none"))
+  for _, w in ipairs({ "questlog", "tracker" }) do
+    local s = ns.stats[w] or {}
+    print(("  %s: window %s, lines with a quest id %d, quest titles %d, dungeon quests %d%s"):format(w, s.found and "found" or "NOT found", s.withId or 0, s.titles or 0, s.tagged or 0, s.err and (", error: " .. tostring(s.err)) or ""))
+  end
 end
 
 function ns.RefreshTags()
@@ -100,6 +134,7 @@ function ns.RefreshTags()
 end
 
 local hooked = {}
+ns.hooked = hooked
 local function hook(target, method, fn, key)
   if hooked[key] then return end
   if method then
