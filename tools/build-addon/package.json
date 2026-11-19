@@ -1,0 +1,12 @@
+{
+  "name": "@btc/build-addon",
+  "private": true,
+  "type": "module",
+  "description": "Builds the Bear Tank Codex addon's Lua data from @btc/guide-data and packages the release zip.",
+  "scripts": {
+    "start": "node src/main.ts"
+  },
+  "dependencies": {
+    "@btc/guide-data": "workspace:*"
+  }
+}

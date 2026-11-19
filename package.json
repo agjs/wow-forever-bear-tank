@@ -1,0 +1,26 @@
+{
+  "name": "bear-tank-codex",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": ">=26.4.0"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @btc/web dev",
+    "build": "pnpm build:addon && pnpm --filter @btc/web build",
+    "build:addon": "pnpm --filter @btc/build-addon start",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:addon": "pnpm --filter @btc/addon test",
+    "check": "biome check .",
+    "format": "biome check --write .",
+    "verify": "pnpm typecheck && pnpm check && pnpm test && pnpm test:addon"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.8",
+    "@types/node": "26.6.6",
+    "typescript": "7.0.2",
+    "vitest": "5.1.1"
+  }
+}

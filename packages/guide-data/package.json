@@ -1,0 +1,9 @@
+{
+  "name": "@btc/guide-data",
+  "private": true,
+  "type": "module",
+  "description": "The Bear Tank Codex guide content as typed data. The website and the addon are both built from it.",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
