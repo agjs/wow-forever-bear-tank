@@ -251,7 +251,7 @@ ev:SetScript("OnEvent", function(_, event, arg1)
   if event == "ADDON_LOADED" then
     if arg1 == ADDON then
       BearTankQuestsDB = BearTankQuestsDB or {}
-      print("|cfff2c46dBear Tank Codex:|r dungeon quests loaded. Type |cffffffff/btq|r to open.")
+      print("|cfff2c46dBear Tank Codex:|r dungeon quests loaded. Type |cffffffff/btq|r to open, |cffffffff/btq tags|r to turn quest log tags on or off.")
     end
     return
   end
@@ -266,6 +266,12 @@ SLASH_BEARTANKQUESTS1 = "/btq"
 SLASH_BEARTANKQUESTS2 = "/beartank"
 SlashCmdList.BEARTANKQUESTS = function(msg)
   msg = (msg or ""):lower():gsub("^%s+", ""):gsub("%s+$", "")
+  if msg == "tags" then
+    BearTankQuestsDB.tags = BearTankQuestsDB.tags == false
+    print("|cfff2c46dBear Tank Codex:|r quest log tags " .. (BearTankQuestsDB.tags and "on" or "off") .. ".")
+    if ns.RefreshTags then ns.RefreshTags() end
+    return
+  end
   if not f then makeFrame() end
   if msg ~= "" then
     for i, d in ipairs(DUNGEONS) do

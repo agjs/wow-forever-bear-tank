@@ -1,9 +1,10 @@
 ## Interface: 16001, 16002, 16003, 16100
 ## Title: Bear Tank Codex: Dungeon Quests
-## Notes: Every Horde dungeon quest from level 44 to 60, with live status, where to pick each one up, and map pins. Type /btq.
+## Notes: Every Horde dungeon quest from level 44 to 60, with live status, where to pick each one up, map pins, and colored dungeon tags in your quest log. Type /btq.
 ## Author: Bear Tank Codex
-## Version: 1.0.0
+## Version: 1.1.0
 ## SavedVariables: BearTankQuestsDB
 
 Data.lua
 BearTankQuests.lua
+Tags.lua

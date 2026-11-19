@@ -5,6 +5,11 @@ const root = path.join(__dirname, "..");
 const ctx = { window: {} }; vm.createContext(ctx);
 vm.runInContext(fs.readFileSync(path.join(root, "dquests.js"), "utf8"), ctx);
 const D = ctx.window.DQUESTS;
+const CHAINS = JSON.parse(fs.readFileSync(path.join(__dirname, "chains.json"), "utf8"));
+// short tag and color per dungeon, used for the quest log labels
+const STYLE = { alcaz: ["Alcaz", "8ab8f0"], zf: ["ZF", "e8c070"], mara: ["Mara", "9be070"], st: ["ST", "60d0c0"], brd: ["BRD", "ff8a50"],
+  blackmaw: ["BMH", "c0a080"], lbrs: ["LBRS", "ff6a6a"], ubrs: ["UBRS", "ff4a8a"], dme: ["DM:E", "b090ff"], dmw: ["DM:W", "a080f0"],
+  dmn: ["DM:N", "9070e0"], strat_live: ["Strat", "f0e060"], strat_undead: ["Strat UD", "d0c050"], scholo: ["Scholo", "70e0ff"] };
 
 const lua = s => '"' + String(s).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ").replace(/\|/g, "||") + '"';
 const inside = w => /^(inside|drops|a random drop)/i.test(w);
@@ -22,7 +27,8 @@ for (const d of D) {
     g.q.push(x);
   });
   stops.sort((a, b) => a.inside - b.inside);
-  out += `  { key = ${lua(d.key)}, name = ${lua(d.name)}, lo = ${d.lv[0]}, hi = ${d.lv[1]}, stops = {\n`;
+  const [short, color] = STYLE[d.key] || [d.name, "f2c46d"];
+  out += `  { key = ${lua(d.key)}, name = ${lua(d.name)}, short = ${lua(short)}, color = ${lua(color)}, lo = ${d.lv[0]}, hi = ${d.lv[1]}, stops = {\n`;
   for (const s of stops) {
     out += `    { title = ${lua(s.title)}, zone = ${lua(s.zone)}, x = ${s.x ?? "nil"}, y = ${s.y ?? "nil"}, inside = ${s.inside}, q = {\n`;
     for (const [id, n, side, req, , giver, where, note] of s.q)
@@ -32,6 +38,11 @@ for (const d of D) {
   out += "  } },\n";
 }
 out += "}\n";
+// quest id -> dungeon tag; the dungeon quest itself first, then the other steps of its chain
+const tags = {};
+for (const d of D) for (const x of d.q) tags[x[0]] = tags[x[0]] || { k: d.key, chain: false };
+for (const d of D) for (const x of d.q) for (const [cid] of (CHAINS[x[0]] || [])) if (!tags[cid]) tags[cid] = { k: d.key, chain: true };
+out += "ns.TAGS = {\n" + Object.entries(tags).map(([id, t]) => `  [${id}] = { k = ${lua(t.k)}, chain = ${t.chain} },`).join("\n") + "\n}\n";
 fs.writeFileSync(path.join(root, "addon/BearTankQuests/Data.lua"), out);
 execSync("rm -f BearTankQuests.zip && cd addon && zip -qr ../BearTankQuests.zip BearTankQuests -x '*.DS_Store'", { cwd: root });
-console.log("Data.lua:", D.length, "dungeons,", D.reduce((n, d) => n + d.q.length, 0), "quests; zip written");
+console.log("Data.lua:", D.length, "dungeons,", D.reduce((n, d) => n + d.q.length, 0), "quests,", Object.keys(tags).length, "tagged quest ids; zip written");
