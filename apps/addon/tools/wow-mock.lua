@@ -2,7 +2,13 @@
 -- functions the addon's Api uses. Frames accept any method call; the ones that matter record state.
 local M = {}
 
-local registry = { frames = {}, events = {}, printed = {} }
+local registry = { frames = {}, events = {}, printed = {}, errors = {} }
+
+-- Like the real client, registering an event it doesn't know is an error.
+local KNOWN_EVENTS = {}
+for _, name in ipairs(require("forever-events")) do
+  KNOWN_EVENTS[name] = true
+end
 M.registry = registry
 
 local function object(kind)
@@ -55,6 +61,9 @@ local function frame(kind, name)
     return self._scripts[event]
   end
   function f:RegisterEvent(event)
+    if not KNOWN_EVENTS[event] then
+      error('Attempt to register unknown event "' .. tostring(event) .. '"', 2)
+    end
     registry.events[event] = registry.events[event] or {}
     table.insert(registry.events[event], self)
   end
@@ -103,6 +112,11 @@ function M.install(state)
   _G.UISpecialFrames = {}
   _G.tinsert = table.insert
   _G.SlashCmdList = {}
+  _G.geterrorhandler = function()
+    return function(err)
+      table.insert(registry.errors, err)
+    end
+  end
   _G.GameTooltip = object("GameTooltip")
   _G.hooksecurefunc = function() end
   _G.C_Timer = {

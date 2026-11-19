@@ -2,7 +2,7 @@
 ## Title: Bear Tank Codex
 ## Notes: The Bear Tank Codex guide in game: what to do at your level, dungeon quests with live status, professions with the materials in your bags, and colored dungeon quests in your quest log. Type /btq.
 ## Author: Bear Tank Codex
-## Version: 2.0.0
+## Version: 2.0.1
 ## SavedVariables: BearTankCodexDB
 
 Core\Namespace.lua

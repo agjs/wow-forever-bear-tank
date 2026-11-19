@@ -9,7 +9,7 @@ globals = { "BearTankCodexDB", "SLASH_BEARTANKCODEX1", "SLASH_BEARTANKCODEX2", "
 read_globals = {
   "CreateFrame", "UIParent", "UISpecialFrames", "GameTooltip", "C_Timer", "C_QuestLog", "C_Map", "C_SuperTrack",
   "C_SkillInfo", "C_Item", "C_SpellBook", "UiMapPoint", "TomTom", "UnitLevel", "GetRealZoneText", "GetMoney",
-  "IsPlayerSpell", "GetNumSkillLines", "GetSkillLineInfo", "hooksecurefunc", "QuestScrollFrame",
+  "IsPlayerSpell", "geterrorhandler", "GetNumSkillLines", "GetSkillLineInfo", "hooksecurefunc", "QuestScrollFrame",
   "ObjectiveTrackerFrame", "QuestObjectiveTracker", "CampaignQuestObjectiveTracker", "tinsert", "IsQuestFlaggedCompleted",
 }
 

@@ -11,7 +11,7 @@ local cache = { quests = {}, spells = {}, items = {} }
 local TOPICS = {
   player = { "PLAYER_LEVEL_UP", "ZONE_CHANGED_NEW_AREA", "PLAYER_MONEY" },
   quests = { "QUEST_LOG_UPDATE", "QUEST_TURNED_IN", "QUEST_ACCEPTED" },
-  spells = { "LEARNED_SPELL_IN_TAB", "SPELLS_CHANGED" },
+  spells = { "LEARNED_SPELL_IN_SKILL_LINE", "SPELLS_CHANGED" },
   skills = { "SKILL_LINES_CHANGED", "CHAT_MSG_SKILL" },
   bags = { "BAG_UPDATE_DELAYED" },
 }

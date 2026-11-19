@@ -28,6 +28,10 @@ describe("Addon integration", function()
     expect(type(SlashCmdList.BEARTANKCODEX)).toBe("function")
   end)
 
+  it("sets up without errors (every event it listens to exists in the Forever client)", function()
+    expect(#Mock.registry.errors).toBe(0)
+  end)
+
   it("opens the Now tab with route, trainer and dungeons", function()
     SlashCmdList.BEARTANKCODEX("now")
     local text = plain()

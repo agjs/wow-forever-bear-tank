@@ -21,7 +21,11 @@ function Events.on(event, fn)
   if not list then
     list = {}
     gameHandlers[event] = list
-    frame:RegisterEvent(event)
+    -- An event the client doesn't have must not break the rest of the addon's setup.
+    local ok, err = pcall(frame.RegisterEvent, frame, event)
+    if not ok then
+      geterrorhandler()(err)
+    end
   end
   list[#list + 1] = fn
 end
