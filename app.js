@@ -274,6 +274,24 @@
     el.querySelectorAll(".clsrow button").forEach(b => b.onclick = () => { state.pvpCls = b.dataset.c; store.set("pvpCls", state.pvpCls); renderPvp(); refreshWH(); });
   }
 
+  /* ---------------- DUNGEON QUESTS ---------------- */
+  function renderDQ() {
+    const D = window.DQUESTS, el = $("#dq-body"); if (!D || !el) return;
+    const L = state.level, done = new Set(store.get("dqdone", []));
+    const npcA = (id, n) => id ? `<a href="https://www.wowhead.com/forever/npc=${id}" target="_blank" rel="noopener">${esc(n)}</a>` : esc(n);
+    const row = ([id, n, side, req, npc, giver, where, note]) => `<li class="dq${done.has(id) ? " done" : ""}"><label><input type="checkbox" data-q="${id}"${done.has(id) ? " checked" : ""}></label><div>
+      <a href="https://www.wowhead.com/forever/quest=${id}" target="_blank" rel="noopener"><b>${esc(n)}</b></a> <span class="tag ${side === "H" ? "q" : "v"}">${side === "H" ? "Horde" : "Both factions"}</span>${req > L ? ` <span class="tag c">needs level ${req}</span>` : ""}
+      <small>From ${npcA(npc, giver)}, ${rich(where)}.${note ? ` ${rich(note)}` : ""}</small></div></li>`;
+    const block = d => { const n = d.q.filter(x => done.has(x[0])).length;
+      return `<div class="card dqcard"><div class="dqh"><b>${esc(d.name)}</b><span class="muted small">Levels ${d.lv[0]}–${d.lv[1]}${d.forever ? " · new in Forever" : ""} · ${n}/${d.q.length} done · <a href="https://www.wowhead.com/forever/guide/${d.guide}" target="_blank" rel="noopener">Wowhead guide</a></span></div><ul class="dqlist">${d.q.map(row).join("")}</ul></div>`; };
+    const now = D.filter(d => d.lv[1] >= L && d.lv[0] <= L + 3), later = D.filter(d => d.lv[0] > L + 3), past = D.filter(d => d.lv[1] < L);
+    el.innerHTML = `${now.length ? `<h3>Your level now</h3>${now.map(block).join("")}` : ""}
+      ${later.length ? `<h3>Coming up</h3>${later.map(d => fold(`${esc(d.name)} <span class="muted small">levels ${d.lv[0]}–${d.lv[1]} · ${d.q.length} quests</span>`, block(d))).join("")}` : ""}
+      ${past.length ? fold(`Dungeons below your level (${past.map(d => esc(d.name)).join(", ")})`, past.map(block).join("")) : ""}
+      <p class="small muted psrc">Source: Wowhead's Forever dungeon guides, with each quest's faction and level checked in the Wowhead Forever database. Class-only and Blacksmith-only quests are left out.</p>`;
+    el.querySelectorAll("input[data-q]").forEach(c => c.onchange = () => { const id = +c.dataset.q; c.checked ? done.add(id) : done.delete(id); store.set("dqdone", [...done]); renderDQ(); refreshWH(); });
+  }
+
   /* ---------------- CAMPS & CRATES ---------------- */
   function renderCamps() {
     const C = window.CAMPS, el = $("#camps-body"); if (!C || !el) return;
@@ -552,7 +570,7 @@
 
   /* ---------------- wiring ---------------- */
   function refreshWH() { try { window.$WowheadPower && $WowheadPower.refreshLinks(); } catch {} }
-  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderGear(); renderCamps(); renderDerived(); refreshWH(); }
+  function renderAll() { renderToday(); renderRoad(); renderTalents(); renderRotation(); renderDungeons(); renderTrainer(); renderProf(); renderPvp(); renderGear(); renderCamps(); renderDQ(); renderDerived(); refreshWH(); }
   function setLevel(v) { state.level = Math.max(10, Math.min(60, v || 10)); $("#lvl").value = state.level; store.set("level", state.level); state.sel = null; renderAll(); }
   function setTab(t) {
     state.tab = t; store.set("tab", t);

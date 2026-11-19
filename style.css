@@ -516,3 +516,15 @@ b.big{font-size:18px;display:block}
 
 .kv li.nextrank{background:rgba(232,184,90,.07);border-left:3px solid var(--gold);padding-left:10px;border-radius:4px}
 .kv li.nextrank em{color:var(--gold);font-style:normal;font-weight:700}
+
+.dqcard{margin-bottom:16px}
+.dqh{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:6px}
+.dqh b{font:700 17px var(--display);color:var(--gold);letter-spacing:.4px}
+.dqlist{list-style:none;margin:0;padding:0}
+.dq{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.dq:first-child{border-top:0}
+.dq label{padding-top:2px}
+.dq input{width:17px;height:17px;accent-color:var(--gold);cursor:pointer}
+.dq small{display:block;color:var(--text-3);margin-top:3px;line-height:1.5}
+.dq.done{opacity:.45}
+.dq.done b{text-decoration:line-through}
