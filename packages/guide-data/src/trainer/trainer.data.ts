@@ -1,5 +1,5 @@
 // Bear Tank Codex guide data. The website and the addon are both built from this package.
-import type { ClassQuests, TrainerSpell, TrainerSpellInfo } from "./trainer.types.ts";
+import type { ClassQuests, RemovedSpell, TrainerSpell, TrainerSpellInfo } from "./trainer.types.ts";
 
 export const trainerSpells: readonly TrainerSpell[] = [
   {
@@ -368,14 +368,6 @@ export const trainerSpells: readonly TrainerSpell[] = [
     rank: 1,
     spellId: 2908,
     cost: 3000,
-    fromQuest: false,
-  },
-  {
-    level: 24,
-    name: "Tiger's Fury",
-    rank: 0,
-    spellId: 5217,
-    cost: 4000,
     fromQuest: false,
   },
   {
@@ -1636,11 +1628,6 @@ export const trainerSpellInfo: Readonly<Record<string, TrainerSpellInfo>> = {
     icon: "ability_druid_disembowel",
     text: "Cat Form attack that adds a bleed and a combo point.",
   },
-  "Tiger's Fury": {
-    category: "cat",
-    icon: "ability_mount_jungletiger",
-    text: "Cat Form: more damage for a few seconds.",
-  },
   "Ferocious Bite": {
     category: "cat",
     icon: "ability_druid_ferociousbite",
@@ -2000,3 +1987,14 @@ export const classQuests: ClassQuests = {
     },
   ],
 };
+
+/** Spells WoW: Forever removed. The guide must never list them (checked by trainer.test.ts). */
+export const removedSpells: readonly RemovedSpell[] = [
+  {
+    name: "Tiger's Fury",
+    spellId: 5217,
+    removedIn: "Beta update, October 1, 2026",
+    source:
+      "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-november-2/2360696/2",
+  },
+];

@@ -32,3 +32,11 @@ export interface ClassQuest {
   readonly note: string;
   readonly origin: Origin;
 }
+
+/** A spell Blizzard removed from WoW: Forever, with where that was announced. */
+export interface RemovedSpell {
+  readonly name: string;
+  readonly spellId: number;
+  readonly removedIn: string;
+  readonly source: string;
+}

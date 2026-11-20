@@ -165,13 +165,6 @@ ns.data.rotation = {
       talent = "feralCharge",
     },
     {
-      spell = "Tiger's Fury",
-      icon = "ability_mount_jungletiger",
-      spellId = 5217,
-      text = "At the start of the fight: 15% more damage for 6 seconds. Usable every 30 seconds.",
-      level = 24,
-    },
-    {
       spell = "Rake",
       icon = "ability_druid_disembowel",
       spellId = 1822,

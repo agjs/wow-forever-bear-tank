@@ -464,16 +464,6 @@ ns.data.trainer = {
   },
   {
     level = 24,
-    name = "Tiger's Fury",
-    rank = 0,
-    spellId = 5217,
-    cost = 4000,
-    icon = "ability_mount_jungletiger",
-    optional = false,
-    quest = false,
-  },
-  {
-    level = 24,
     name = "Rake",
     rank = 1,
     spellId = 1822,

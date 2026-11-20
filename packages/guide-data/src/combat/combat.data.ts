@@ -352,7 +352,6 @@ export const spells: Readonly<Record<string, SpellInfo>> = {
   "Ferocious Bite": { icon: "ability_druid_ferociousbite", spellId: 22568 },
   Prowl: { icon: "ability_ambush", spellId: 5215 },
   Ravage: { icon: "ability_druid_ravage", spellId: 6785 },
-  "Tiger's Fury": { icon: "ability_mount_jungletiger", spellId: 5217 },
   "Dire Bear Form": { icon: "ability_racial_bearform", spellId: 9634 },
   Innervate: { icon: "spell_nature_lightning", spellId: 29166 },
   Rebirth: { icon: "spell_nature_reincarnation", spellId: 20748 },
@@ -436,11 +435,6 @@ export const priorityLists: Readonly<Record<PriorityListKey, readonly PrioritySt
       spell: "Feral Charge",
       text: "In Cat Form, Feral Charge leaps you behind the enemy from 8 to 25 yards away. Follow it with Shred. Usable every 30 seconds.",
       unlock: { talent: "feralCharge" },
-    },
-    {
-      spell: "Tiger's Fury",
-      text: "At the start of the fight: 15% more damage for 6 seconds. Usable every 30 seconds.",
-      unlock: { level: 24 },
     },
     {
       spell: "Rake",

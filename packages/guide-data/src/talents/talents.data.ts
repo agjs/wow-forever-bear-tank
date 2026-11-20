@@ -1573,7 +1573,7 @@ export const secondSpec: SecondSpec = {
       "Keep Rake on the target. Rend and Tear adds 15 percent damage to everything while it bleeds.",
       "Build combo points with Shred from behind. Use Claw when you can't get behind.",
       "At 5 combo points: Rip if the target will live 10 more seconds or more, otherwise Ferocious Bite.",
-      "When Energy runs low, use Shifting Power, and Tiger's Fury before big hits.",
+      "When Energy runs low, use Shifting Power (a talent: turns mana into 40 Energy).",
     ],
     stats:
       "Weapon damage first (it sets the damage of every cat attack), then enough Hit, then Agility, then Strength and Crit.",

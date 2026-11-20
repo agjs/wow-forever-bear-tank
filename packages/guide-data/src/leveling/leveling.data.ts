@@ -376,7 +376,7 @@ export const checkpoints: readonly Checkpoint[] = [
     where:
       "Shadowfang Keep (a castle in Silverpine Forest) and Blackfathom Deeps (an underwater cave on the coast of Ashenvale). Forever also added a new dungeon for these levels: Excavation Site in the Wetlands (levels 24 to 29).",
     talents: "Sharpened Claws ranks 1 and 2 (levels 23 and 24), Lacerate (level 25), Predatory Strikes ranks 1 and 2",
-    train: "At level 24: Remove Curse, a stronger rank of Swipe, and Tiger's Fury (a Cat Form ability).",
+    train: "At level 24: Remove Curse and a stronger rank of Swipe.",
     items: [
       {
         name: "Seal of Sylvanas",
@@ -1017,12 +1017,6 @@ export const abilities: readonly Ability[] = [
     name: "Remove Curse",
     text: "Removes a curse. Cast it in normal (caster) form.",
     kind: "util",
-  },
-  {
-    level: 24,
-    name: "Tiger's Fury",
-    text: "A Cat Form damage boost.",
-    kind: "cat",
   },
   {
     level: 25,
