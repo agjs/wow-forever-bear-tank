@@ -148,8 +148,8 @@ export const mechanics: readonly Mechanic[] = [
   },
   {
     title: "Rage",
-    text: "Forever gives you more rage when you get hit than Classic did. Against a boss that hits you you'll rarely run out, so talents that give rage are worth less.",
-    source: "Wowhead (L0uki)",
+    text: "Forever gives you more rage when you get hit than Classic did. The rage is based on the enemy, not on your own health, so Stamina gear doesn't lower it. Critical hits in Bear Form give 100% more rage. Against a boss that hits you you'll rarely run out, so talents that give rage are worth less.",
+    source: "Wowhead (L0uki) / Blizzard development notes",
   },
   {
     title: "Hit chance",
@@ -168,12 +168,12 @@ export const mechanics: readonly Mechanic[] = [
   },
   {
     title: "Threat",
-    text: "Bear form makes everything you do cause 115% more threat.",
-    source: "Leprestore",
+    text: "Bear form makes everything you do cause 115% more threat. It replaces Blessing of Salvation, which Forever removed. Faerie Fire and Demoralizing Roar also make threat in bear form, and Faerie Fire doesn't reset your auto-attack timer, so you can press it any time.",
+    source: "Blizzard development notes",
   },
   {
     title: "Items in forms",
-    text: "In Forever you can use many items without leaving your form. Sharpening stones and weightstones now make your bear attacks stronger.",
+    text: "In Forever you can use many items without leaving your form, mana potions included. Sharpening stones and weightstones now make your bear attacks stronger. Nothing can disarm you while you're in a form.",
     source: "Method.gg / Wowhead",
   },
   {

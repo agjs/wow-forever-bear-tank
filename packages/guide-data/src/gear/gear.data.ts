@@ -582,7 +582,7 @@ export const gear: readonly GearItem[] = [
     level: 40,
     itemLevel: 45,
     stats: "109 armor",
-    source: "Made by leatherworkers (usable from level 45). Gives extra rage when you press Enrage",
+    source: "Made by leatherworkers (usable from level 40). Gives 5 extra rage when you press Enrage",
     icon: "inv_helmet_04",
     quality: 3,
     levelEstimated: false,

@@ -16,7 +16,7 @@ export const pvp: Pvp = {
     "Battlegrounds use level brackets, so you mostly fight players close to your own level.",
     "Crowd control rule (general WoW, not confirmed for Forever): when an enemy repeatedly stuns, fears, roots or sheeps you, each repeat lasts a shorter time, and after a few repeats you are briefly immune to that type.",
     "November 4 changes that matter: roots from proc-based talents (Frostbite, Entrapment, Improved Wing Clip, Counterattack, Improved Hamstring) now follow this shorter-repeat rule. Paladin Stoicism (Protection) cuts stun and charm length by 10 or 20 percent. Priest Dark Sacrifice no longer breaks crowd control.",
-    "Berserk, the druid talent that cleared fear and gave fear immunity, was removed in the October 30 hotfixes. No Forever source found says how fear is handled for druids now.",
+    "Berserk, the druid talent that cleared fear and gave fear immunity, was removed before launch (Blizzard's November 2 development notes). Primal Bite took its place in the talent tree.",
     "Classes: Forever keeps the nine Classic classes (Warrior, Paladin, Hunter, Rogue, Priest, Shaman, Mage, Warlock, Druid). No new class is confirmed. Race and class pairings differ from Classic. Horde Windshaper Skyborne can be Warrior, Hunter, Rogue, Shaman or Druid. Alliance High Order Skyborne can be Warrior, Hunter, Rogue, Mage or Druid. Alliance Human can be Warrior, Paladin, Rogue, Priest, Mage or Warlock. Alliance Dwarf can be Warrior, Paladin, Hunter, Rogue or Priest. Alliance Night Elf can be Warrior, Hunter, Rogue, Priest or Druid. Alliance Gnome can be Warrior, Rogue, Mage or Warlock.",
     "Corpse camping and ganking: no Forever-specific rule was found. Blizzard's general support wording says game staff generally do not step into player vs player disputes. Assume open-world fights are yours to handle. (Classic and retail wording, unverified for Forever.)",
     "Honor leather is the cheap early PvP gear for a druid: agility for Cat, stamina for Bear (LFCarry promotional guide, unverified).",
@@ -77,7 +77,7 @@ export const pvp: Pvp = {
       },
       {
         title: "Racials work in form",
-        text: "Racial abilities such as Shadowmeld, War Stomp and Walk on Air can be used in form (beta notes). Your Windshaper Skyborne racial Skysight is a speed boost, and Walk on Air is an instant glide. Use Skysight to run from chasers. (Single source.)",
+        text: "Racial abilities such as Shadowmeld, War Stomp and Walk on Air can be used in form (beta notes). Your Windshaper Skyborne racial Skysight is a speed boost, and Walk on Air is an instant glide. Use Skysight to run from chasers.",
         origin: "forever",
       },
       {
@@ -110,7 +110,7 @@ export const pvp: Pvp = {
       },
     ],
     talents:
-      "Talent positions conflict between Warcraft Tavern's Nov 4 notes and its beta notes, and between sources, so check the in-game calculator. Based on the Nov 4 notes: Lacerate is a 1-point talent in row 4 (not all druids get it). Primal Bite is a 1-point talent in row 7 and replaces Berserk, which was removed. Shifting Power is a 1-point talent in row 7 that needs Predatory Discipline. For PvP, keep Feral Swiftness (dodge that works everywhere), Natural Reaction (dodge gives rage) and Feral Charge (Cat version). Your bear tank build is fine for open-world PvP. Swap Lacerate and Rend and Tear, which are PvE threat talents, for points in Feral Charge or Shifting Power if you plan to duel. No Forever druid PvP build is confirmed.",
+      "From Blizzard's November 2 development notes: Lacerate is a 1-point talent in row 4 (not all druids get it). Primal Bite is a 1-point talent in row 7 and replaces Berserk, which was removed. Shifting Power is a 1-point talent in row 7 that needs Predatory Discipline. For PvP, keep Feral Swiftness (dodge that works everywhere), Natural Reaction (dodge gives rage) and Feral Charge (Cat version). Your bear tank build is fine for open-world PvP. Swap Lacerate and Rend and Tear, which are PvE threat talents, for points in Feral Charge or Shifting Power if you plan to duel. No Forever druid PvP build is confirmed.",
   },
   classes: [
     {
@@ -411,7 +411,7 @@ export const pvp: Pvp = {
     {
       race: "High Order Skyborne (Alliance, new in Forever)",
       racials:
-        "Read Ley Line is a health and mana regeneration cooldown. Walk on Air is an instant glide (90-second cooldown per one guide). Elemental Insight and Wind Blessed (haste, 2 percent after Nov 4) are passives. Single-source racial details.",
+        "Read Leyline makes health and mana regenerate 50% faster for 15 seconds (doubled for an hour when used at a leyline). Walk on Air is an instant 10-second glide with a 90-second cooldown. Elemental Insight (5% more damage to elementals) and Wind Blessed (2% haste) are passives.",
       origin: "forever",
     },
   ],

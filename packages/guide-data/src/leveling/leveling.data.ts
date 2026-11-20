@@ -435,7 +435,7 @@ export const checkpoints: readonly Checkpoint[] = [
     ],
     tips: [
       "Lacerate is a new talent button at level 25: a bleed that you can stack on an enemy up to 5 times. For now, put one stack on the enemy you're killing, then use Maul and Swipe. Stacking all 5 is only worth it on long boss fights.",
-      "Before you enter a dungeon, pick up every quest for it (they're spread around the nearby zones). Enemies inside give less experience than quests do, so the quest rewards are where most of the value is.",
+      "Before you enter a dungeon, pick up every quest for it (they're spread around the nearby zones). Forever halved the bonus experience from dungeon quests but gives 20% more experience for dungeon kills, so a full clear with the quests done is the best experience per hour.",
     ],
     doneWhen: "You've learned Lacerate and have the Seal of Sylvanas ring plus Shadowfang Keep quest gear",
   },

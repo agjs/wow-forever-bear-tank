@@ -13,6 +13,10 @@ export const meta: Meta = {
 
 export const sources: readonly Source[] = [
   {
+    title: "Blizzard: WoW Forever Beta Development Notes (updated November 2)",
+    url: "https://us.forums.blizzard.com/en/wow/t/wow-forever-beta-development-notes-%E2%80%93-updated-november-2/2360696",
+  },
+  {
     title: "Wowhead: Feral Tank Leveling (L0uki, 2026-11-04)",
     url: "https://www.wowhead.com/forever/guide/classes/druid/feral/tank-leveling-tips",
   },
@@ -75,6 +79,11 @@ export const extraLinks: WowheadLinks = {
   Tranquility: "spell=740",
   "Feline Grace": "spell=20719",
   "Wolfshead Helm": "item=8345",
+  Skysight: "spell=1259686",
+  "Read Leyline": "spell=1259705",
+  "Wind Blessed": "spell=1259710",
+  "Elemental Insight": "spell=1259707",
+  "Walk on Air": "spell=1259416",
   "Enraged Idol": "item=272428",
   "Idol of Shifting Tides": "item=263411",
   "Rugged Armor Kit": "item=15564",

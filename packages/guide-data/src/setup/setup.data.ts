@@ -107,6 +107,14 @@ export const qualityOfLife: QualityOfLife = {
       text: "Log out in an inn or next to your Camp Tent. Rested experience doubles the experience from kills until it runs out.",
     },
     {
+      title: "Put new spells on your bars",
+      text: "Forever doesn't add newly trained spells to your action bars. After every trainer visit, open your spellbook (P) and drag the new spells onto your bars.",
+    },
+    {
+      title: "Equip new bags yourself",
+      text: "New bags don't go into an empty bag slot on their own. Drag each one onto a free bag slot next to your backpack.",
+    },
+    {
       title: "Only buy ranks you use",
       text: "Skip the optional caster spells at the trainer. The Trainer tab marks them.",
     },
@@ -154,11 +162,15 @@ export const qualityOfLife: QualityOfLife = {
 export const racials: readonly Racial[] = [
   {
     name: "Wind Blessed",
-    text: "Passive: you attack 2% faster. More swings means more rage.",
+    text: "Passive: 2% haste, so you attack and cast 2% faster. More swings means more rage.",
   },
   {
     name: "Skysight",
-    text: "Run 15% faster for 15 seconds, usable every 2 minutes. Doesn't work inside raids.",
+    text: "Run 15% faster (mounted too) for 30 seconds, usable every 2 minutes. Use it next to an elemental convergence and you become Charged for 1 hour, which doubles it to 30%. Charged stays through death but ends when you enter a raid.",
+  },
+  {
+    name: "Read Leyline",
+    text: "Regenerate health and mana 50% faster for 15 seconds, usable every 2 minutes. Use it next to a leyline and you become Attuned for 1 hour, which doubles it. Attuned stays through death but ends when you enter a raid. It can't be used while Innervate is on you.",
   },
   {
     name: "Walk on Air",
